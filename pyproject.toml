@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "pugsql"
+version = "0.1.0"
+description = ""
+authors = ["Dan McKinley <mcfunley@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+sqlalchemy = "^1.3"
+more-itertools = "^7.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^3.0"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
