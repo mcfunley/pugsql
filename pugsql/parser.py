@@ -27,6 +27,7 @@ def parse_comments(comments):
     for _, c in comments:
         consume_comment(cpr, c)
 
+    cpr.setdefault('result', statement.Raw())
     return cpr
 
 
@@ -41,6 +42,28 @@ def consume_name(cpr, tokens):
     name, keywords = lexer.lex_name(tokens['rest'])
     cpr['name'] = name
 
-    for k in keywords:
-        # todo handle single-line
-        pass
+    if len(keywords) == 0:
+        return
+
+    k = keywords[0]
+    if k == ':query' or k == ':?':
+        cpr['command'] = statement.Query()
+    elif k == ':execute' or k == ':!':
+        cpr['command'] = statement.Execute()
+    elif k == ':returning-execute' or k == ':<!':
+        cpr['command'] = statement.ReturningExecute()
+    elif k == ':insert' or k == ':!':
+        cpr['command'] = statement.Insert()
+    else:
+        raise Exception('todo')
+
+    if len(keywords) == 1:
+        return
+
+    k = keywords[1]
+    if k == ':one' or k == ':1':
+        cpr['result'] = statement.One()
+    elif k == ':many' or k == ':*':
+        cpr['result'] = statement.Many()
+    elif k == ':affected' or k == ':n':
+        cpr['result'] = statement.Affected()
