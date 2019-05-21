@@ -1,5 +1,4 @@
-from .query import Query, Command, Result
-from . import lexer
+from . import lexer, statement
 from more_itertools import split_at
 
 
@@ -9,7 +8,7 @@ def parse(pugsql):
 
     cpr = parse_comments(leading_comments)
 
-    return Query(
+    return statement.Statement(
         name=cpr['name'],
         sql='TK',
         doc=cpr['doc'],

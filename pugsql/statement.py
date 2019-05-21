@@ -10,7 +10,7 @@ class Result(object):
 
 
 @dataclass
-class Query:
+class Statement:
     name: str
     sql: str
     doc: str
