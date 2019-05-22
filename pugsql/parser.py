@@ -20,14 +20,13 @@ def parse_comments(comments):
     cpr = {
         'name': None,
         'command': None,
-        'result': None,
+        'result': statement.Raw(),
         'doc': None,
     }
 
     for _, c in comments:
         consume_comment(cpr, c)
 
-    cpr.setdefault('result', statement.Raw())
     return cpr
 
 
@@ -52,8 +51,6 @@ def consume_name(cpr, tokens):
         cpr['command'] = statement.Execute()
     elif k == ':returning-execute' or k == ':<!':
         cpr['command'] = statement.ReturningExecute()
-    elif k == ':insert' or k == ':!':
-        cpr['command'] = statement.Insert()
     else:
         raise Exception('todo')
 
@@ -67,3 +64,5 @@ def consume_name(cpr, tokens):
         cpr['result'] = statement.Many()
     elif k == ':affected' or k == ':n':
         cpr['result'] = statement.Affected()
+    elif k != ':raw':
+        raise Exception('todo')

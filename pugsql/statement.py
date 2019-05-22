@@ -13,9 +13,6 @@ class Execute(Command):
 class ReturningExecute(Command):
     pass
 
-class Insert(Command):
-    pass
-
 
 class Result(object):
     pass
