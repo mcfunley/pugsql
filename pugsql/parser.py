@@ -20,7 +20,7 @@ def parse(pugsql):
 def parse_comments(comments):
     cpr = {
         'name': None,
-        'command': None,
+        'command': statement.Query(),
         'result': statement.Raw(),
         'doc': None,
     }

@@ -22,6 +22,15 @@ class OneLinerTest(TestCase):
     def parse(self, path):
         return parse('oneliners/%s' % path)
 
+    def test_name_only_query(self):
+        self.assertIsInstance(self.parse('name-only').command, statement.Query)
+
+    def test_name_only_raw(self):
+        self.assertIsInstance(self.parse('name-only').result, statement.Raw)
+
+    def test_name_only_name(self):
+        self.assertEqual(self.parse('name-only').name, 'username_for_id')
+
     def test_short_query(self):
         self.assertIsInstance(
             self.parse('short-query-short-one').command, statement.Query)
