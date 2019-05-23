@@ -1,4 +1,3 @@
 -- :name username_for_id
--- :command :query
--- :result :one
+-- :result :1
 select username from users where user_id = :user_id

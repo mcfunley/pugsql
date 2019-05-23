@@ -1,8 +1,6 @@
 from . import lexer, statement
 from more_itertools import split_at
 
-# TODO query should be the default command
-
 def parse(pugsql):
     stream = lexer.lex(pugsql)
     leading_comments, *rest = split_at(stream, lambda x: x[0] != 'C')
@@ -11,16 +9,14 @@ def parse(pugsql):
 
     return statement.Statement(
         name=cpr['name'],
-        sql='TODO',
+        sql=pugsql,
         doc=cpr['doc'],
-        command=cpr['command'],
         result=cpr['result'])
 
 
 def parse_comments(comments):
     cpr = {
         'name': None,
-        'command': statement.Query(),
         'result': statement.Raw(),
         'doc': None,
     }
@@ -37,34 +33,14 @@ def consume_comment(cpr, c):
     if toks['keyword'] == 'name':
         consume_name(cpr, toks)
 
-    if toks['keyword'] == 'command':
-        consume_command(cpr, toks)
-
     if toks['keyword'] == 'result':
         consume_result(cpr, toks)
-
-
-def consume_command(cpr, tokens):
-    if len(tokens['rest']) == 0:
-        raise Exception('TODO')
-    set_command(cpr, tokens['rest'])
 
 
 def consume_result(cpr, tokens):
     if len(tokens['rest']) == 0:
         raise Exception('TODO')
     set_result(cpr, tokens['rest'])
-
-
-def set_command(cpr, keyword):
-    if keyword == ':query' or keyword == ':?':
-        cpr['command'] = statement.Query()
-    elif keyword == ':execute' or keyword == ':!':
-        cpr['command'] = statement.Execute()
-    elif keyword == ':returning-execute' or keyword == ':<!':
-        cpr['command'] = statement.ReturningExecute()
-    else:
-        raise Exception('todo')
 
 
 def consume_name(cpr, tokens):
@@ -75,12 +51,7 @@ def consume_name(cpr, tokens):
     if len(keywords) == 0:
         return
 
-    set_command(cpr, keywords[0])
-
-    if len(keywords) == 1:
-        return
-
-    set_result(cpr, keywords[1])
+    set_result(cpr, keywords[0])
 
 
 def set_result(cpr, keyword):

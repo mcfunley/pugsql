@@ -1,19 +1,5 @@
 from dataclasses import dataclass
-
-
-
-class Command(object):
-    def execute(self, conn, params):
-        raise NotImplementedError()
-
-class Query(Command):
-    pass
-
-class Execute(Command):
-    pass
-
-class ReturningExecute(Command):
-    pass
+from sqlalchemy.sql import text
 
 
 class Result(object):
@@ -27,7 +13,8 @@ class Many(Result):
     pass
 
 class Affected(Result):
-    pass
+    def transform(self, r):
+        return r.rowcount
 
 class Raw(Result):
     def transform(self, r):
@@ -39,7 +26,6 @@ class Statement:
     name: str
     sql: str
     doc: str
-    command: Command
     result: Result
 
     def set_engine(self, engine):
@@ -49,5 +35,5 @@ class Statement:
         if self.engine is None:
             raise Exception('TODO')
 
-        with self.engine.connect() as conn:
-            return self.result.transform(self.command.execute(conn, params))
+        r = self.engine.execute(text(self.sql), **params)
+        return self.result.transform(r)

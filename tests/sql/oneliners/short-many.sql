@@ -1,2 +1,2 @@
--- :name search_usernames :query :many
+-- :name search_usernames :*
 select * from users where username = :username
