@@ -1,6 +1,6 @@
 from . import compiler
 
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 
 def create_module(sqlpath):
     return compiler.create_module(sqlpath)
