@@ -7,10 +7,13 @@ class Result(object):
         raise NotImplementedError()
 
 class One(Result):
-    pass
+    def transform(self, r):
+        return { k: v for k, v in zip(r.keys(), r.first()) }
 
 class Many(Result):
-    pass
+    def transform(self, r):
+        ks = r.keys()
+        return ({ k: v for k, v in zip(ks, row)} for row in r.fetchall())
 
 class Affected(Result):
     def transform(self, r):

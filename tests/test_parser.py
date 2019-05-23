@@ -10,6 +10,18 @@ def parse(path):
     return parser.parse(sql(path))
 
 
+class SqlTests(TestCase):
+    def test_query(self):
+        self.assertEqual(
+            parse('basic').sql,
+            'select username from users where user_id = :user_id')
+
+    def test_extra_comments(self):
+        self.assertEqual(
+            parse('extra-comments').sql,
+            '-- some extra commentary\nselect * from foo where bar = :bar')
+
+
 class BasicTest(TestCase):
     def test_returns_stmt(self):
         self.assertIsInstance(parse('basic'), statement.Statement)

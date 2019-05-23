@@ -2,16 +2,12 @@ import re
 
 
 def lex(pugsql):
-    return compress([categorize(l) for l in pugsql.splitlines()])
+    return [categorize(l) for l in pugsql.splitlines()]
 
 
 def categorize(line):
     line = line.strip()
     return ('C', line) if line.startswith('--') else ('Q', line)
-
-
-def compress(stream):
-    return stream
 
 
 def lex_comment(c):
@@ -23,5 +19,5 @@ def lex_comment(c):
 
 
 def lex_name(nameline):
-    name, *rest = re.split('\s+', nameline.strip())
+    name, *rest = re.split(r'\s+', nameline.strip())
     return name, [k for k in rest if k.startswith(':')]

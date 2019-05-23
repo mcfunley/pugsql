@@ -1,15 +1,17 @@
 from . import lexer, statement
-from more_itertools import split_at
+from itertools import takewhile
 
 def parse(pugsql):
     stream = lexer.lex(pugsql)
-    leading_comments, *rest = split_at(stream, lambda x: x[0] != 'C')
+    leading_comments = list(takewhile(lambda x: x[0] == 'C', stream))
+    rest = stream[len(leading_comments):]
 
     cpr = parse_comments(leading_comments)
+    sql = '\n'.join(cpr['unconsumed'] + [q for _, q in rest])
 
     return statement.Statement(
         name=cpr['name'],
-        sql=pugsql,
+        sql=sql,
         doc=cpr['doc'],
         result=cpr['result'])
 
@@ -19,22 +21,21 @@ def parse_comments(comments):
         'name': None,
         'result': statement.Raw(),
         'doc': None,
+        'unconsumed': [],
     }
 
     for _, c in comments:
-        consume_comment(cpr, c)
+        toks = lexer.lex_comment(c)
+        if not toks:
+            cpr['unconsumed'].append(c)
+        elif toks['keyword'] == 'name':
+            consume_name(cpr, toks)
+        elif toks['keyword'] == 'result':
+            consume_result(cpr, toks)
+        else:
+            cpr['unconsumed'].append(c)
 
     return cpr
-
-
-def consume_comment(cpr, c):
-    toks = lexer.lex_comment(c)
-
-    if toks['keyword'] == 'name':
-        consume_name(cpr, toks)
-
-    if toks['keyword'] == 'result':
-        consume_result(cpr, toks)
 
 
 def consume_result(cpr, tokens):
