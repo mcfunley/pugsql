@@ -1,0 +1,39 @@
+header {
+    background-color: $red;
+    padding: 1rem 0;
+    text-align: center;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+    color: #eee;
+
+    h1 {
+	font-size: 10rem;
+	line-height: 6rem;
+
+	small {
+	    font-size: 2.2rem;
+	    color: $yellow;
+	}
+    }
+
+    #dotclub {
+	text-align: right;
+
+	a {
+	    color: $yellow;
+	    font-size: 1.5em;
+	    margin: 0 1rem 0 0;
+	}
+    }
+
+    #header-content {
+	margin: 2rem 0 0 0;
+    }
+}
+
+header, footer {
+    span {
+	display: inline-block;
+	width: 100%;
+	line-height: unset;
+    }
+}

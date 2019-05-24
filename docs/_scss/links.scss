@@ -1,0 +1,10 @@
+.content {
+    a, a:visited {
+	text-decoration: none;
+	color: $link;
+    }
+
+    a:hover, a:focus {
+	color: darken($link, 10%);
+    }
+}
