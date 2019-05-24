@@ -27,7 +27,7 @@ In the example above, the query would be specified like this:
 select * from users where user_id = :user_id
 ```
 
-So _throw away_ your clunky ORM and talk to your database the way the gods intended! Install PugSQL today!
+So _throw away_ your bulky ORM and talk to your database the way the gods intended! Install PugSQL today!
 
 ```bash
 $ pip install pugsql
