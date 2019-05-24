@@ -61,4 +61,8 @@ footer {
     .social-list:last-child {
 	padding-right: 0;
     }
+
+    a.club, a.club:visited, a.club:hover, a.club:focus {
+	color: $white;
+    }
 }

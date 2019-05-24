@@ -1,21 +1,21 @@
 .content {
-
-    .highlighter-rouge {
-	background-color: #1b1d1e;
-    }
+    max-width: 92rem;
+    margin: auto;
 
     p {
 	font-size: 2rem;
-	padding: 3.5rem 0.5rem;
+    }
+
+    h3 {
+	color: $blue;
     }
 
     .highlight {
-	padding: 1rem 0.5rem;
-    }
+	padding: 1rem;
 
-    .highlight, p {
-	max-width: 92rem;
-	margin: auto;
+	@media only screen and (min-width: 1120px) {
+	    border-radius: 5px;
+	}
     }
 
     .tutorial-link {
@@ -23,5 +23,6 @@
 	font-size: 3.90625rem;
 	text-transform: uppercase;
 	padding: 3rem 0;
+	margin-bottom: 2rem;
     }
 }
