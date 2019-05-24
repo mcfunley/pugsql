@@ -1,19 +1,18 @@
-from pugsql import __version__, create_module, compiler
+from pugsql import module, compiler
 from unittest import TestCase
 
 
-def test_create_module():
+def test_module():
     compiler.modules.clear()
-    assert create_module('tests/sql').sqlpath == 'tests/sql'
+    assert module('tests/sql').sqlpath == 'tests/sql'
 
 
 
 class PugsqlTest(TestCase):
     def setUp(self):
         compiler.modules.clear()
-        self.fixtures = create_module('tests/sql/fixtures')
-        self.fixtures.set_connection_string(
-            'sqlite:///./tests/data/fixtures.sqlite3')
+        self.fixtures = module('tests/sql/fixtures')
+        self.fixtures.connect('sqlite:///./tests/data/fixtures.sqlite3')
 
     def test_get_one(self):
         self.assertEqual(

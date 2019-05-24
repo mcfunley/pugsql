@@ -20,7 +20,7 @@ class Module(object):
             setattr(self, s.name, s)
             self._statements[s.name] = s
 
-    def set_connection_string(self, connstr):
+    def connect(self, connstr):
         self.set_engine(create_engine(connstr))
 
     def set_engine(self, engine):
@@ -31,7 +31,7 @@ class Module(object):
 modules = {}
 
 
-def create_module(sqlpath):
+def module(sqlpath):
     global modules
     if sqlpath not in modules:
         modules[sqlpath] = Module(sqlpath)

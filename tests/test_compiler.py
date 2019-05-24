@@ -8,14 +8,12 @@ class BasicCompilerTest(TestCase):
         compiler.modules.clear()
 
     def test_setsattr(self):
-        m = compiler.create_module('tests/sql')
+        m = compiler.module('tests/sql')
         self.assertEqual(m.username_for_id.name, 'username_for_id')
 
     def test_sets_sqlpath(self):
-        m = compiler.create_module('tests/sql')
+        m = compiler.module('tests/sql')
         self.assertEqual('tests/sql', m.sqlpath)
 
     def test_caches_modules(self):
-        self.assertEqual(
-            compiler.create_module('tests/sql'),
-            compiler.create_module('tests/sql'))
+        self.assertEqual(compiler.module('tests/sql'), compiler.module('tests/sql'))
