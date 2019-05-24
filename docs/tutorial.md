@@ -13,7 +13,7 @@ pip install pugsql
 
 ### Writing SQL Files
 
-The premise of PugSQL is that the best way to cope with a database is to write SQL. In a PugSQL project, you'll just have a set of `.sql` files in a directory. Like this:
+The premise of PugSQL is that the best way to cope with the reality of database ownership is to write SQL. In a PugSQL project, you'll just have a set of `.sql` files in a directory. Like this:
 
 ```bash
 $ ls queries/
