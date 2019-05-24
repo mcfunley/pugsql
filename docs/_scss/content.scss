@@ -4,10 +4,24 @@
 	background-color: #1b1d1e;
     }
 
+    p {
+	font-size: 2rem;
+	padding: 3.5rem 0.5rem;
+    }
+
+    .highlight {
+	padding: 1rem 0.5rem;
+    }
+
     .highlight, p {
 	max-width: 92rem;
 	margin: auto;
-	padding: 2rem 0.5rem;
     }
 
+    .tutorial-link {
+	text-align: center;
+	font-size: 3.90625rem;
+	text-transform: uppercase;
+	padding: 3rem 0;
+    }
 }
