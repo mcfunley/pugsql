@@ -2,7 +2,12 @@ header {
     text-shadow: 0 1px 2px rgba(0,0,0,0.25);
 
     h1 {
-	font-size: 10rem;
+	font-size: 8rem;
+
+	@media only screen and (min-width: 700px) {
+	    font-size: 10rem;
+	}
+
 	line-height: 6rem;
 
 	small {

@@ -25,4 +25,12 @@
 	padding: 3rem 0;
 	margin-bottom: 2rem;
     }
+
+    .tutorial-link, p {
+	padding: 0 1rem;
+
+	@media only screen and (min-width: 1120px) {
+	    padding: 0;
+	}
+    }
 }
