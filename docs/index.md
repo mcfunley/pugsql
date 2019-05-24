@@ -32,5 +32,3 @@ $ pip install pugsql
 ```
 
 PugSQL was inspired by the amazing [HugSQL](https://hugsql.org) library for the [Clojure](https://clojure.org) programming language.
-
-https://docs.sqlalchemy.org/en/13/core/engines.html
