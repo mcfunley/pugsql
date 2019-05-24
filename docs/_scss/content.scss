@@ -13,7 +13,7 @@
     .highlight {
 	padding: 1rem;
 
-	@media only screen and (min-width: 1120px) {
+	@media only screen and (min-width: $gutter-stop) {
 	    border-radius: 5px;
 	}
     }
@@ -26,10 +26,10 @@
 	margin-bottom: 2rem;
     }
 
-    .tutorial-link, p {
+    .tutorial-link, p, h2, h3, h4, h5, h6 {
 	padding: 0 1rem;
 
-	@media only screen and (min-width: 1120px) {
+	@media only screen and (min-width: $gutter-stop) {
 	    padding: 0;
 	}
     }

@@ -49,18 +49,31 @@ header, footer {
     }
 }
 
+
+$footer-social-stop: 500px;
+
+
 footer {
     padding: 3rem 0;
+    @media only screen and (max-width: $gutter-stop) {
+	padding: 3rem 1rem;
+    }
 
     .social-list {
-	display: table;
-	margin: 1rem auto 2rem auto;;
+	line-height: 4rem;
+	margin: 0 auto;
 	padding: 0;
 	list-style-type: none;
 
+	@media only screen and (min-width: $footer-social-stop) {
+	    display: table;
+	}
+
 	li {
-	    display: table-cell;
-	    padding-right: 2rem;
+	    @media only screen and (min-width: $footer-social-stop) {
+		display: table-cell;
+		padding-right: 2rem;
+	    }
 	}
     }
     .social-list:last-child {
