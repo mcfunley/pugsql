@@ -1,0 +1,82 @@
+$heading-face: Montserrat;
+$para-face: Roboto;
+$heading-bottom-margin: 3rem;
+
+html, body {
+    height: 100%;
+    font-size: 10px;
+    @media screen and (min-width: 720px) {
+	font-size: 12px;
+    }
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    color: $black-text;
+}
+
+%paragraph {
+    font-family: $para-face;
+    font-size: 1.6rem;
+    line-height: 3rem;
+    font-weight: 400;
+    font-style: normal;
+    letter-spacing: 0rem;
+    margin-bottom: 3rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin-bottom: $heading-bottom-margin;
+    font-family: $heading-face;
+    font-weight: 400;
+    font-style: normal;
+    letter-spacing: 0em;
+
+    small {
+	@extend %paragraph;
+    }
+}
+
+h1, h1, h3 {
+}
+
+h1 {
+    font-size: 6.103515625rem;
+    line-height: 9rem;
+}
+
+h2 {
+    font-size: 4.8828125rem;
+    line-height: 6rem;
+}
+
+h3 {
+    font-family: $heading-face;
+    font-size: 3.90625rem;
+    line-height: 6rem;
+}
+
+h4 {
+    font-size: 3.125em;
+    line-height: 3rem;
+}
+
+h5 {
+    font-size: 2.5rem;
+    line-height: 3rem;
+}
+
+h6 {
+    font-size: 2em;
+    line-height: 3rem;
+}
+
+p {
+    @extend %paragraph;
+}
+
+header, footer {
+    p {
+	font-family: $heading-face;
+    }
+}

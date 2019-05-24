@@ -1,0 +1,12 @@
+title: PugSQL
+email: mcfunley@gmail.com
+twitter_username: mcfunley
+github_username: mcfunley
+
+markdown: kramdown
+plugins:
+  - jekyll-gist
+  - jekyll-sitemap
+
+sass:
+  sass_dir: _scss
