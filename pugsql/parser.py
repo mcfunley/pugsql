@@ -1,6 +1,7 @@
 from . import lexer, statement
 from itertools import takewhile
 
+
 def parse(pugsql):
     stream = lexer.lex(pugsql)
     leading_comments = list(takewhile(lambda x: x[0] == 'C', stream))
