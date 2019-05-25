@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+poetry run pytest
+poetry run flake8
 poetry build
 poetry install
 bin/checkrelease.py
