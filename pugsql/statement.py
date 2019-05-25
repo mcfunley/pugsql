@@ -33,13 +33,17 @@ class Statement(object):
         self.sql = sql
         self.doc = doc
         self.result = result
+        self.engine = None
 
     def set_engine(self, engine):
         self.engine = engine
 
     def __call__(self, **params):
         if self.engine is None:
-            raise Exception('TODO')
+            raise RuntimeError(
+                'No connection engine is configured. Pass a connection string '
+                "to the module's connect method, or pass a SQLAlchemy engine "
+                'to the set_engine method.')
 
         r = self.engine.execute(text(self.sql), **params)
         return self.result.transform(r)
