@@ -1,6 +1,6 @@
 # Release History
 
-## 0.1.4 (in development)
+## 0.1.4
 * Improved exception feedback.
 * Improved docstrings on public interface and important objects.
 * Added some PyPI project metadata.
