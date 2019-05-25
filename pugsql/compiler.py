@@ -5,7 +5,17 @@ from sqlalchemy import create_engine
 
 
 class Module(object):
+    """
+    Holds a set of SQL functions loaded from files.
+    """
+
     def __init__(self, sqlpath):
+        """
+        Loads functions found in the *sql files specified by sqlpath into
+        properties on this object.
+
+        The named sql functions in files should be unique.
+        """
         self.sqlpath = sqlpath
         self._statements = {}
 
@@ -21,9 +31,22 @@ class Module(object):
             self._statements[s.name] = s
 
     def connect(self, connstr):
+        """
+        Sets the connection string for SQL functions on this module.
+
+        See https://docs.sqlalchemy.org/en/13/core/engines.html for examples of
+        legal connection strings for different databases.
+        """
         self.set_engine(create_engine(connstr))
 
     def set_engine(self, engine):
+        """
+        Sets the SQLAlchemy engine for SQL functions on this module. This can
+        be used instead of the connect method, when more customization of the
+        connection engine is desired.
+
+        See also: https://docs.sqlalchemy.org/en/13/core/connections.html
+        """
         for s in self._statements.values():
             s.set_engine(engine)
 
@@ -32,6 +55,10 @@ modules = {}
 
 
 def module(sqlpath):
+    """
+    Compiles a new Module or returns a cached one. Use the pugsql.module
+    instead of this one.
+    """
     global modules
     if sqlpath not in modules:
         modules[sqlpath] = Module(sqlpath)
