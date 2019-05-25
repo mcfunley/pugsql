@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -euo pipefail
+
+poetry build
+poetry install
+bin/checkrelease.py
+git tag -a v$(bin/printversion) -m "Tagging release $(bin/printversion)"
+git push
+poetry publish
