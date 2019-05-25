@@ -1,5 +1,8 @@
 # Release History
 
+## 0.1.5
+* Fixed broken flake8 tests in 0.1.4 release.
+
 ## 0.1.4
 * Improved exception feedback.
 * Improved docstrings on public interface and important objects.
