@@ -16,6 +16,9 @@ class Module(object):
 
         The named sql functions in files should be unique.
         """
+        if not os.path.isdir(sqlpath):
+            raise ValueError('Directory not found: %s' % sqlpath)
+
         self.sqlpath = sqlpath
         self._statements = {}
 

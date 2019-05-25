@@ -1,4 +1,5 @@
 from pugsql import module, compiler
+import pytest
 from unittest import TestCase
 
 
@@ -27,3 +28,9 @@ class PugsqlTest(TestCase):
         self.assertEqual(
             1,
             self.fixtures.update_username(user_id=3, username='dottie'))
+
+    def test_bad_path(self):
+        with pytest.raises(
+                ValueError,
+                message='Directory not found: does/not/exist'):
+            module('does/not/exist')
