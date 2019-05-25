@@ -10,6 +10,7 @@ sqlalchemy = "^1.3"
 
 [tool.poetry.dev-dependencies]
 pytest = "^3.0"
+flake8 = "^3.7"
 
 [build-system]
 requires = ["poetry>=0.12"]

@@ -6,18 +6,22 @@ class Result(object):
     def transform(self, r):
         raise NotImplementedError()
 
+
 class One(Result):
     def transform(self, r):
         return { k: v for k, v in zip(r.keys(), r.first()) }
+
 
 class Many(Result):
     def transform(self, r):
         ks = r.keys()
         return ({ k: v for k, v in zip(ks, row)} for row in r.fetchall())
 
+
 class Affected(Result):
     def transform(self, r):
         return r.rowcount
+
 
 class Raw(Result):
     def transform(self, r):

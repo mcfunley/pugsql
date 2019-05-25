@@ -7,7 +7,6 @@ def test_module():
     assert module('tests/sql').sqlpath == 'tests/sql'
 
 
-
 class PugsqlTest(TestCase):
     def setUp(self):
         compiler.modules.clear()

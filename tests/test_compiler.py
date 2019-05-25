@@ -2,7 +2,6 @@ from pugsql import compiler
 from unittest import TestCase
 
 
-
 class BasicCompilerTest(TestCase):
     def setUp(self):
         compiler.modules.clear()
@@ -16,4 +15,6 @@ class BasicCompilerTest(TestCase):
         self.assertEqual('tests/sql', m.sqlpath)
 
     def test_caches_modules(self):
-        self.assertEqual(compiler.module('tests/sql'), compiler.module('tests/sql'))
+        self.assertEqual(
+            compiler.module('tests/sql'),
+            compiler.module('tests/sql'))

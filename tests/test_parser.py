@@ -1,10 +1,11 @@
 from pugsql import parser
 from pugsql import statement
-from unittest import TestCase, skip
+from unittest import TestCase
 
 
 def sql(path):
     return open('tests/sql/%s.sql' % path, 'r').read()
+
 
 def parse(path):
     return parser.parse(sql(path))
