@@ -1,8 +1,18 @@
 [tool.poetry]
 name = "pugsql"
 version = "0.1.3"
-description = ""
+description = "PugSQL is an anti-ORM that facilitates interacting with databases using SQL in files."
 authors = ["Dan McKinley <mcfunley@gmail.com>"]
+license = "Apache-2.0"
+homepage = "https://pugsql.org"
+repository = "https://github.com/mcfunley/pugsql"
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
+  "Topic :: Database :: Front-Ends"
+]
 
 [tool.poetry.dependencies]
 python = ">=3.4"
