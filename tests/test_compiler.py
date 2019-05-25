@@ -18,3 +18,9 @@ class BasicCompilerTest(TestCase):
         self.assertEqual(
             compiler.module('tests/sql'),
             compiler.module('tests/sql'))
+
+    def test_function_redefinition(self):
+        self.assertRaises(
+            ValueError,
+            compiler.module,
+            'tests/sql/duplicate-name')

@@ -25,7 +25,10 @@ class Module(object):
             s = parser.parse(pugsql)
 
             if hasattr(self, s.name):
-                raise Exception('TODO')
+                raise ValueError(
+                    'Error loading %s - a SQL function named %s was already '
+                    'defined.' % (
+                        sqlfile, s.name))
 
             setattr(self, s.name, s)
             self._statements[s.name] = s
