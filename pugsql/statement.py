@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from sqlalchemy.sql import text
 
 
@@ -28,12 +27,12 @@ class Raw(Result):
         return r
 
 
-@dataclass
-class Statement:
-    name: str
-    sql: str
-    doc: str
-    result: Result
+class Statement(object):
+    def __init__(self, name, sql, doc, result):
+        self.name = name
+        self.sql = sql
+        self.doc = doc
+        self.result = result
 
     def set_engine(self, engine):
         self.engine = engine
