@@ -29,6 +29,18 @@ class Raw(Result):
 
 class Statement(object):
     def __init__(self, name, sql, doc, result):
+        if not name:
+            raise ValueError('Statement must have a name.')
+
+        if sql is None:
+            raise ValueError('Statement must have a SQL string.')
+        sql = sql.strip()
+        if not len(sql):
+            raise ValueError('SQL string cannot be empty.')
+
+        if not result:
+            raise ValueError('Statement must have a result type.')
+
         self.name = name
         self.sql = sql
         self.doc = doc
