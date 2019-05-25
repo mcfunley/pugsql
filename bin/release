@@ -7,4 +7,5 @@ poetry install
 bin/checkrelease.py
 git tag -a v$(bin/printversion) -m "Tagging release $(bin/printversion)"
 git push
+git push --tags
 poetry publish
