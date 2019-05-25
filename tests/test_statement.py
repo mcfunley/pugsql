@@ -4,7 +4,6 @@ from unittest import TestCase
 from unittest.mock import Mock
 
 
-
 def test_raw():
     assert Raw().transform('x') == 'x'
 
@@ -45,3 +44,9 @@ class StatementTest(TestCase):
                 ValueError,
                 message='Statement must have a result type.'):
             Statement('foo', 'select 1', '', None)
+
+    def test_sets_engine(self):
+        e = Mock()
+        s = Statement('foo', 'select 1', '', Raw())
+        s.set_engine(e)
+        self.assertEqual(e, s.engine)
