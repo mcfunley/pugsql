@@ -1,4 +1,5 @@
 from pugsql import compiler
+import pytest
 from unittest import TestCase
 
 
@@ -20,7 +21,9 @@ class BasicCompilerTest(TestCase):
             compiler.module('tests/sql'))
 
     def test_function_redefinition(self):
-        self.assertRaises(
-            ValueError,
-            compiler.module,
-            'tests/sql/duplicate-name')
+        msg = (
+            'Error loading tests/sql/duplicate-name/foo.sql - a SQL function '
+            'named foo was already defined in '
+            'tests/sql/duplicate-name/foo2.sql.')
+        with pytest.raises(ValueError, match=msg):
+            compiler.module('tests/sql/duplicate-name')

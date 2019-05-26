@@ -28,7 +28,7 @@ class Raw(Result):
 
 
 class Statement(object):
-    def __init__(self, name, sql, doc, result):
+    def __init__(self, name, sql, doc, result, filename=None):
         if not name:
             raise ValueError('Statement must have a name.')
 
@@ -45,6 +45,7 @@ class Statement(object):
         self.sql = sql
         self.doc = doc
         self.result = result
+        self.filename = filename
         self.engine = None
 
     def set_engine(self, engine):

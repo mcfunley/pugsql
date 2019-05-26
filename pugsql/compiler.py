@@ -30,8 +30,8 @@ class Module(object):
             if hasattr(self, s.name):
                 raise ValueError(
                     'Error loading %s - a SQL function named %s was already '
-                    'defined.' % (
-                        sqlfile, s.name))
+                    'defined in %s.' % (
+                        sqlfile, s.name, self._statements[s.name].filename))
 
             setattr(self, s.name, s)
             self._statements[s.name] = s

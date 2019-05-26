@@ -16,7 +16,8 @@ def parse(pugsql, ctx=None):
         name=cpr['name'],
         sql=sql,
         doc=cpr['doc'],
-        result=cpr['result'])
+        result=cpr['result'],
+        filename=ctx.sqlfile if ctx.sqlfile != '<literal>' else None)
 
 
 def parse_comments(comments):

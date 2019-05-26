@@ -50,3 +50,7 @@ class StatementTest(TestCase):
         s = Statement('foo', 'select 1', '', Raw())
         s.set_engine(e)
         self.assertEqual(e, s.engine)
+
+    def test_filename(self):
+        s = Statement('foo', 'select 1', '', Raw(), 'path/foobar.sql')
+        self.assertEqual('path/foobar.sql', s.filename)
