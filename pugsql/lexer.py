@@ -19,8 +19,7 @@ def lex(pugsql, ctx):
 
 
 def categorize(line, ctx):
-    ctx = context.advance(ctx, cols=len(line) - len(line.lstrip()))
-    line = line.strip()
+    line, ctx = whitespace_advance(line, ctx)
 
     if line.startswith('--'):
         return Token('C', line, ctx)
@@ -54,9 +53,7 @@ def lex_comment(token):
 
 
 def lex_name(token):
-    line = token.value
-    ctx = context.advance(token.context, cols=len(line) - len(line.lstrip()))
-    line = line.strip()
+    line, ctx = whitespace_advance(token.value, token.context)
 
     m = re.match(
         r'(?P<name>[^ ]+)'
@@ -66,7 +63,7 @@ def lex_name(token):
         r'(?P<rest>.+)?', line)
 
     if not m:
-        return
+        return None
 
     d = m.groupdict()
 
@@ -79,3 +76,26 @@ def lex_name(token):
         'keyword': Token('K', d['keyword'], kwctx),
         'rest': Token('S', d['rest'], restctx),
     }
+
+
+def lex_result(token):
+    line, ctx = whitespace_advance(token.value, token.context)
+    m = re.match(
+        r'(?P<keyword>\:[^ ]+)'
+        r'(?P<rest>.+)?', line)
+
+    if not m:
+        return None
+
+    d = m.groupdict()
+    restctx = context.advance(ctx, cols=len(d['keyword']))
+
+    return {
+        'keyword': Token('K', d['keyword'], ctx),
+        'rest': Token('S', d['rest'], restctx),
+    }
+
+
+def whitespace_advance(line, ctx):
+    ctx = context.advance(ctx, cols=len(line) - len(line.lstrip()))
+    return line.strip(), ctx

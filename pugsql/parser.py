@@ -1,4 +1,5 @@
 from . import lexer, statement, context
+from .exceptions import ParserError
 from itertools import takewhile
 
 
@@ -35,39 +36,53 @@ def parse_comments(comments):
         elif toks['keyword'].value == ':name':
             consume_name(cpr, toks['rest'])
         elif toks['keyword'].value == ':result':
-            consume_result(cpr, toks)
+            consume_result(cpr, toks['rest'])
         else:
             cpr['unconsumed'].append(comment_token.value)
 
     return cpr
 
 
-def consume_result(cpr, tokens):
-    if not tokens['rest'].value:
-        raise Exception('TODO')
-    set_result(cpr, tokens['rest'].value)
+def consume_result(cpr, rest):
+    if not rest.value:
+        raise ParserError('expected keyword', rest)
+    set_result(cpr, rest)
 
 
 def consume_name(cpr, rest):
     tokens = lexer.lex_name(rest)
     if not tokens:
-        raise ValueError(
-            'Error in %s:%s:%s - expected a query name.' % (
-                rest.context.sqlfile,
-                rest.context.line,
-                rest.context.col))
+        raise ParserError('expected a query name.', rest)
 
     cpr['name'] = tokens['name'].value
 
     if not tokens['keyword'].value:
+        if tokens['rest'].value:
+            raise ParserError(
+                'encountered unexpected input after query name.',
+                tokens['rest'])
         return
 
-    # todo deal with extra
-    # todo deal with illegal python chars
-    set_result(cpr, tokens['keyword'].value)
+    if tokens['rest'].value:
+        raise ParserError(
+            'encountered unexpected input after result type.',
+            tokens['rest'])
+
+    set_result(cpr, tokens['keyword'])
 
 
-def set_result(cpr, keyword):
+def set_result(cpr, ktok):
+    tokens = lexer.lex_result(ktok)
+    if not tokens:
+        raise ParserError('expected keyword', ktok)
+
+    if tokens['rest'].value:
+        raise ParserError(
+            'encountered unexpected input after result type',
+            tokens['rest'])
+
+    keyword = tokens['keyword'].value
+
     if keyword == ':one' or keyword == ':1':
         cpr['result'] = statement.One()
     elif keyword == ':many' or keyword == ':*':
@@ -75,4 +90,4 @@ def set_result(cpr, keyword):
     elif keyword == ':affected' or keyword == ':n':
         cpr['result'] = statement.Affected()
     elif keyword != ':raw':
-        raise Exception('todo')
+        raise ParserError("unrecognized keyword '%s'" % keyword, ktok)

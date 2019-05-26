@@ -1,5 +1,5 @@
-from pugsql import parser
-from pugsql import statement
+from pugsql import parser, statement
+from pugsql.exceptions import ParserError
 import pytest
 from unittest import TestCase
 
@@ -102,7 +102,86 @@ class MultilineTest(TestCase):
 class ParserErrorTest(TestCase):
     def test_no_name(self):
         msg = 'Error in <literal>:1:9 - expected a query name.'
-        with pytest.raises(ValueError, match=msg):
+        with pytest.raises(ParserError, match=msg):
             parser.parse(
                 '-- :name \n'
                 'select 1;')
+
+    def test_name_only_extra(self):
+        msg = ('Error in <literal>:1:14 - encountered '
+               'unexpected input after query name.')
+        with pytest.raises(ParserError, match=msg):
+            parser.parse(
+                '-- :name foo and some other stuff\n'
+                'select 1')
+
+    def test_extra_after_result_nameline(self):
+        msg = ('Error in <literal>:1:24 - encountered '
+               'unexpected input after result type.')
+        with pytest.raises(ParserError, match=msg):
+            parser.parse(
+                '-- :name foo :affected things\n'
+                'select 1')
+
+    def test_unrecognized_keyword_nameline(self):
+        msg = "Error in <literal>:1:14 - unrecognized keyword ':wrong'"
+        with pytest.raises(ParserError, match=msg):
+            parser.parse(
+                '-- :name foo :wrong\n'
+                'select 1')
+
+    def test_unrecognized_keyword_resultline(self):
+        msg = "Error in <literal>:2:12 - unrecognized keyword ':nope'"
+        with pytest.raises(ParserError, match=msg):
+            parser.parse(
+                '-- :name foo\n'
+                '-- :result :nope\n'
+                'select 1')
+
+    def test_missing_result_type_result_line(self):
+        msg = "Error in <literal>:2:11 - expected keyword"
+        with pytest.raises(ParserError, match=msg):
+            parser.parse(
+                '-- :name foo\n'
+                '-- :result \n'
+                'select 1')
+
+    def test_result_type_not_keyword_result_line(self):
+        msg = r"Error in <literal>:2:12 - expected keyword"
+        with pytest.raises(ParserError, match=msg):
+            parser.parse(
+                '-- :name foo\n'
+                '-- :result raw\n'
+                'select 1')
+
+    def test_extra_after_result_result_line(self):
+        msg = ('Error in <literal>:2:16 - encountered unexpected input after '
+               'result type')
+        with pytest.raises(ParserError, match=msg):
+            parser.parse(
+                '-- :name foo\n'
+                '-- :result :raw thing\n'
+                'select 1')
+
+
+class ResultLineWhitespceTest(TestCase):
+    def test_works_leading_whitespace(self):
+        s = parser.parse(
+            '-- :name foo\n'
+            '--   :result :1\n'
+            'select 1')
+        self.assertIsInstance(s.result, statement.One)
+
+    def test_works_trailing_whitespace(self):
+        s = parser.parse(
+            '-- :name foo\n'
+            '--   :result :1   \n'
+            'select 1')
+        self.assertIsInstance(s.result, statement.One)
+
+    def test_works_internal_whitespace(self):
+        s = parser.parse(
+            '-- :name foo\n'
+            '--   :result     :1   \n'
+            'select 1')
+        self.assertIsInstance(s.result, statement.One)

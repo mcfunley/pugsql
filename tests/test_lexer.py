@@ -170,3 +170,23 @@ class LexNameTest(TestCase):
 
     def test_empty(self):
         self.assertIsNone(lexer.lex_name(self.tok('')))
+
+
+class LexResultTest(TestCase):
+    def tok(self, s):
+        return lexer.Token('S', s, at(1, 1))
+
+    def test_works(self):
+        self.assertEqual({
+            'keyword': lexer.Token('K', ':raw', at(1, 1)),
+            'rest': lexer.Token('S', None, at(1, 5)),
+        }, lexer.lex_result(self.tok(':raw')))
+
+    def test_rest(self):
+        self.assertEqual({
+            'keyword': lexer.Token('K', ':raw', at(1, 1)),
+            'rest': lexer.Token('S', ' stuff', at(1, 5)),
+        }, lexer.lex_result(self.tok(':raw stuff')))
+
+    def test_no_keyword(self):
+        self.assertIsNone(lexer.lex_result(self.tok('thing')))
