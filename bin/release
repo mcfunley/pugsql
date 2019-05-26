@@ -7,6 +7,9 @@ poetry run flake8
 poetry build
 poetry install
 bin/checkrelease.py
+bin/build-docs
+git add .
+git commit -m "updating documentation"
 git tag -a v$(bin/printversion) -m "Tagging release $(bin/printversion)"
 git push
 git push --tags
