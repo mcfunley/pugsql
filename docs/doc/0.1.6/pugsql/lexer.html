@@ -34,7 +34,15 @@ from collections import namedtuple
 import re
 
 
+__pdoc__ = {}
+
+
 Token = namedtuple(&#39;Token&#39;, [&#39;tag&#39;, &#39;value&#39;, &#39;context&#39;])
+__pdoc__[&#39;Token&#39;] = &#39;A tagged string produced by the lexer.&#39;
+__pdoc__[&#39;Token.tag&#39;] = &#39;A character indicating the meaning of the `value`.&#39;
+__pdoc__[&#39;Token.value&#39;] = &#39;The string value of the `Token`.&#39;
+__pdoc__[&#39;Token.context&#39;] = (&#39;A `pugsql.context.Context` for tracking source &#39;
+                             &#39;code information.&#39;)
 
 
 def lex(pugsql, ctx):
@@ -278,7 +286,7 @@ def whitespace_advance(line, ctx):
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Token(tag, value, context)</p></section>
+<section class="desc"><p>A tagged string produced by the lexer.</p></section>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>builtins.tuple</li>
@@ -287,15 +295,15 @@ def whitespace_advance(line, ctx):
 <dl>
 <dt id="pugsql.lexer.Token.context"><code class="name">var <span class="ident">context</span></code></dt>
 <dd>
-<section class="desc"><p>Alias for field number 2</p></section>
+<section class="desc"><p>A <a title="pugsql.context.Context" href="context.html#pugsql.context.Context"><code>Context()</code></a> for tracking source code information.</p></section>
 </dd>
 <dt id="pugsql.lexer.Token.tag"><code class="name">var <span class="ident">tag</span></code></dt>
 <dd>
-<section class="desc"><p>Alias for field number 0</p></section>
+<section class="desc"><p>A character indicating the meaning of the <code>value</code>.</p></section>
 </dd>
 <dt id="pugsql.lexer.Token.value"><code class="name">var <span class="ident">value</span></code></dt>
 <dd>
-<section class="desc"><p>Alias for field number 1</p></section>
+<section class="desc"><p>The string value of the <a title="pugsql.lexer.Token" href="#pugsql.lexer.Token"><code>Token</code></a>.</p></section>
 </dd>
 </dl>
 </dd>

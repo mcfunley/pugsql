@@ -7,7 +7,15 @@ from collections import namedtuple
 import re
 
 
+__pdoc__ = {}
+
+
 Token = namedtuple('Token', ['tag', 'value', 'context'])
+__pdoc__['Token'] = 'A tagged string produced by the lexer.'
+__pdoc__['Token.tag'] = 'A character indicating the meaning of the `value`.'
+__pdoc__['Token.value'] = 'The string value of the `Token`.'
+__pdoc__['Token.context'] = ('A `pugsql.context.Context` for tracking source '
+                             'code information.')
 
 
 def lex(pugsql, ctx):
