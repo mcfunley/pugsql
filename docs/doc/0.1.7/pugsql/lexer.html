@@ -46,15 +46,17 @@ __pdoc__[&#39;Token.context&#39;] = (&#39;A `pugsql.context.Context` for trackin
 
 
 def lex(pugsql, ctx):
+    &#34;&#34;&#34;
+    &#34;&#34;&#34;
     def generate(pugsql, ctx):
         for l in pugsql.splitlines():
             ctx = context.advance(ctx, lines=1)
-            yield categorize(l, ctx)
+            yield _categorize(l, ctx)
     return list(generate(pugsql, ctx))
 
 
-def categorize(line, ctx):
-    line, ctx = whitespace_advance(line, ctx)
+def _categorize(line, ctx):
+    line, ctx = _whitespace_advance(line, ctx)
 
     if line.startswith(&#39;--&#39;):
         return Token(&#39;C&#39;, line, ctx)
@@ -88,7 +90,7 @@ def lex_comment(token):
 
 
 def lex_name(token):
-    line, ctx = whitespace_advance(token.value, token.context)
+    line, ctx = _whitespace_advance(token.value, token.context)
 
     m = re.match(
         r&#39;(?P&lt;name&gt;[^ ]+)&#39;
@@ -114,7 +116,7 @@ def lex_name(token):
 
 
 def lex_result(token):
-    line, ctx = whitespace_advance(token.value, token.context)
+    line, ctx = _whitespace_advance(token.value, token.context)
     m = re.match(
         r&#39;(?P&lt;keyword&gt;\:[^ ]+)&#39;
         r&#39;(?P&lt;rest&gt;.+)?&#39;, line)
@@ -131,7 +133,7 @@ def lex_result(token):
     }
 
 
-def whitespace_advance(line, ctx):
+def _whitespace_advance(line, ctx):
     ctx = context.advance(ctx, cols=len(line) - len(line.lstrip()))
     return line.strip(), ctx</code></pre>
 </details>
@@ -143,21 +145,6 @@ def whitespace_advance(line, ctx):
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="pugsql.lexer.categorize"><code class="name flex">
-<span>def <span class="ident">categorize</span></span>(<span>line, ctx)</span>
-</code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def categorize(line, ctx):
-    line, ctx = whitespace_advance(line, ctx)
-
-    if line.startswith(&#39;--&#39;):
-        return Token(&#39;C&#39;, line, ctx)
-    return Token(&#39;Q&#39;, line, ctx)</code></pre>
-</details>
-</dd>
 <dt id="pugsql.lexer.lex"><code class="name flex">
 <span>def <span class="ident">lex</span></span>(<span>pugsql, ctx)</span>
 </code></dt>
@@ -166,10 +153,12 @@ def whitespace_advance(line, ctx):
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">def lex(pugsql, ctx):
+    &#34;&#34;&#34;
+    &#34;&#34;&#34;
     def generate(pugsql, ctx):
         for l in pugsql.splitlines():
             ctx = context.advance(ctx, lines=1)
-            yield categorize(l, ctx)
+            yield _categorize(l, ctx)
     return list(generate(pugsql, ctx))</code></pre>
 </details>
 </dd>
@@ -214,7 +203,7 @@ def whitespace_advance(line, ctx):
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">def lex_name(token):
-    line, ctx = whitespace_advance(token.value, token.context)
+    line, ctx = _whitespace_advance(token.value, token.context)
 
     m = re.match(
         r&#39;(?P&lt;name&gt;[^ ]+)&#39;
@@ -247,7 +236,7 @@ def whitespace_advance(line, ctx):
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">def lex_result(token):
-    line, ctx = whitespace_advance(token.value, token.context)
+    line, ctx = _whitespace_advance(token.value, token.context)
     m = re.match(
         r&#39;(?P&lt;keyword&gt;\:[^ ]+)&#39;
         r&#39;(?P&lt;rest&gt;.+)?&#39;, line)
@@ -262,18 +251,6 @@ def whitespace_advance(line, ctx):
         &#39;keyword&#39;: Token(&#39;K&#39;, d[&#39;keyword&#39;], ctx),
         &#39;rest&#39;: Token(&#39;S&#39;, d[&#39;rest&#39;], restctx),
     }</code></pre>
-</details>
-</dd>
-<dt id="pugsql.lexer.whitespace_advance"><code class="name flex">
-<span>def <span class="ident">whitespace_advance</span></span>(<span>line, ctx)</span>
-</code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def whitespace_advance(line, ctx):
-    ctx = context.advance(ctx, cols=len(line) - len(line.lstrip()))
-    return line.strip(), ctx</code></pre>
 </details>
 </dd>
 </dl>
@@ -322,13 +299,11 @@ def whitespace_advance(line, ctx):
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
-<ul class="two-column">
-<li><code><a title="pugsql.lexer.categorize" href="#pugsql.lexer.categorize">categorize</a></code></li>
+<ul class="">
 <li><code><a title="pugsql.lexer.lex" href="#pugsql.lexer.lex">lex</a></code></li>
 <li><code><a title="pugsql.lexer.lex_comment" href="#pugsql.lexer.lex_comment">lex_comment</a></code></li>
 <li><code><a title="pugsql.lexer.lex_name" href="#pugsql.lexer.lex_name">lex_name</a></code></li>
 <li><code><a title="pugsql.lexer.lex_result" href="#pugsql.lexer.lex_result">lex_result</a></code></li>
-<li><code><a title="pugsql.lexer.whitespace_advance" href="#pugsql.lexer.whitespace_advance">whitespace_advance</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>

@@ -19,15 +19,17 @@ __pdoc__['Token.context'] = ('A `pugsql.context.Context` for tracking source '
 
 
 def lex(pugsql, ctx):
+    """
+    """
     def generate(pugsql, ctx):
         for l in pugsql.splitlines():
             ctx = context.advance(ctx, lines=1)
-            yield categorize(l, ctx)
+            yield _categorize(l, ctx)
     return list(generate(pugsql, ctx))
 
 
-def categorize(line, ctx):
-    line, ctx = whitespace_advance(line, ctx)
+def _categorize(line, ctx):
+    line, ctx = _whitespace_advance(line, ctx)
 
     if line.startswith('--'):
         return Token('C', line, ctx)
@@ -61,7 +63,7 @@ def lex_comment(token):
 
 
 def lex_name(token):
-    line, ctx = whitespace_advance(token.value, token.context)
+    line, ctx = _whitespace_advance(token.value, token.context)
 
     m = re.match(
         r'(?P<name>[^ ]+)'
@@ -87,7 +89,7 @@ def lex_name(token):
 
 
 def lex_result(token):
-    line, ctx = whitespace_advance(token.value, token.context)
+    line, ctx = _whitespace_advance(token.value, token.context)
     m = re.match(
         r'(?P<keyword>\:[^ ]+)'
         r'(?P<rest>.+)?', line)
@@ -104,6 +106,6 @@ def lex_result(token):
     }
 
 
-def whitespace_advance(line, ctx):
+def _whitespace_advance(line, ctx):
     ctx = context.advance(ctx, cols=len(line) - len(line.lstrip()))
     return line.strip(), ctx

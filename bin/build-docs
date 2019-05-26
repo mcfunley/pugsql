@@ -2,6 +2,6 @@
 
 poetry run pdoc \
        --html \
-       --output-dir=docs/doc/$(bin/printversion) \
+       --output-dir=docs/doc/$(python -c "import pugsql; print(pugsql.__version__)") \
        --force \
        pugsql

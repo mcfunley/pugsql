@@ -2,7 +2,8 @@
 
 ## development
 * Dropped support for Python 3.4.
-* Now generating module documentation with [https://pypi.org/project/pdoc3/](pdoc3) (in progress)
+* Greatly improved docstrings throughout (in progress).
+* Now generating module documentation with [https://pypi.org/project/pdoc3/](pdoc3) (in progress).
 * Better PyPI package page (todo).
 * Improved homepage (todo).
 
