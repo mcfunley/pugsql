@@ -1,14 +1,16 @@
-from . import lexer, statement
+from . import lexer, statement, context
 from itertools import takewhile
 
 
-def parse(pugsql):
-    stream = lexer.lex(pugsql)
+def parse(pugsql, ctx=None):
+    ctx = ctx or context.Context('<literal>')
+
+    stream = lexer.lex(pugsql, ctx)
     leading_comments = list(takewhile(lambda x: x[0] == 'C', stream))
     rest = stream[len(leading_comments):]
 
     cpr = parse_comments(leading_comments)
-    sql = '\n'.join(cpr['unconsumed'] + [q for _, q in rest])
+    sql = '\n'.join(cpr['unconsumed'] + [q for _, q, _ in rest])
 
     return statement.Statement(
         name=cpr['name'],
@@ -25,7 +27,7 @@ def parse_comments(comments):
         'unconsumed': [],
     }
 
-    for _, c in comments:
+    for _, c, ctx in comments:
         toks = lexer.lex_comment(c)
         if not toks:
             cpr['unconsumed'].append(c)

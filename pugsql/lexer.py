@@ -1,13 +1,19 @@
+from . import context
 import re
 
 
-def lex(pugsql):
-    return [categorize(l) for l in pugsql.splitlines()]
+def lex(pugsql, ctx):
+    def generate(pugsql, ctx):
+        for l in pugsql.splitlines():
+            ctx = context.advance(ctx, lines=1)
+            yield categorize(l, ctx)
+    return list(generate(pugsql, ctx))
 
 
-def categorize(line):
+def categorize(line, ctx):
+    ctx = context.advance(ctx, cols=len(line) - len(line.lstrip()))
     line = line.strip()
-    return ('C', line) if line.startswith('--') else ('Q', line)
+    return ('C', line, ctx) if line.startswith('--') else ('Q', line, ctx)
 
 
 def lex_comment(c):

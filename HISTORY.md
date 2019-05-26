@@ -1,5 +1,8 @@
 # Release History
 
+## development
+* PugSQL now provides detailed file/line/column syntax errors (in progress).
+
 ## 0.1.5
 * Fixed broken flake8 tests in 0.1.4 release.
 

@@ -1,4 +1,4 @@
-from . import parser
+from . import parser, context
 from glob import glob
 import os
 from sqlalchemy import create_engine
@@ -25,7 +25,7 @@ class Module(object):
         for sqlfile in glob(os.path.join(self.sqlpath, '*sql')):
             with open(sqlfile, 'r') as f:
                 pugsql = f.read()
-            s = parser.parse(pugsql)
+            s = parser.parse(pugsql, ctx=context.Context(sqlfile))
 
             if hasattr(self, s.name):
                 raise ValueError(
