@@ -116,6 +116,13 @@ class LexNameTest(TestCase):
             'rest': lexer.Token('S', None, at(1, 4)),
         }, lexer.lex_name(self.tok('foo')))
 
+    def test_name_rest_no_keyword(self):
+        self.assertEqual({
+            'name': lexer.Token('N', 'foo', at(1, 1)),
+            'keyword': lexer.Token('K', None, at(1, 5)),
+            'rest': lexer.Token('S', 'other stuff', at(1, 5)),
+        }, lexer.lex_name(self.tok('foo other stuff')))
+
     def test_with_keyword(self):
         self.assertEqual({
             'name': lexer.Token('N', 'foo', at(1, 1)),
