@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.6.2" />
 <title>pugsql.exceptions API documentation</title>
-<meta name="description" content="" />
+<meta name="description" content="Exception types raised by PugSQL. PugSQL will also raise built-in exceptions
+when they&#39;re appropriate." />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
@@ -20,20 +21,40 @@
 <h1 class="title">Module <code>pugsql.exceptions</code></h1>
 </header>
 <section id="section-intro">
+<p>Exception types raised by PugSQL. PugSQL will also raise built-in exceptions
+when they're appropriate.</p>
 <details class="source">
 <summary>Source code</summary>
-<pre><code class="python">class ParserError(ValueError):
+<pre><code class="python">&#34;&#34;&#34;
+Exception types raised by PugSQL. PugSQL will also raise built-in exceptions
+when they&#39;re appropriate.
+&#34;&#34;&#34;
+
+__pdoc__ = {}
+
+class ParserError(ValueError):
     &#34;&#34;&#34;
     Exception raised when syntax errors are encountered parsing PugSQL files.
     &#34;&#34;&#34;
+    token = None
+
     def __init__(self, message, token):
+        &#34;&#34;&#34;
+        Creates a new ParserError given a message and the token indicating the
+        position of the error. Builds a user-facing error message indicating
+        the file, line, and column of the error.
+        &#34;&#34;&#34;
         super(ParserError, self).__init__(
             &#39;Error in %s:%s:%s - %s&#39; % (
                 token.context.sqlfile,
                 token.context.line,
                 token.context.col,
                 message))
-        self.token = token</code></pre>
+        self.token = token
+
+__pdoc__[&#39;ParserError.token&#39;] = (
+    &#39;The `pugsql.lexer.Token` indicating the position of the error &#39;
+    &#39;encountered during parsing.&#39;)</code></pre>
 </details>
 </section>
 <section>
@@ -50,14 +71,24 @@
 <span>(</span><span>message, token)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Exception raised when syntax errors are encountered parsing PugSQL files.</p></section>
+<section class="desc"><p>Exception raised when syntax errors are encountered parsing PugSQL files.</p>
+<p>Creates a new ParserError given a message and the token indicating the
+position of the error. Builds a user-facing error message indicating
+the file, line, and column of the error.</p></section>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">class ParserError(ValueError):
     &#34;&#34;&#34;
     Exception raised when syntax errors are encountered parsing PugSQL files.
     &#34;&#34;&#34;
+    token = None
+
     def __init__(self, message, token):
+        &#34;&#34;&#34;
+        Creates a new ParserError given a message and the token indicating the
+        position of the error. Builds a user-facing error message indicating
+        the file, line, and column of the error.
+        &#34;&#34;&#34;
         super(ParserError, self).__init__(
             &#39;Error in %s:%s:%s - %s&#39; % (
                 token.context.sqlfile,
@@ -72,6 +103,13 @@
 <li>builtins.Exception</li>
 <li>builtins.BaseException</li>
 </ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pugsql.exceptions.ParserError.token"><code class="name">var <span class="ident">token</span></code></dt>
+<dd>
+<section class="desc"><p>The <a title="pugsql.lexer.Token" href="lexer.html#pugsql.lexer.Token"><code>Token</code></a> indicating the position of the error encountered during parsing.</p></section>
+</dd>
+</dl>
 </dd>
 </dl>
 </section>
@@ -91,6 +129,9 @@
 <ul>
 <li>
 <h4><code><a title="pugsql.exceptions.ParserError" href="#pugsql.exceptions.ParserError">ParserError</a></code></h4>
+<ul class="">
+<li><code><a title="pugsql.exceptions.ParserError.token" href="#pugsql.exceptions.ParserError.token">token</a></code></li>
+</ul>
 </li>
 </ul>
 </li>
