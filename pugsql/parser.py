@@ -33,7 +33,7 @@ def parse_comments(comments):
         if not toks:
             cpr['unconsumed'].append(comment_token.value)
         elif toks['keyword'].value == ':name':
-            consume_name(cpr, toks)
+            consume_name(cpr, toks['rest'])
         elif toks['keyword'].value == ':result':
             consume_result(cpr, toks)
         else:
@@ -48,11 +48,14 @@ def consume_result(cpr, tokens):
     set_result(cpr, tokens['rest'].value)
 
 
-def consume_name(cpr, tokens):
-    # TODO deal with no name
-    tokens = lexer.lex_name(tokens['rest'])
+def consume_name(cpr, rest):
+    tokens = lexer.lex_name(rest)
     if not tokens:
-        raise Exception('TODO')
+        raise ValueError(
+            'Error in %s:%s:%s - expected a query name.' % (
+                rest.context.sqlfile,
+                rest.context.line,
+                rest.context.col))
 
     cpr['name'] = tokens['name'].value
 

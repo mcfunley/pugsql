@@ -1,5 +1,6 @@
 from pugsql import parser
 from pugsql import statement
+import pytest
 from unittest import TestCase
 
 
@@ -99,4 +100,9 @@ class MultilineTest(TestCase):
 
 
 class ParserErrorTest(TestCase):
-    pass
+    def test_no_name(self):
+        msg = 'Error in <literal>:1:9 - expected a query name.'
+        with pytest.raises(ValueError, match=msg):
+            parser.parse(
+                '-- :name \n'
+                'select 1;')
