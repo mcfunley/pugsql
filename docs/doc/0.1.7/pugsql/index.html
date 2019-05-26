@@ -47,7 +47,20 @@ def module(sqlpath):
     return compiler._module(sqlpath)
 
 
-__all__ = [&#39;__version__&#39;, &#39;module&#39;,]</code></pre>
+def get_modules():
+    &#34;&#34;&#34;
+    Returns a dict of all modules currently loaded by pugsql. Clearing or
+    otherwise modifying this dict will reset (or modify) the underlying data.
+
+    For example, this call would reset pugsql so that repeated calls to
+    `pugsql.module` will reload files from disk:
+
+        pugsql.get_modules().clear()
+    &#34;&#34;&#34;
+    return compiler.modules
+
+
+__all__ = [&#39;__version__&#39;, &#39;module&#39;, &#39;get_modules&#39;,]</code></pre>
 </details>
 </section>
 <section>
@@ -86,6 +99,31 @@ track of source location.</p></section>
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
+<dt id="pugsql.get_modules"><code class="name flex">
+<span>def <span class="ident">get_modules</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns a dict of all modules currently loaded by pugsql. Clearing or
+otherwise modifying this dict will reset (or modify) the underlying data.</p>
+<p>For example, this call would reset pugsql so that repeated calls to
+<a title="pugsql.module" href="#pugsql.module"><code>module()</code></a> will reload files from disk:</p>
+<pre><code>pugsql.get_modules().clear()
+</code></pre></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_modules():
+    &#34;&#34;&#34;
+    Returns a dict of all modules currently loaded by pugsql. Clearing or
+    otherwise modifying this dict will reset (or modify) the underlying data.
+
+    For example, this call would reset pugsql so that repeated calls to
+    `pugsql.module` will reload files from disk:
+
+        pugsql.get_modules().clear()
+    &#34;&#34;&#34;
+    return compiler.modules</code></pre>
+</details>
+</dd>
 <dt id="pugsql.module"><code class="name flex">
 <span>def <span class="ident">module</span></span>(<span>sqlpath)</span>
 </code></dt>
@@ -146,6 +184,7 @@ sqlpath are safe and return the same module object.</p></section>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
+<li><code><a title="pugsql.get_modules" href="#pugsql.get_modules">get_modules</a></code></li>
 <li><code><a title="pugsql.module" href="#pugsql.module">module</a></code></li>
 </ul>
 </li>

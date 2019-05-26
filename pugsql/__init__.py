@@ -23,4 +23,17 @@ def module(sqlpath):
     return compiler._module(sqlpath)
 
 
-__all__ = ['__version__', 'module',]
+def get_modules():
+    """
+    Returns a dict of all modules currently loaded by pugsql. Clearing or
+    otherwise modifying this dict will reset (or modify) the underlying data.
+
+    For example, this call would reset pugsql so that repeated calls to
+    `pugsql.module` will reload files from disk:
+
+        pugsql.get_modules().clear()
+    """
+    return compiler.modules
+
+
+__all__ = ['__version__', 'module', 'get_modules',]
