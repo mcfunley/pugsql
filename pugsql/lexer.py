@@ -53,6 +53,29 @@ def lex_comment(token):
     }
 
 
-def lex_name(nameline):
-    name, *rest = re.split(r'\s+', nameline.strip())
-    return name, [k for k in rest if k.startswith(':')]
+def lex_name(token):
+    line = token.value
+    ctx = context.advance(token.context, cols=len(line) - len(line.lstrip()))
+    line = line.strip()
+
+    m = re.match(
+        r'(?P<name>[^ ]+)'
+        r'(?P<internalws>\s+)?'
+        r'(?P<keyword>\:[^ ]+)?'
+        r'(?P<internalws2>\s+)?'
+        r'(?P<rest>.+)?', line)
+
+    if not m:
+        return
+
+    d = m.groupdict()
+
+    kwbegin = len(d['name']) + len(d['internalws'] or '')
+    kwctx = context.advance(ctx, cols=kwbegin)
+    restbegin = sum(len(d[k] or '') for k in d.keys() if k != 'rest')
+    restctx = context.advance(ctx, cols=restbegin)
+    return {
+        'name': Token('N', d['name'], ctx),
+        'keyword': Token('K', d['keyword'], kwctx),
+        'rest': Token('S', d['rest'], restctx),
+    }

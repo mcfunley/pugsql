@@ -86,7 +86,6 @@ class LexCommentTest(TestCase):
             'rest': lexer.Token('S', 'bar :baz', at(1, 14)),
         }, lexer.lex_comment(self.tok('--      :foo bar :baz')))
 
-
     def test_internal_whitespace(self):
         self.assertEqual({
             'keyword': lexer.Token('K', ':foo', at(1, 5)),
@@ -98,3 +97,63 @@ class LexCommentTest(TestCase):
             'keyword': lexer.Token('K', ':foo', at(1, 4)),
             'rest': lexer.Token('S', '', at(1, 8)),
         }, lexer.lex_comment(self.tok('-- :foo')))
+
+
+class LexNameTest(TestCase):
+    def tok(self, rest):
+        return lexer.Token('S', rest, at(1, 1))
+
+    def test_name_only(self):
+        self.assertEqual({
+            'name': lexer.Token('N', 'foo', at(1, 1)),
+            'keyword': lexer.Token('K', None, at(1, 4)),
+            'rest': lexer.Token('S', None, at(1, 4)),
+        }, lexer.lex_name(self.tok('foo')))
+
+    def test_with_keyword(self):
+        self.assertEqual({
+            'name': lexer.Token('N', 'foo', at(1, 1)),
+            'keyword': lexer.Token('K', ':bar', at(1, 5)),
+            'rest': lexer.Token('S', None, at(1, 9)),
+        }, lexer.lex_name(self.tok('foo :bar')))
+
+    def test_with_rest(self):
+        self.assertEqual({
+            'name': lexer.Token('N', 'foo', at(1, 1)),
+            'keyword': lexer.Token('K', ':bar', at(1, 5)),
+            'rest': lexer.Token('S', 'other stuff', at(1, 10)),
+        }, lexer.lex_name(self.tok('foo :bar other stuff')))
+
+    def test_leading_whitespace(self):
+        self.assertEqual({
+            'name': lexer.Token('N', 'foo', at(1, 4)),
+            'keyword': lexer.Token('K', ':bar', at(1, 8)),
+            'rest': lexer.Token('S', 'other stuff', at(1, 13)),
+        }, lexer.lex_name(self.tok('   foo :bar other stuff')))
+
+    def test_trailing_whitespace(self):
+        self.assertEqual({
+            'name': lexer.Token('N', 'foo', at(1, 4)),
+            'keyword': lexer.Token('K', ':bar', at(1, 8)),
+            'rest': lexer.Token('S', 'other stuff', at(1, 13)),
+        }, lexer.lex_name(self.tok('   foo :bar other stuff   ')))
+
+    def test_name_only_trailing_whitespace(self):
+        self.assertEqual({
+            'name': lexer.Token('N', 'foo', at(1, 1)),
+            'keyword': lexer.Token('K', None, at(1, 4)),
+            'rest': lexer.Token('S', None, at(1, 4)),
+        }, lexer.lex_name(self.tok('foo    ')))
+
+    def test_with_keyword_trailing_whitespace(self):
+        self.assertEqual({
+            'name': lexer.Token('N', 'foo', at(1, 1)),
+            'keyword': lexer.Token('K', ':bar', at(1, 5)),
+            'rest': lexer.Token('S', None, at(1, 9)),
+        }, lexer.lex_name(self.tok('foo :bar    ')))
+
+    def test_no_name(self):
+        self.assertIsNone(lexer.lex_name(self.tok('   ')))
+
+    def test_empty(self):
+        self.assertIsNone(lexer.lex_name(self.tok('')))

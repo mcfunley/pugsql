@@ -50,13 +50,18 @@ def consume_result(cpr, tokens):
 
 def consume_name(cpr, tokens):
     # TODO deal with no name
-    name, keywords = lexer.lex_name(tokens['rest'].value)
-    cpr['name'] = name
+    tokens = lexer.lex_name(tokens['rest'])
+    if not tokens:
+        raise Exception('TODO')
 
-    if len(keywords) == 0:
+    cpr['name'] = tokens['name'].value
+
+    if not tokens['keyword'].value:
         return
 
-    set_result(cpr, keywords[0])
+    # todo deal with extra
+    # todo deal with illegal python chars
+    set_result(cpr, tokens['keyword'].value)
 
 
 def set_result(cpr, keyword):

@@ -96,3 +96,7 @@ class MultilineTest(TestCase):
     def test_long_raw(self):
         self.assertIsInstance(
             self.parse('raw').result, statement.Raw)
+
+
+class ParserErrorTest(TestCase):
+    pass
