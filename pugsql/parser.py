@@ -9,6 +9,18 @@ import re
 
 
 def parse(pugsql, ctx=None):
+    """
+    Processes the SQL string given in `pugsql` and returns a valid
+    `pugsql.statement.Statement` object.
+
+    Will raise a `pugsql.exceptions.ParserError` in any number of cases in
+    which the PugSQL metadata isn't valid. However, this does not parse and
+    validate the SQL statement.
+
+    `ctx` is a context object provided by the `pugsql.context.Context`
+    function, or `None`. If it is `None` a default context is created which
+    will indicate that the SQL is being parsed from a literal string.
+    """
     ctx = ctx or context.Context('<literal>')
 
     stream = lexer.lex(pugsql, ctx)

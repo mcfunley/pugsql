@@ -36,6 +36,18 @@ import re
 
 
 def parse(pugsql, ctx=None):
+    &#34;&#34;&#34;
+    Processes the SQL string given in `pugsql` and returns a valid
+    `pugsql.statement.Statement` object.
+
+    Will raise a `pugsql.exceptions.ParserError` in any number of cases in
+    which the PugSQL metadata isn&#39;t valid. However, this does not parse and
+    validate the SQL statement.
+
+    `ctx` is a context object provided by the `pugsql.context.Context`
+    function, or `None`. If it is `None` a default context is created which
+    will indicate that the SQL is being parsed from a literal string.
+    &#34;&#34;&#34;
     ctx = ctx or context.Context(&#39;&lt;literal&gt;&#39;)
 
     stream = lexer.lex(pugsql, ctx)
@@ -146,10 +158,29 @@ def _is_legal_name(value):
 <span>def <span class="ident">parse</span></span>(<span>pugsql, ctx=None)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<section class="desc"><p>Processes the SQL string given in <a title="pugsql" href="index.html"><code>pugsql</code></a> and returns a valid
+<a title="pugsql.statement.Statement" href="statement.html#pugsql.statement.Statement"><code>Statement</code></a> object.</p>
+<p>Will raise a <a title="pugsql.exceptions.ParserError" href="exceptions.html#pugsql.exceptions.ParserError"><code>ParserError</code></a> in any number of cases in
+which the PugSQL metadata isn't valid. However, this does not parse and
+validate the SQL statement.</p>
+<p><code>ctx</code> is a context object provided by the <a title="pugsql.context.Context" href="context.html#pugsql.context.Context"><code>Context()</code></a>
+function, or <code>None</code>. If it is <code>None</code> a default context is created which
+will indicate that the SQL is being parsed from a literal string.</p></section>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">def parse(pugsql, ctx=None):
+    &#34;&#34;&#34;
+    Processes the SQL string given in `pugsql` and returns a valid
+    `pugsql.statement.Statement` object.
+
+    Will raise a `pugsql.exceptions.ParserError` in any number of cases in
+    which the PugSQL metadata isn&#39;t valid. However, this does not parse and
+    validate the SQL statement.
+
+    `ctx` is a context object provided by the `pugsql.context.Context`
+    function, or `None`. If it is `None` a default context is created which
+    will indicate that the SQL is being parsed from a literal string.
+    &#34;&#34;&#34;
     ctx = ctx or context.Context(&#39;&lt;literal&gt;&#39;)
 
     stream = lexer.lex(pugsql, ctx)
