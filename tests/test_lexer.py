@@ -98,6 +98,12 @@ class LexCommentTest(TestCase):
             'rest': lexer.Token('S', '', at(1, 8)),
         }, lexer.lex_comment(self.tok('-- :foo')))
 
+    def test_no_space(self):
+        self.assertEqual({
+            'keyword': lexer.Token('K', ':foo', at(1, 3)),
+            'rest': lexer.Token('S', '', at(1, 7)),
+        }, lexer.lex_comment(self.tok('--:foo')))
+
 
 class LexNameTest(TestCase):
     def tok(self, rest):

@@ -29,7 +29,7 @@ def categorize(line, ctx):
 
 def lex_comment(token):
     m = re.match(
-        r'(?P<lead>--\s+)'
+        r'(?P<lead>--\s*)'
         r'(?P<keyword>\:[^ ]+)'
         r'(?P<internalws>\s+)?'
         r'(?P<rest>.*)?', token.value)
