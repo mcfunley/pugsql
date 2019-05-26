@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.6.2" />
 <title>pugsql.compiler API documentation</title>
-<meta name="description" content="" />
+<meta name="description" content="Code that processes SQL files and returns modules of database functions." />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
@@ -20,9 +20,13 @@
 <h1 class="title">Module <code>pugsql.compiler</code></h1>
 </header>
 <section id="section-intro">
+<p>Code that processes SQL files and returns modules of database functions.</p>
 <details class="source">
 <summary>Source code</summary>
-<pre><code class="python">from . import parser, context
+<pre><code class="python">&#34;&#34;&#34;
+Code that processes SQL files and returns modules of database functions.
+&#34;&#34;&#34;
+from . import parser, context
 from glob import glob
 import os
 from sqlalchemy import create_engine
@@ -86,8 +90,8 @@ modules = {}
 
 def module(sqlpath):
     &#34;&#34;&#34;
-    Compiles a new Module or returns a cached one. Use the pugsql.module
-    instead of this one.
+    Compiles a new Module or returns a cached one. Use the `pugsql.module`
+    function instead of this one.
     &#34;&#34;&#34;
     global modules
     if sqlpath not in modules:
@@ -106,14 +110,14 @@ def module(sqlpath):
 <span>def <span class="ident">module</span></span>(<span>sqlpath)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Compiles a new Module or returns a cached one. Use the pugsql.module
-instead of this one.</p></section>
+<section class="desc"><p>Compiles a new Module or returns a cached one. Use the <a title="pugsql.module" href="index.html#pugsql.module"><code>module()</code></a>
+function instead of this one.</p></section>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">def module(sqlpath):
     &#34;&#34;&#34;
-    Compiles a new Module or returns a cached one. Use the pugsql.module
-    instead of this one.
+    Compiles a new Module or returns a cached one. Use the `pugsql.module`
+    function instead of this one.
     &#34;&#34;&#34;
     global modules
     if sqlpath not in modules:

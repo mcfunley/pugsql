@@ -1,3 +1,6 @@
+"""
+Code that processes SQL files and returns modules of database functions.
+"""
 from . import parser, context
 from glob import glob
 import os
@@ -62,8 +65,8 @@ modules = {}
 
 def module(sqlpath):
     """
-    Compiles a new Module or returns a cached one. Use the pugsql.module
-    instead of this one.
+    Compiles a new Module or returns a cached one. Use the `pugsql.module`
+    function instead of this one.
     """
     global modules
     if sqlpath not in modules:
