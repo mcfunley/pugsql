@@ -1,6 +1,7 @@
 from . import lexer, statement, context
 from .exceptions import ParserError
 from itertools import takewhile
+import re
 
 
 def parse(pugsql, ctx=None):
@@ -54,7 +55,13 @@ def consume_name(cpr, rest):
     if not tokens:
         raise ParserError('expected a query name.', rest)
 
-    cpr['name'] = tokens['name'].value
+    name = tokens['name'].value
+    if not is_legal_name(name):
+        raise ParserError(
+            "'%s' is not a legal Python function name." % name,
+            tokens['name'])
+
+    cpr['name'] = name
 
     if not tokens['keyword'].value:
         if tokens['rest'].value:
@@ -91,3 +98,7 @@ def set_result(cpr, ktok):
         cpr['result'] = statement.Affected()
     elif keyword != ':raw':
         raise ParserError("unrecognized keyword '%s'" % keyword, ktok)
+
+
+def is_legal_name(value):
+    return re.match(r'^[a-zA-Z_][a-zA-Z0-9_]+$', value) is not None

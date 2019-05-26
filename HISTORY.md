@@ -1,8 +1,8 @@
 # Release History
 
-## development
+## 0.1.6
 * PugSQL now provides detailed file/line/column syntax errors.
-* Illegal characters in function names fails faster (in progress).
+* Illegal characters in Python function names will now fail to parse.
 * Duplicate function names in one library will now fail.
 
 ## 0.1.5

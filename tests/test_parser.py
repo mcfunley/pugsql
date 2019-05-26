@@ -185,3 +185,51 @@ class ResultLineWhitespceTest(TestCase):
             '--   :result     :1   \n'
             'select 1')
         self.assertIsInstance(s.result, statement.One)
+
+
+class LegalFunctionNameTest(TestCase):
+    def errmsg(self, name):
+        return ("Error in <literal>:1:10 - '%s' is not a legal Python "
+                "function name." % name)
+
+    def test_nonalphaunderscore(self):
+        with pytest.raises(ParserError, match=self.errmsg('foo#')):
+            parser.parse(
+                '-- :name foo#\n'
+                'select 1')
+
+    def test_begins_with_number(self):
+        with pytest.raises(ParserError, match=self.errmsg('9foo')):
+            parser.parse(
+                '-- :name 9foo\n'
+                'select 1')
+
+    def test_dashes(self):
+        with pytest.raises(ParserError, match=self.errmsg('foo-bar')):
+            parser.parse(
+                '-- :name foo-bar\n'
+                'select 1')
+
+    def test_numbers(self):
+        s = parser.parse(
+            '-- :name foo1\n'
+            'select 1')
+        self.assertEqual('foo1', s.name)
+
+    def test_underscores(self):
+        s = parser.parse(
+            '-- :name foo_bar\n'
+            'select 1')
+        self.assertEqual('foo_bar', s.name)
+
+    def test_leading_underscores(self):
+        s = parser.parse(
+            '-- :name _foo_bar\n'
+            'select 1')
+        self.assertEqual('_foo_bar', s.name)
+
+    def test_uppercase(self):
+        s = parser.parse(
+            '-- :name _FOO_BAR\n'
+            'select 1')
+        self.assertEqual('_FOO_BAR', s.name)
