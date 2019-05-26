@@ -6,11 +6,11 @@ def parse(pugsql, ctx=None):
     ctx = ctx or context.Context('<literal>')
 
     stream = lexer.lex(pugsql, ctx)
-    leading_comments = list(takewhile(lambda x: x[0] == 'C', stream))
+    leading_comments = list(takewhile(lambda t: t.tag == 'C', stream))
     rest = stream[len(leading_comments):]
 
     cpr = parse_comments(leading_comments)
-    sql = '\n'.join(cpr['unconsumed'] + [qtok.value for _, qtok in rest])
+    sql = '\n'.join(cpr['unconsumed'] + [token.value for token in rest])
 
     return statement.Statement(
         name=cpr['name'],
@@ -28,7 +28,7 @@ def parse_comments(comments):
         'unconsumed': [],
     }
 
-    for _, comment_token in comments:
+    for comment_token in comments:
         toks = lexer.lex_comment(comment_token)
         if not toks:
             cpr['unconsumed'].append(comment_token.value)

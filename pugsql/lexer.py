@@ -3,7 +3,7 @@ from collections import namedtuple
 import re
 
 
-Token = namedtuple('Token', ['value', 'context'])
+Token = namedtuple('Token', ['tag', 'value', 'context'])
 
 
 def lex(pugsql, ctx):
@@ -19,8 +19,8 @@ def categorize(line, ctx):
     line = line.strip()
 
     if line.startswith('--'):
-        return ('C', Token(line, ctx))
-    return ('Q', Token(line, ctx))
+        return Token('C', line, ctx)
+    return Token('Q', line, ctx)
 
 
 def lex_comment(token):
