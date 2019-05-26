@@ -32,5 +32,5 @@ class PugsqlTest(TestCase):
     def test_bad_path(self):
         with pytest.raises(
                 ValueError,
-                message='Directory not found: does/not/exist'):
+                match='Directory not found: does/not/exist'):
             module('does/not/exist')

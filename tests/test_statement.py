@@ -14,35 +14,31 @@ class StatementTest(TestCase):
         self.assertRaises(RuntimeError, lambda: s())
 
     def test_no_name(self):
-        with pytest.raises(ValueError, message='Statement must have a name.'):
+        with pytest.raises(ValueError, match='Statement must have a name.'):
             Statement(None, 'foo', '', Raw())
 
     def test_name_empty(self):
-        with pytest.raises(ValueError, message='Statement must have a name.'):
+        with pytest.raises(ValueError, match='Statement must have a name.'):
             Statement('', 'foo', '', Raw())
 
     def test_sql_none(self):
         with pytest.raises(
                 ValueError,
-                message='Statement must have a SQL string.'):
+                match='Statement must have a SQL string.'):
             Statement('foo', None, '', Raw())
 
     def test_sql_empty(self):
-        with pytest.raises(
-                ValueError,
-                message='SQL string cannot be empty.'):
+        with pytest.raises(ValueError, match='SQL string cannot be empty.'):
             Statement('foo', '', '', Raw())
 
     def test_sql_whitespace(self):
-        with pytest.raises(
-                ValueError,
-                message='SQL string cannot be empty.'):
+        with pytest.raises(ValueError, match='SQL string cannot be empty.'):
             Statement('foo', '   ', '', Raw())
 
     def test_result_none(self):
         with pytest.raises(
                 ValueError,
-                message='Statement must have a result type.'):
+                match='Statement must have a result type.'):
             Statement('foo', 'select 1', '', None)
 
     def test_sets_engine(self):
