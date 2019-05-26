@@ -11,7 +11,7 @@ def parse(pugsql, ctx=None):
     leading_comments = list(takewhile(lambda t: t.tag == 'C', stream))
     rest = stream[len(leading_comments):]
 
-    cpr = parse_comments(leading_comments)
+    cpr = _parse_comments(leading_comments)
     sql = '\n'.join(cpr['unconsumed'] + [token.value for token in rest])
 
     return statement.Statement(
@@ -22,7 +22,7 @@ def parse(pugsql, ctx=None):
         filename=ctx.sqlfile if ctx.sqlfile != '<literal>' else None)
 
 
-def parse_comments(comments):
+def _parse_comments(comments):
     cpr = {
         'name': None,
         'result': statement.Raw(),
@@ -35,28 +35,28 @@ def parse_comments(comments):
         if not toks:
             cpr['unconsumed'].append(comment_token.value)
         elif toks['keyword'].value == ':name':
-            consume_name(cpr, toks['rest'])
+            _consume_name(cpr, toks['rest'])
         elif toks['keyword'].value == ':result':
-            consume_result(cpr, toks['rest'])
+            _consume_result(cpr, toks['rest'])
         else:
             cpr['unconsumed'].append(comment_token.value)
 
     return cpr
 
 
-def consume_result(cpr, rest):
+def _consume_result(cpr, rest):
     if not rest.value:
         raise ParserError('expected keyword', rest)
-    set_result(cpr, rest)
+    _set_result(cpr, rest)
 
 
-def consume_name(cpr, rest):
+def _consume_name(cpr, rest):
     tokens = lexer.lex_name(rest)
     if not tokens:
         raise ParserError('expected a query name.', rest)
 
     name = tokens['name'].value
-    if not is_legal_name(name):
+    if not _is_legal_name(name):
         raise ParserError(
             "'%s' is not a legal Python function name." % name,
             tokens['name'])
@@ -75,10 +75,10 @@ def consume_name(cpr, rest):
             'encountered unexpected input after result type.',
             tokens['rest'])
 
-    set_result(cpr, tokens['keyword'])
+    _set_result(cpr, tokens['keyword'])
 
 
-def set_result(cpr, ktok):
+def _set_result(cpr, ktok):
     tokens = lexer.lex_result(ktok)
     if not tokens:
         raise ParserError('expected keyword', ktok)
@@ -100,5 +100,5 @@ def set_result(cpr, ktok):
         raise ParserError("unrecognized keyword '%s'" % keyword, ktok)
 
 
-def is_legal_name(value):
+def _is_legal_name(value):
     return re.match(r'^[a-zA-Z_][a-zA-Z0-9_]+$', value) is not None
