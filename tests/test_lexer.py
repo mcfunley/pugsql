@@ -58,4 +58,32 @@ class LexTest(TestCase):
 
 
 class LexCommentTest(TestCase):
-    pass
+    def tok(self, comment):
+        return lexer.Token('C', comment, ctx)
+
+    def test_no_keywords(self):
+        self.assertIsNone(lexer.lex_comment(self.tok('-- foobar baz')))
+
+    def test_not_a_comment(self):
+        self.assertIsNone(lexer.lex_comment(self.tok('select 1')))
+
+    def test_internal_keyword(self):
+        self.assertIsNone(lexer.lex_comment(self.tok('-- stuff :foo bar')))
+
+    def test_works(self):
+        self.assertEqual({
+            'keyword': ':foo',
+            'rest': 'bar baz',
+        }, lexer.lex_comment(self.tok('-- :foo bar baz')))
+
+    def test_multiple_keywords(self):
+        self.assertEqual({
+            'keyword': ':foo',
+            'rest': 'bar :baz',
+        }, lexer.lex_comment(self.tok('-- :foo bar :baz')))
+
+    def test_leading_whitespace(self):
+        self.assertEqual({
+            'keyword': ':foo',
+            'rest': 'bar :baz',
+        }, lexer.lex_comment(self.tok('--      :foo bar :baz')))

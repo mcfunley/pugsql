@@ -32,9 +32,9 @@ def parse_comments(comments):
         toks = lexer.lex_comment(comment_token)
         if not toks:
             cpr['unconsumed'].append(comment_token.value)
-        elif toks['keyword'] == 'name':
+        elif toks['keyword'] == ':name':
             consume_name(cpr, toks)
-        elif toks['keyword'] == 'result':
+        elif toks['keyword'] == ':result':
             consume_result(cpr, toks)
         else:
             cpr['unconsumed'].append(comment_token.value)

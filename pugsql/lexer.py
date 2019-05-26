@@ -1,3 +1,7 @@
+"""
+Functions that take strings and yield streams / dicts of tokens, keeping
+track of source location.
+"""
 from . import context
 from collections import namedtuple
 import re
@@ -25,8 +29,8 @@ def categorize(line, ctx):
 
 def lex_comment(token):
     m = re.match(
-        r'--(?P<leading_whitespace>\s+)'
-        r'\:(?P<keyword>[^ ]+)'
+        r'--\s+'
+        r'(?P<keyword>\:[^ ]+)'
         r'\s+(?P<rest>.*)', token.value)
     return m.groupdict() if m else None
 
