@@ -32,10 +32,14 @@ import os
 from sqlalchemy import create_engine
 
 
+__pdoc__ = {}
+
+
 class Module(object):
     &#34;&#34;&#34;
     Holds a set of SQL functions loaded from files.
     &#34;&#34;&#34;
+    sqlpath = None
 
     def __init__(self, sqlpath):
         &#34;&#34;&#34;
@@ -85,7 +89,16 @@ class Module(object):
             s.set_engine(engine)
 
 
+__pdoc__[&#39;Module.sqlpath&#39;] = (
+    &#39;The path that the `pugsql.compiler.Module` was loaded from.&#39;)
+
+
 modules = {}
+
+
+__pdoc__[&#39;modules&#39;] = (
+    &#39;A `dict` of all loaded PugSQL modules. The keys of the dict are the &#39;
+    &#39;paths as provided to `pugsql.module`.&#39;)
 
 
 def _module(sqlpath):
@@ -123,6 +136,7 @@ properties on this object.</p>
     &#34;&#34;&#34;
     Holds a set of SQL functions loaded from files.
     &#34;&#34;&#34;
+    sqlpath = None
 
     def __init__(self, sqlpath):
         &#34;&#34;&#34;
@@ -171,6 +185,13 @@ properties on this object.</p>
         for s in self._statements.values():
             s.set_engine(engine)</code></pre>
 </details>
+<h3>Class variables</h3>
+<dl>
+<dt id="pugsql.compiler.Module.sqlpath"><code class="name">var <span class="ident">sqlpath</span></code></dt>
+<dd>
+<section class="desc"><p>The path that the <a title="pugsql.compiler.Module" href="#pugsql.compiler.Module"><code>Module</code></a> was loaded from.</p></section>
+</dd>
+</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="pugsql.compiler.Module.connect"><code class="name flex">
@@ -237,6 +258,7 @@ connection engine is desired.</p>
 <ul class="">
 <li><code><a title="pugsql.compiler.Module.connect" href="#pugsql.compiler.Module.connect">connect</a></code></li>
 <li><code><a title="pugsql.compiler.Module.set_engine" href="#pugsql.compiler.Module.set_engine">set_engine</a></code></li>
+<li><code><a title="pugsql.compiler.Module.sqlpath" href="#pugsql.compiler.Module.sqlpath">sqlpath</a></code></li>
 </ul>
 </li>
 </ul>

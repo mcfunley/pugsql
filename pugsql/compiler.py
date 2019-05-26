@@ -7,10 +7,14 @@ import os
 from sqlalchemy import create_engine
 
 
+__pdoc__ = {}
+
+
 class Module(object):
     """
     Holds a set of SQL functions loaded from files.
     """
+    sqlpath = None
 
     def __init__(self, sqlpath):
         """
@@ -58,6 +62,10 @@ class Module(object):
         """
         for s in self._statements.values():
             s.set_engine(engine)
+
+
+__pdoc__['Module.sqlpath'] = (
+    'The path that the `pugsql.compiler.Module` was loaded from.')
 
 
 modules = {}
