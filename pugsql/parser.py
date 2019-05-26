@@ -32,9 +32,9 @@ def parse_comments(comments):
         toks = lexer.lex_comment(comment_token)
         if not toks:
             cpr['unconsumed'].append(comment_token.value)
-        elif toks['keyword'] == ':name':
+        elif toks['keyword'].value == ':name':
             consume_name(cpr, toks)
-        elif toks['keyword'] == ':result':
+        elif toks['keyword'].value == ':result':
             consume_result(cpr, toks)
         else:
             cpr['unconsumed'].append(comment_token.value)
@@ -43,14 +43,14 @@ def parse_comments(comments):
 
 
 def consume_result(cpr, tokens):
-    if len(tokens['rest']) == 0:
+    if not tokens['rest'].value:
         raise Exception('TODO')
-    set_result(cpr, tokens['rest'])
+    set_result(cpr, tokens['rest'].value)
 
 
 def consume_name(cpr, tokens):
     # TODO deal with no name
-    name, keywords = lexer.lex_name(tokens['rest'])
+    name, keywords = lexer.lex_name(tokens['rest'].value)
     cpr['name'] = name
 
     if len(keywords) == 0:

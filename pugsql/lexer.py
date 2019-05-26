@@ -29,10 +29,28 @@ def categorize(line, ctx):
 
 def lex_comment(token):
     m = re.match(
-        r'--\s+'
+        r'(?P<lead>--\s+)'
         r'(?P<keyword>\:[^ ]+)'
-        r'\s+(?P<rest>.*)', token.value)
-    return m.groupdict() if m else None
+        r'(?P<internalws>\s+)?'
+        r'(?P<rest>.*)?', token.value)
+
+    if not m:
+        return None
+
+    d = m.groupdict()
+    restbegin = sum(len(d[k] or '') for k in d.keys() if k != 'rest')
+
+    return {
+        'keyword': Token(
+            'K',
+            d['keyword'],
+            context.advance(token.context, cols=len(d['lead']))),
+
+        'rest': Token(
+            'S',
+            d['rest'],
+            context.advance(token.context, cols=restbegin))
+    }
 
 
 def lex_name(nameline):

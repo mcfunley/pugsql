@@ -57,7 +57,7 @@ class LexTest(TestCase):
 
 class LexCommentTest(TestCase):
     def tok(self, comment):
-        return lexer.Token('C', comment, ctx)
+        return lexer.Token('C', comment, at(1, 1))
 
     def test_no_keywords(self):
         self.assertIsNone(lexer.lex_comment(self.tok('-- foobar baz')))
@@ -70,18 +70,31 @@ class LexCommentTest(TestCase):
 
     def test_works(self):
         self.assertEqual({
-            'keyword': ':foo',
-            'rest': 'bar baz',
+            'keyword': lexer.Token('K', ':foo', at(1, 4)),
+            'rest': lexer.Token('S', 'bar baz', at(1, 9)),
         }, lexer.lex_comment(self.tok('-- :foo bar baz')))
 
     def test_multiple_keywords(self):
         self.assertEqual({
-            'keyword': ':foo',
-            'rest': 'bar :baz',
+            'keyword': lexer.Token('K', ':foo', at(1, 4)),
+            'rest': lexer.Token('S', 'bar :baz', at(1, 9)),
         }, lexer.lex_comment(self.tok('-- :foo bar :baz')))
 
     def test_leading_whitespace(self):
         self.assertEqual({
-            'keyword': ':foo',
-            'rest': 'bar :baz',
+            'keyword': lexer.Token('K', ':foo', at(1, 9)),
+            'rest': lexer.Token('S', 'bar :baz', at(1, 14)),
         }, lexer.lex_comment(self.tok('--      :foo bar :baz')))
+
+
+    def test_internal_whitespace(self):
+        self.assertEqual({
+            'keyword': lexer.Token('K', ':foo', at(1, 5)),
+            'rest': lexer.Token('S', 'bar :baz', at(1, 12)),
+        }, lexer.lex_comment(self.tok('--  :foo   bar :baz')))
+
+    def test_keyword_only(self):
+        self.assertEqual({
+            'keyword': lexer.Token('K', ':foo', at(1, 4)),
+            'rest': lexer.Token('S', '', at(1, 8)),
+        }, lexer.lex_comment(self.tok('-- :foo')))
