@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.6.2" />
 <title>pugsql.lexer API documentation</title>
-<meta name="description" content="Functions that take strings and yield streams / dicts of tokens, keeping
-track of source location." />
+<meta name="description" content="Functions that take strings and yield streams or dicts of `pugsql.lexer.Token`
+objects, keeping track of source location." />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
@@ -21,13 +21,13 @@ track of source location." />
 <h1 class="title">Module <code>pugsql.lexer</code></h1>
 </header>
 <section id="section-intro">
-<p>Functions that take strings and yield streams / dicts of tokens, keeping
-track of source location.</p>
+<p>Functions that take strings and yield streams or dicts of <a title="pugsql.lexer.Token" href="#pugsql.lexer.Token"><code>Token</code></a>
+objects, keeping track of source location.</p>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">&#34;&#34;&#34;
-Functions that take strings and yield streams / dicts of tokens, keeping
-track of source location.
+Functions that take strings and yield streams or dicts of `pugsql.lexer.Token`
+objects, keeping track of source location.
 &#34;&#34;&#34;
 from . import context
 from collections import namedtuple
@@ -47,6 +47,7 @@ __pdoc__[&#39;Token.context&#39;] = (&#39;A `pugsql.context.Context` for trackin
 
 def lex(pugsql, ctx):
     &#34;&#34;&#34;
+    Splits the provided multiline PugSQL string into
     &#34;&#34;&#34;
     def generate(pugsql, ctx):
         for l in pugsql.splitlines():
@@ -149,11 +150,12 @@ def _whitespace_advance(line, ctx):
 <span>def <span class="ident">lex</span></span>(<span>pugsql, ctx)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<section class="desc"><p>Splits the provided multiline PugSQL string into</p></section>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">def lex(pugsql, ctx):
     &#34;&#34;&#34;
+    Splits the provided multiline PugSQL string into
     &#34;&#34;&#34;
     def generate(pugsql, ctx):
         for l in pugsql.splitlines():

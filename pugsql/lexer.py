@@ -1,6 +1,6 @@
 """
-Functions that take strings and yield streams / dicts of tokens, keeping
-track of source location.
+Functions that take strings and yield streams or dicts of `pugsql.lexer.Token`
+objects, keeping track of source location.
 """
 from . import context
 from collections import namedtuple
@@ -20,6 +20,7 @@ __pdoc__['Token.context'] = ('A `pugsql.context.Context` for tracking source '
 
 def lex(pugsql, ctx):
     """
+    Splits the provided multiline PugSQL string into
     """
     def generate(pugsql, ctx):
         for l in pugsql.splitlines():

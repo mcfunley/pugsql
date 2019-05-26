@@ -1,3 +1,7 @@
+"""
+Code that consumes PugSQL-dialect sql strings and returns validated
+`pugsql.statement.Statement` objects.
+"""
 from . import lexer, statement, context
 from .exceptions import ParserError
 from itertools import takewhile

@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.6.2" />
 <title>pugsql.parser API documentation</title>
-<meta name="description" content="" />
+<meta name="description" content="Code that consumes PugSQL-dialect sql strings and returns validated
+`pugsql.statement.Statement` objects." />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
@@ -20,9 +21,15 @@
 <h1 class="title">Module <code>pugsql.parser</code></h1>
 </header>
 <section id="section-intro">
+<p>Code that consumes PugSQL-dialect sql strings and returns validated
+<a title="pugsql.statement.Statement" href="statement.html#pugsql.statement.Statement"><code>Statement</code></a> objects.</p>
 <details class="source">
 <summary>Source code</summary>
-<pre><code class="python">from . import lexer, statement, context
+<pre><code class="python">&#34;&#34;&#34;
+Code that consumes PugSQL-dialect sql strings and returns validated
+`pugsql.statement.Statement` objects.
+&#34;&#34;&#34;
+from . import lexer, statement, context
 from .exceptions import ParserError
 from itertools import takewhile
 import re
@@ -35,7 +42,7 @@ def parse(pugsql, ctx=None):
     leading_comments = list(takewhile(lambda t: t.tag == &#39;C&#39;, stream))
     rest = stream[len(leading_comments):]
 
-    cpr = parse_comments(leading_comments)
+    cpr = _parse_comments(leading_comments)
     sql = &#39;\n&#39;.join(cpr[&#39;unconsumed&#39;] + [token.value for token in rest])
 
     return statement.Statement(
@@ -46,7 +53,7 @@ def parse(pugsql, ctx=None):
         filename=ctx.sqlfile if ctx.sqlfile != &#39;&lt;literal&gt;&#39; else None)
 
 
-def parse_comments(comments):
+def _parse_comments(comments):
     cpr = {
         &#39;name&#39;: None,
         &#39;result&#39;: statement.Raw(),
@@ -59,28 +66,28 @@ def parse_comments(comments):
         if not toks:
             cpr[&#39;unconsumed&#39;].append(comment_token.value)
         elif toks[&#39;keyword&#39;].value == &#39;:name&#39;:
-            consume_name(cpr, toks[&#39;rest&#39;])
+            _consume_name(cpr, toks[&#39;rest&#39;])
         elif toks[&#39;keyword&#39;].value == &#39;:result&#39;:
-            consume_result(cpr, toks[&#39;rest&#39;])
+            _consume_result(cpr, toks[&#39;rest&#39;])
         else:
             cpr[&#39;unconsumed&#39;].append(comment_token.value)
 
     return cpr
 
 
-def consume_result(cpr, rest):
+def _consume_result(cpr, rest):
     if not rest.value:
         raise ParserError(&#39;expected keyword&#39;, rest)
-    set_result(cpr, rest)
+    _set_result(cpr, rest)
 
 
-def consume_name(cpr, rest):
+def _consume_name(cpr, rest):
     tokens = lexer.lex_name(rest)
     if not tokens:
         raise ParserError(&#39;expected a query name.&#39;, rest)
 
     name = tokens[&#39;name&#39;].value
-    if not is_legal_name(name):
+    if not _is_legal_name(name):
         raise ParserError(
             &#34;&#39;%s&#39; is not a legal Python function name.&#34; % name,
             tokens[&#39;name&#39;])
@@ -99,10 +106,10 @@ def consume_name(cpr, rest):
             &#39;encountered unexpected input after result type.&#39;,
             tokens[&#39;rest&#39;])
 
-    set_result(cpr, tokens[&#39;keyword&#39;])
+    _set_result(cpr, tokens[&#39;keyword&#39;])
 
 
-def set_result(cpr, ktok):
+def _set_result(cpr, ktok):
     tokens = lexer.lex_result(ktok)
     if not tokens:
         raise ParserError(&#39;expected keyword&#39;, ktok)
@@ -124,7 +131,7 @@ def set_result(cpr, ktok):
         raise ParserError(&#34;unrecognized keyword &#39;%s&#39;&#34; % keyword, ktok)
 
 
-def is_legal_name(value):
+def _is_legal_name(value):
     return re.match(r&#39;^[a-zA-Z_][a-zA-Z0-9_]+$&#39;, value) is not None</code></pre>
 </details>
 </section>
@@ -135,65 +142,6 @@ def is_legal_name(value):
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="pugsql.parser.consume_name"><code class="name flex">
-<span>def <span class="ident">consume_name</span></span>(<span>cpr, rest)</span>
-</code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def consume_name(cpr, rest):
-    tokens = lexer.lex_name(rest)
-    if not tokens:
-        raise ParserError(&#39;expected a query name.&#39;, rest)
-
-    name = tokens[&#39;name&#39;].value
-    if not is_legal_name(name):
-        raise ParserError(
-            &#34;&#39;%s&#39; is not a legal Python function name.&#34; % name,
-            tokens[&#39;name&#39;])
-
-    cpr[&#39;name&#39;] = name
-
-    if not tokens[&#39;keyword&#39;].value:
-        if tokens[&#39;rest&#39;].value:
-            raise ParserError(
-                &#39;encountered unexpected input after query name.&#39;,
-                tokens[&#39;rest&#39;])
-        return
-
-    if tokens[&#39;rest&#39;].value:
-        raise ParserError(
-            &#39;encountered unexpected input after result type.&#39;,
-            tokens[&#39;rest&#39;])
-
-    set_result(cpr, tokens[&#39;keyword&#39;])</code></pre>
-</details>
-</dd>
-<dt id="pugsql.parser.consume_result"><code class="name flex">
-<span>def <span class="ident">consume_result</span></span>(<span>cpr, rest)</span>
-</code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def consume_result(cpr, rest):
-    if not rest.value:
-        raise ParserError(&#39;expected keyword&#39;, rest)
-    set_result(cpr, rest)</code></pre>
-</details>
-</dd>
-<dt id="pugsql.parser.is_legal_name"><code class="name flex">
-<span>def <span class="ident">is_legal_name</span></span>(<span>value)</span>
-</code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def is_legal_name(value):
-    return re.match(r&#39;^[a-zA-Z_][a-zA-Z0-9_]+$&#39;, value) is not None</code></pre>
-</details>
-</dd>
 <dt id="pugsql.parser.parse"><code class="name flex">
 <span>def <span class="ident">parse</span></span>(<span>pugsql, ctx=None)</span>
 </code></dt>
@@ -208,7 +156,7 @@ def is_legal_name(value):
     leading_comments = list(takewhile(lambda t: t.tag == &#39;C&#39;, stream))
     rest = stream[len(leading_comments):]
 
-    cpr = parse_comments(leading_comments)
+    cpr = _parse_comments(leading_comments)
     sql = &#39;\n&#39;.join(cpr[&#39;unconsumed&#39;] + [token.value for token in rest])
 
     return statement.Statement(
@@ -217,64 +165,6 @@ def is_legal_name(value):
         doc=cpr[&#39;doc&#39;],
         result=cpr[&#39;result&#39;],
         filename=ctx.sqlfile if ctx.sqlfile != &#39;&lt;literal&gt;&#39; else None)</code></pre>
-</details>
-</dd>
-<dt id="pugsql.parser.parse_comments"><code class="name flex">
-<span>def <span class="ident">parse_comments</span></span>(<span>comments)</span>
-</code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def parse_comments(comments):
-    cpr = {
-        &#39;name&#39;: None,
-        &#39;result&#39;: statement.Raw(),
-        &#39;doc&#39;: None,
-        &#39;unconsumed&#39;: [],
-    }
-
-    for comment_token in comments:
-        toks = lexer.lex_comment(comment_token)
-        if not toks:
-            cpr[&#39;unconsumed&#39;].append(comment_token.value)
-        elif toks[&#39;keyword&#39;].value == &#39;:name&#39;:
-            consume_name(cpr, toks[&#39;rest&#39;])
-        elif toks[&#39;keyword&#39;].value == &#39;:result&#39;:
-            consume_result(cpr, toks[&#39;rest&#39;])
-        else:
-            cpr[&#39;unconsumed&#39;].append(comment_token.value)
-
-    return cpr</code></pre>
-</details>
-</dd>
-<dt id="pugsql.parser.set_result"><code class="name flex">
-<span>def <span class="ident">set_result</span></span>(<span>cpr, ktok)</span>
-</code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def set_result(cpr, ktok):
-    tokens = lexer.lex_result(ktok)
-    if not tokens:
-        raise ParserError(&#39;expected keyword&#39;, ktok)
-
-    if tokens[&#39;rest&#39;].value:
-        raise ParserError(
-            &#39;encountered unexpected input after result type&#39;,
-            tokens[&#39;rest&#39;])
-
-    keyword = tokens[&#39;keyword&#39;].value
-
-    if keyword == &#39;:one&#39; or keyword == &#39;:1&#39;:
-        cpr[&#39;result&#39;] = statement.One()
-    elif keyword == &#39;:many&#39; or keyword == &#39;:*&#39;:
-        cpr[&#39;result&#39;] = statement.Many()
-    elif keyword == &#39;:affected&#39; or keyword == &#39;:n&#39;:
-        cpr[&#39;result&#39;] = statement.Affected()
-    elif keyword != &#39;:raw&#39;:
-        raise ParserError(&#34;unrecognized keyword &#39;%s&#39;&#34; % keyword, ktok)</code></pre>
 </details>
 </dd>
 </dl>
@@ -294,13 +184,8 @@ def is_legal_name(value):
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
-<ul class="two-column">
-<li><code><a title="pugsql.parser.consume_name" href="#pugsql.parser.consume_name">consume_name</a></code></li>
-<li><code><a title="pugsql.parser.consume_result" href="#pugsql.parser.consume_result">consume_result</a></code></li>
-<li><code><a title="pugsql.parser.is_legal_name" href="#pugsql.parser.is_legal_name">is_legal_name</a></code></li>
+<ul class="">
 <li><code><a title="pugsql.parser.parse" href="#pugsql.parser.parse">parse</a></code></li>
-<li><code><a title="pugsql.parser.parse_comments" href="#pugsql.parser.parse_comments">parse_comments</a></code></li>
-<li><code><a title="pugsql.parser.set_result" href="#pugsql.parser.set_result">set_result</a></code></li>
 </ul>
 </li>
 </ul>
