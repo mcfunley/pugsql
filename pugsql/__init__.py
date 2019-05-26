@@ -20,7 +20,7 @@ def module(sqlpath):
     The results of this function are cached, so multiple calls giving the same
     sqlpath are safe and return the same module object.
     """
-    return compiler.module(sqlpath)
+    return compiler._module(sqlpath)
 
 
 __all__ = ['__version__', 'module',]

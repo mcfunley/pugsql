@@ -8,17 +8,17 @@ class BasicCompilerTest(TestCase):
         compiler.modules.clear()
 
     def test_setsattr(self):
-        m = compiler.module('tests/sql')
+        m = compiler._module('tests/sql')
         self.assertEqual(m.username_for_id.name, 'username_for_id')
 
     def test_sets_sqlpath(self):
-        m = compiler.module('tests/sql')
+        m = compiler._module('tests/sql')
         self.assertEqual('tests/sql', m.sqlpath)
 
     def test_caches_modules(self):
         self.assertEqual(
-            compiler.module('tests/sql'),
-            compiler.module('tests/sql'))
+            compiler._module('tests/sql'),
+            compiler._module('tests/sql'))
 
     def test_function_redefinition(self):
         msg = (
@@ -26,4 +26,4 @@ class BasicCompilerTest(TestCase):
             'named foo was already defined in '
             'tests/sql/duplicate-name/foo2.sql.')
         with pytest.raises(ValueError, match=msg):
-            compiler.module('tests/sql/duplicate-name')
+            compiler._module('tests/sql/duplicate-name')

@@ -14,7 +14,7 @@ class Module(object):
 
     def __init__(self, sqlpath):
         """
-        Loads functions found in the *sql files specified by sqlpath into
+        Loads functions found in the *sql files specified by `sqlpath` into
         properties on this object.
 
         The named sql functions in files should be unique.
@@ -63,10 +63,10 @@ class Module(object):
 modules = {}
 
 
-def module(sqlpath):
+def _module(sqlpath):
     """
-    Compiles a new Module or returns a cached one. Use the `pugsql.module`
-    function instead of this one.
+    Compiles a new `pugsql.compiler.Module`, or returns a cached one. Use the
+    `pugsql.module` function instead of this one.
     """
     global modules
     if sqlpath not in modules:
