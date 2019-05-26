@@ -5,6 +5,7 @@ when they're appropriate.
 
 __pdoc__ = {}
 
+
 class ParserError(ValueError):
     """
     Exception raised when syntax errors are encountered parsing PugSQL files.
@@ -24,6 +25,7 @@ class ParserError(ValueError):
                 token.context.col,
                 message))
         self.token = token
+
 
 __pdoc__['ParserError.token'] = (
     'The `pugsql.lexer.Token` indicating the position of the error '
