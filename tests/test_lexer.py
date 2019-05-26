@@ -23,7 +23,7 @@ class LexTest(TestCase):
         l1 = lexer.Token('C', '-- :name username_for_id :1', at(1, 4))
         l2 = lexer.Token(
             'Q', 'select username from users where user_id = :user_id',
-             at(2, 1))
+            at(2, 1))
         self.assertEqual(
             [l1, l2],
             lexer.lex(
@@ -33,8 +33,7 @@ class LexTest(TestCase):
     def test_whitespace(self):
         l1 = lexer.Token('C', '-- :name username_for_id :1', at(1, 2))
         l2 = lexer.Token(
-            'Q',
-            'select username from users where user_id = :user_id',
+            'Q', 'select username from users where user_id = :user_id',
             at(2, 2))
         self.assertEqual(
             [l1, l2],
@@ -46,9 +45,8 @@ class LexTest(TestCase):
         l1 = lexer.Token('C', '-- :name username_for_id :1', at(1, 1))
         l2 = lexer.Token('Q', '', at(2, 1))
         l3 = lexer.Token(
-            'Q',
-            'select username from users where user_id = :user_id',
-             at(3, 1))
+            'Q', 'select username from users where user_id = :user_id',
+            at(3, 1))
         self.assertEqual(
             [l1, l2, l3],
             lexer.lex(
