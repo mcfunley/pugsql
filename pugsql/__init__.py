@@ -1,3 +1,15 @@
+"""
+PugSQL is an anti-ORM that facilitates interacting with databases using SQL
+in files. A minimal usage example:
+
+    # create a module from sql files on disk
+    queries = pugsql.module('path/to/sql/files')
+
+    # connect to the database and use the sql queries as functions
+    queries.connect(connection_string)
+    queries.update_username(user_id=42, username='mcfunley')
+
+"""
 from . import compiler
 
 

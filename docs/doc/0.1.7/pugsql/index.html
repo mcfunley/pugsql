@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.6.2" />
 <title>pugsql API documentation</title>
-<meta name="description" content="" />
+<meta name="description" content="PugSQL is an anti-ORM that facilitates interacting with databases using SQL
+in files. A minimal usage example: …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
@@ -20,9 +21,30 @@
 <h1 class="title">Module <code>pugsql</code></h1>
 </header>
 <section id="section-intro">
+<p>PugSQL is an anti-ORM that facilitates interacting with databases using SQL
+in files. A minimal usage example:</p>
+<pre><code># create a module from sql files on disk
+queries = pugsql.module('path/to/sql/files')
+
+# connect to the database and use the sql queries as functions
+queries.connect(connection_string)
+queries.update_username(user_id=42, username='mcfunley')
+</code></pre>
 <details class="source">
 <summary>Source code</summary>
-<pre><code class="python">from . import compiler
+<pre><code class="python">&#34;&#34;&#34;
+PugSQL is an anti-ORM that facilitates interacting with databases using SQL
+in files. A minimal usage example:
+
+    # create a module from sql files on disk
+    queries = pugsql.module(&#39;path/to/sql/files&#39;)
+
+    # connect to the database and use the sql queries as functions
+    queries.connect(connection_string)
+    queries.update_username(user_id=42, username=&#39;mcfunley&#39;)
+
+&#34;&#34;&#34;
+from . import compiler
 
 
 __version__ = &#39;0.1.7&#39;
