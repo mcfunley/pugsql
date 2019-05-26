@@ -1,5 +1,9 @@
 from . import context
+from collections import namedtuple
 import re
+
+
+Token = namedtuple('Token', ['value', 'context'])
 
 
 def lex(pugsql, ctx):
@@ -13,14 +17,17 @@ def lex(pugsql, ctx):
 def categorize(line, ctx):
     ctx = context.advance(ctx, cols=len(line) - len(line.lstrip()))
     line = line.strip()
-    return ('C', line, ctx) if line.startswith('--') else ('Q', line, ctx)
+
+    if line.startswith('--'):
+        return ('C', Token(line, ctx))
+    return ('Q', Token(line, ctx))
 
 
-def lex_comment(c):
+def lex_comment(token):
     m = re.match(
         r'--(?P<leading_whitespace>\s+)'
         r'\:(?P<keyword>[^ ]+)'
-        r'\s+(?P<rest>.*)', c)
+        r'\s+(?P<rest>.*)', token.value)
     return m.groupdict() if m else None
 
 

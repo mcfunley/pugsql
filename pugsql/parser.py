@@ -10,7 +10,7 @@ def parse(pugsql, ctx=None):
     rest = stream[len(leading_comments):]
 
     cpr = parse_comments(leading_comments)
-    sql = '\n'.join(cpr['unconsumed'] + [q for _, q, _ in rest])
+    sql = '\n'.join(cpr['unconsumed'] + [qtok.value for _, qtok in rest])
 
     return statement.Statement(
         name=cpr['name'],
@@ -28,16 +28,16 @@ def parse_comments(comments):
         'unconsumed': [],
     }
 
-    for _, c, ctx in comments:
-        toks = lexer.lex_comment(c)
+    for _, comment_token in comments:
+        toks = lexer.lex_comment(comment_token)
         if not toks:
-            cpr['unconsumed'].append(c)
+            cpr['unconsumed'].append(comment_token.value)
         elif toks['keyword'] == 'name':
             consume_name(cpr, toks)
         elif toks['keyword'] == 'result':
             consume_result(cpr, toks)
         else:
-            cpr['unconsumed'].append(c)
+            cpr['unconsumed'].append(comment_token.value)
 
     return cpr
 
