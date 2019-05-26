@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.6.2" />
+<title>pugsql.statement API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pugsql.statement</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">from sqlalchemy.sql import text
+
+
+class Result(object):
+    def transform(self, r):
+        raise NotImplementedError()
+
+
+class One(Result):
+    def transform(self, r):
+        return { k: v for k, v in zip(r.keys(), r.first()) }
+
+
+class Many(Result):
+    def transform(self, r):
+        ks = r.keys()
+        return ({ k: v for k, v in zip(ks, row)} for row in r.fetchall())
+
+
+class Affected(Result):
+    def transform(self, r):
+        return r.rowcount
+
+
+class Raw(Result):
+    def transform(self, r):
+        return r
+
+
+class Statement(object):
+    def __init__(self, name, sql, doc, result, filename=None):
+        if not name:
+            raise ValueError(&#39;Statement must have a name.&#39;)
+
+        if sql is None:
+            raise ValueError(&#39;Statement must have a SQL string.&#39;)
+        sql = sql.strip()
+        if not len(sql):
+            raise ValueError(&#39;SQL string cannot be empty.&#39;)
+
+        if not result:
+            raise ValueError(&#39;Statement must have a result type.&#39;)
+
+        self.name = name
+        self.sql = sql
+        self.doc = doc
+        self.result = result
+        self.filename = filename
+        self.engine = None
+
+    def set_engine(self, engine):
+        self.engine = engine
+
+    def __call__(self, **params):
+        if self.engine is None:
+            raise RuntimeError(
+                &#39;No connection engine is configured. Pass a connection string &#39;
+                &#34;to the module&#39;s connect method, or pass a SQLAlchemy engine &#34;
+                &#39;to the set_engine method.&#39;)
+
+        r = self.engine.execute(text(self.sql), **params)
+        return self.result.transform(r)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="pugsql.statement.text"><code class="name flex">
+<span>def <span class="ident">text</span></span>(<span>text, bind=None, bindparams=None, typemap=None, autocommit=None)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Construct a new :class:<code>.TextClause</code> clause, representing
+a textual SQL string directly.</p>
+<p>E.g.::</p>
+<pre><code>from sqlalchemy import text
+
+t = text("SELECT * FROM users")
+result = connection.execute(t)
+</code></pre>
+<p>The advantages :func:<code>.text</code> provides over a plain string are
+backend-neutral support for bind parameters, per-statement
+execution options, as well as
+bind parameter and result-column typing behavior, allowing
+SQLAlchemy type constructs to play a role when executing
+a statement that is specified literally.
+The construct can also
+be provided with a <code>.c</code> collection of column elements, allowing
+it to be embedded in other SQL expression constructs as a subquery.</p>
+<p>Bind parameters are specified by name, using the format <code>:name</code>.
+E.g.::</p>
+<pre><code>t = text("SELECT * FROM users WHERE id=:user_id")
+result = connection.execute(t, user_id=12)
+</code></pre>
+<p>For SQL statements where a colon is required verbatim, as within
+an inline string, use a backslash to escape::</p>
+<pre><code>t = text("SELECT * FROM users WHERE name='\:username'")
+</code></pre>
+<p>The :class:<code>.TextClause</code> construct includes methods which can
+provide information about the bound parameters as well as the column
+values which would be returned from the textual statement, assuming
+it's an executable SELECT type of statement.
+The
+:meth:<code>.TextClause.bindparams</code> method is used to provide bound
+parameter detail, and :meth:<code>.TextClause.columns</code> method allows
+specification of return columns including names and types::</p>
+<pre><code>t = text("SELECT * FROM users WHERE id=:user_id").\
+        bindparams(user_id=7).\
+        columns(id=Integer, name=String)
+
+for id, name in connection.execute(t):
+    print(id, name)
+</code></pre>
+<p>The :func:<code>.text</code> construct is used in cases when
+a literal string SQL fragment is specified as part of a larger query,
+such as for the WHERE clause of a SELECT statement::</p>
+<pre><code>s = select([users.c.id, users.c.name]).where(text("id=:user_id"))
+result = connection.execute(s, user_id=12)
+</code></pre>
+<p>:func:<code>.text</code> is also used for the construction
+of a full, standalone statement using plain text.
+As such, SQLAlchemy refers
+to it as an :class:<code>.Executable</code> object, and it supports
+the :meth:<code>Executable.execution_options</code> method.
+For example,
+a :func:<code>.text</code> construct that should be subject to "autocommit"
+can be set explicitly so using the
+:paramref:<code>.Connection.execution_options.autocommit</code> option::</p>
+<pre><code>t = text("EXEC my_procedural_thing()").\
+        execution_options(autocommit=True)
+</code></pre>
+<p>Note that SQLAlchemy's usual "autocommit" behavior applies to
+:func:<code>.text</code> constructs implicitly - that is, statements which begin
+with a phrase such as <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>,
+or a variety of other phrases specific to certain backends, will
+be eligible for autocommit if no transaction is in progress.</p>
+<p>:param text:
+the text of the SQL statement to be created.
+use <code>:&lt;param&gt;</code>
+to specify bind parameters; they will be compiled to their
+engine-specific format.</p>
+<p>!!! warning "Warning:&ensp;The :paramref:<code>.text.text</code> argument to :func:<code>.text</code> can be passed as a Python string argument, which will be treated as <strong>trusted SQL text</strong> and rendered as given.
+<strong>DO NOT PASS UNTRUSTED INPUT TO THIS PARAMETER</strong>."</p>
+<p>:param autocommit: whether or not to set the "autocommit" execution
+option for this :class:<code>.TextClause</code> object.</p>
+<p>!!! deprecated "Deprecated since version:&ensp;0.6 The :paramref:<code>.text.autocommit</code> parameter is deprecated and will be removed in a future release.
+Please use the :paramref:<code>.Connection.execution_options.autocommit</code> parameter in conjunction with the :meth:<code>.Executable.execution_options</code> method."</p>
+<p>:param bind:
+an optional connection or engine to be used for this text query.</p>
+<p>:param bindparams:
+A list of :func:<code>.bindparam</code> instances used to
+provide information about parameters embedded in the statement.</p>
+<p>!!! deprecated "Deprecated since version:&ensp;0.9 The :paramref:<code>.text.bindparams</code> parameter is deprecated and will be removed in a future release.
+Please refer to the :meth:<code>.TextClause.bindparams</code> method."</p>
+<p>E.g.::</p>
+<pre><code>  stmt = text("SELECT * FROM table WHERE id=:id",
+            bindparams=[bindparam('id', value=5, type_=Integer)])
+</code></pre>
+<p>:param typemap:
+A dictionary mapping the names of columns represented in the columns
+clause of a <code>SELECT</code> statement to type objects.</p>
+<p>!!! deprecated "Deprecated since version:&ensp;0.9 The :paramref:<code>.text.typemap</code> parameter is deprecated and will be removed in a future release.
+Please refer to the :meth:<code>.TextClause.columns</code> method."</p>
+<p>E.g.::</p>
+<pre><code>  stmt = text("SELECT * FROM table",
+                typemap={'id': Integer, 'name': String},
+            )
+</code></pre>
+<div class="admonition seealso">
+<p class="admonition-title">Seealso</p>
+<p>:ref:<code>sqlexpression_text</code> - in the Core tutorial</p>
+<p>:ref:<code>orm_tutorial_literal_sql</code> - in the ORM tutorial</p>
+</div></section>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pugsql.statement.Affected"><code class="flex name class">
+<span>class <span class="ident">Affected</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Affected(Result):
+    def transform(self, r):
+        return r.rowcount</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pugsql.statement.Result" href="#pugsql.statement.Result">Result</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="pugsql.statement.Affected.transform"><code class="name flex">
+<span>def <span class="ident">transform</span></span>(<span>self, r)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def transform(self, r):
+    return r.rowcount</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pugsql.statement.Many"><code class="flex name class">
+<span>class <span class="ident">Many</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Many(Result):
+    def transform(self, r):
+        ks = r.keys()
+        return ({ k: v for k, v in zip(ks, row)} for row in r.fetchall())</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pugsql.statement.Result" href="#pugsql.statement.Result">Result</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="pugsql.statement.Many.transform"><code class="name flex">
+<span>def <span class="ident">transform</span></span>(<span>self, r)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def transform(self, r):
+    ks = r.keys()
+    return ({ k: v for k, v in zip(ks, row)} for row in r.fetchall())</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pugsql.statement.One"><code class="flex name class">
+<span>class <span class="ident">One</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class One(Result):
+    def transform(self, r):
+        return { k: v for k, v in zip(r.keys(), r.first()) }</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pugsql.statement.Result" href="#pugsql.statement.Result">Result</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="pugsql.statement.One.transform"><code class="name flex">
+<span>def <span class="ident">transform</span></span>(<span>self, r)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def transform(self, r):
+    return { k: v for k, v in zip(r.keys(), r.first()) }</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pugsql.statement.Raw"><code class="flex name class">
+<span>class <span class="ident">Raw</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Raw(Result):
+    def transform(self, r):
+        return r</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pugsql.statement.Result" href="#pugsql.statement.Result">Result</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="pugsql.statement.Raw.transform"><code class="name flex">
+<span>def <span class="ident">transform</span></span>(<span>self, r)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def transform(self, r):
+    return r</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pugsql.statement.Result"><code class="flex name class">
+<span>class <span class="ident">Result</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Result(object):
+    def transform(self, r):
+        raise NotImplementedError()</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="pugsql.statement.One" href="#pugsql.statement.One">One</a></li>
+<li><a title="pugsql.statement.Many" href="#pugsql.statement.Many">Many</a></li>
+<li><a title="pugsql.statement.Affected" href="#pugsql.statement.Affected">Affected</a></li>
+<li><a title="pugsql.statement.Raw" href="#pugsql.statement.Raw">Raw</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="pugsql.statement.Result.transform"><code class="name flex">
+<span>def <span class="ident">transform</span></span>(<span>self, r)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def transform(self, r):
+    raise NotImplementedError()</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pugsql.statement.Statement"><code class="flex name class">
+<span>class <span class="ident">Statement</span></span>
+<span>(</span><span>name, sql, doc, result, filename=None)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Statement(object):
+    def __init__(self, name, sql, doc, result, filename=None):
+        if not name:
+            raise ValueError(&#39;Statement must have a name.&#39;)
+
+        if sql is None:
+            raise ValueError(&#39;Statement must have a SQL string.&#39;)
+        sql = sql.strip()
+        if not len(sql):
+            raise ValueError(&#39;SQL string cannot be empty.&#39;)
+
+        if not result:
+            raise ValueError(&#39;Statement must have a result type.&#39;)
+
+        self.name = name
+        self.sql = sql
+        self.doc = doc
+        self.result = result
+        self.filename = filename
+        self.engine = None
+
+    def set_engine(self, engine):
+        self.engine = engine
+
+    def __call__(self, **params):
+        if self.engine is None:
+            raise RuntimeError(
+                &#39;No connection engine is configured. Pass a connection string &#39;
+                &#34;to the module&#39;s connect method, or pass a SQLAlchemy engine &#34;
+                &#39;to the set_engine method.&#39;)
+
+        r = self.engine.execute(text(self.sql), **params)
+        return self.result.transform(r)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pugsql.statement.Statement.set_engine"><code class="name flex">
+<span>def <span class="ident">set_engine</span></span>(<span>self, engine)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def set_engine(self, engine):
+    self.engine = engine</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pugsql" href="index.html">pugsql</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="pugsql.statement.text" href="#pugsql.statement.text">text</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pugsql.statement.Affected" href="#pugsql.statement.Affected">Affected</a></code></h4>
+<ul class="">
+<li><code><a title="pugsql.statement.Affected.transform" href="#pugsql.statement.Affected.transform">transform</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pugsql.statement.Many" href="#pugsql.statement.Many">Many</a></code></h4>
+<ul class="">
+<li><code><a title="pugsql.statement.Many.transform" href="#pugsql.statement.Many.transform">transform</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pugsql.statement.One" href="#pugsql.statement.One">One</a></code></h4>
+<ul class="">
+<li><code><a title="pugsql.statement.One.transform" href="#pugsql.statement.One.transform">transform</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pugsql.statement.Raw" href="#pugsql.statement.Raw">Raw</a></code></h4>
+<ul class="">
+<li><code><a title="pugsql.statement.Raw.transform" href="#pugsql.statement.Raw.transform">transform</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pugsql.statement.Result" href="#pugsql.statement.Result">Result</a></code></h4>
+<ul class="">
+<li><code><a title="pugsql.statement.Result.transform" href="#pugsql.statement.Result.transform">transform</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pugsql.statement.Statement" href="#pugsql.statement.Statement">Statement</a></code></h4>
+<ul class="">
+<li><code><a title="pugsql.statement.Statement.set_engine" href="#pugsql.statement.Statement.set_engine">set_engine</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.2</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

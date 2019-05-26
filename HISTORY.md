@@ -1,5 +1,11 @@
 # Release History
 
+## development
+* Dropped support for Python 3.4.
+* Now generating module documentation with [https://pypi.org/project/pdoc3/](pdoc3) (in progress)
+* Better PyPI package page (todo).
+* Improved homepage (todo).
+
 ## 0.1.6
 * PugSQL now provides detailed file/line/column syntax errors.
 * Illegal characters in Python function names will now fail to parse.

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+poetry run pdoc \
+       --html \
+       --output-dir=docs/doc/$(bin/printversion) \
+       --force \
+       pugsql
