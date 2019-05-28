@@ -1,5 +1,8 @@
 # Release History
 
+## development
+* Effective function signature is shown with `str(statement)` or `repr(statement)`.
+
 ## 0.1.7
 * Added the `pugsql.get_modules()` API.
 * Dropped support for Python 3.4.

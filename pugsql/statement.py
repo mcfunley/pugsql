@@ -8,10 +8,18 @@ class Result(object):
     def transform(self, r):
         raise NotImplementedError()
 
+    @property
+    def display_type(self):
+        raise NotImplemented()
+
 
 class One(Result):
     def transform(self, r):
         return { k: v for k, v in zip(r.keys(), r.first()) }
+
+    @property
+    def display_type(self):
+        return 'row'
 
 
 class Many(Result):
@@ -19,15 +27,27 @@ class Many(Result):
         ks = r.keys()
         return ({ k: v for k, v in zip(ks, row)} for row in r.fetchall())
 
+    @property
+    def display_type(self):
+        return 'rows'
+
 
 class Affected(Result):
     def transform(self, r):
         return r.rowcount
 
+    @property
+    def display_type(self):
+        return 'rowcount'
+
 
 class Raw(Result):
     def transform(self, r):
         return r
+
+    @property
+    def display_type(self):
+        return 'raw'
 
 
 class Statement(object):
@@ -50,6 +70,8 @@ class Statement(object):
         self.result = result
         self.filename = filename
         self.engine = None
+        self._text = sqlalchemy.sql.text(self.sql)
+
 
     def set_engine(self, engine):
         self.engine = engine
@@ -61,6 +83,17 @@ class Statement(object):
                 "to the module's connect method, or pass a SQLAlchemy engine "
                 'to the set_engine method.')
 
-        t = sqlalchemy.sql.text(self.sql)
-        r = self.engine.execute(t, **params)
+        r = self.engine.execute(self._text, **params)
         return self.result.transform(r)
+
+    def _param_names(self):
+        kfn = lambda p: self.sql.index(':' + p)
+        return sorted(self._text._bindparams.keys(), key=kfn)
+
+    def __str__(self):
+        paramstr = ', '.join(['%s=None' % k for k in self._param_names()])
+        return 'pugsql.statement.Statement: %s(%s) :: %s' % (
+            self.name, paramstr, self.result.display_type)
+
+    def __repr__(self):
+        return str(self)
