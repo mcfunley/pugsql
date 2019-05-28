@@ -1,11 +1,11 @@
 # Release History
 
-## development
+## 0.1.7
 * Added the `pugsql.get_modules()` API.
 * Dropped support for Python 3.4.
 * Greatly improved docstrings throughout (in progress).
 * Now generating module documentation with [https://pypi.org/project/pdoc3/](pdoc3).
-* Better PyPI package page (todo).
+* Better PyPI package page.
 * Improved homepage.
 
 ## 0.1.6
