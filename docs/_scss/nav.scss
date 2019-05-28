@@ -1,0 +1,42 @@
+$navlink-left-pad: 3rem;
+
+nav {
+    background-color: $blue;
+    @extend %paragraph;
+
+    @media only screen and (max-width: 400px) {
+	font-size: 1.4rem;
+    }
+
+    a, a:visited, a:hover, a:focus {
+	text-decoration: none;
+	color: $white;
+    }
+
+    ol {
+	list-style-type: none;
+	display: table;
+	margin: 0 auto;
+	padding: 0;
+	height: 5rem;
+
+	li {
+	    display: table-cell;
+	    padding-left: $navlink-left-pad / 2;
+	    vertical-align: middle;
+	}
+	li:first-child {
+	    padding-left: 0;
+	}
+
+	li:before {
+	    content: '|';
+	    padding-right: $navlink-left-pad / 2;
+	    color: darken($blue, 20%);
+	}
+
+	li:first-child:before {
+	    content: '';
+	}
+    }
+}
