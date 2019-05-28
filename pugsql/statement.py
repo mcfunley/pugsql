@@ -1,4 +1,4 @@
-from sqlalchemy.sql import text
+import sqlalchemy
 
 
 class Result(object):
@@ -58,5 +58,6 @@ class Statement(object):
                 "to the module's connect method, or pass a SQLAlchemy engine "
                 'to the set_engine method.')
 
-        r = self.engine.execute(text(self.sql), **params)
+        t = sqlalchemy.sql.text(self.sql)
+        r = self.engine.execute(t, **params)
         return self.result.transform(r)
