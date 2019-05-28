@@ -1,7 +1,9 @@
 $navlink-left-pad: 3rem;
+$nav-border: 1px solid darken($blue, 0.1);
 
 nav {
-    border: 1px solid fade-out($blue, 30%);
+    border-top: $nav-border;
+    border-bottom: $nav-border;
     background-color: $blue;
     @extend %paragraph;
 
