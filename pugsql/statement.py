@@ -1,5 +1,5 @@
 """
-
+Compiled SQL function objects.
 """
 import sqlalchemy
 
