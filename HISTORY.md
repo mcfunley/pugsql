@@ -4,9 +4,9 @@
 * Added the `pugsql.get_modules()` API.
 * Dropped support for Python 3.4.
 * Greatly improved docstrings throughout (in progress).
-* Now generating module documentation with [https://pypi.org/project/pdoc3/](pdoc3) (in progress).
+* Now generating module documentation with [https://pypi.org/project/pdoc3/](pdoc3).
 * Better PyPI package page (todo).
-* Improved homepage (todo).
+* Improved homepage.
 
 ## 0.1.6
 * PugSQL now provides detailed file/line/column syntax errors.
