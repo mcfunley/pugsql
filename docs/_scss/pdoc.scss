@@ -11,16 +11,24 @@ $pdoc-mobile-stop: 700px;
 	text-decoration: none;
     }
 
-
     h1, h3 {
 	line-height: $banner-height;
     }
 
+    img {
+	margin: 0 0 0 20px;
+	@media only screen and (max-width: $pdoc-mobile-stop) {
+	    margin: 0 0 0 10px;
+	}
+	float: left;
+	height: $banner-height;
+    }
+
     h1 {
 	float: left;
-	margin: 0 0 0 30px;
+	margin: 0 0 0 10px;
 	@media only screen and (max-width: $pdoc-mobile-stop) {
-	    margin: 0 0 0 20px;
+	    margin: 0 0 0 5px;
 	}
     }
 
@@ -29,7 +37,7 @@ $pdoc-mobile-stop: 700px;
 	color: $yellow;
 	margin: 0 30px 0 0;
 
-	@media only screen and (max-width: 424px) {
+	@media only screen and (max-width: 550px) {
 	    span {
 		display: none;
 	    }
