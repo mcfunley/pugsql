@@ -15,7 +15,8 @@ nav {
 	text-decoration: none;
 	color: $white;
     }
-    a:hover, a:focus {
+
+    a:hover, a:focus, ol li.active a, ol li.active a:visited {
 	color: lighten($blue, 30%);
     }
 
