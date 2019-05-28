@@ -1,7 +1,10 @@
 #!/bin/bash
 
+python -c "import pugsql; print('v'+pugsql.__version__)" > docs/_pdoc/version.mako
+
 poetry run pdoc \
        --html \
        --output-dir=docs/doc/$(python -c "import pugsql; print(pugsql.__version__)") \
+       --template-dir=docs/_pdoc \
        --force \
        pugsql

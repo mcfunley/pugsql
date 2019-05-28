@@ -8,5 +8,8 @@ plugins:
   - jekyll-gist
   - jekyll-sitemap
 
+exclude:
+  - _pdoc
+
 sass:
   sass_dir: _scss

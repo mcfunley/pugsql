@@ -6,6 +6,7 @@
 <meta name="generator" content="pdoc 0.6.2" />
 <title>pugsql.statement API documentation</title>
 <meta name="description" content="" />
+<link href="/assets/pdoc.css" rel="stylesheet">
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
@@ -14,6 +15,15 @@
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 </head>
 <body>
+<div id="banner">
+<h1>
+<a href="https://pugsql.org">PugSQL</a>
+</h1>
+<h3>
+v0.1.7
+<span>documentation</span>
+</h3>
+</div>
 <main>
 <article id="content">
 <header>
@@ -22,7 +32,7 @@
 <section id="section-intro">
 <details class="source">
 <summary>Source code</summary>
-<pre><code class="python">from sqlalchemy.sql import text
+<pre><code class="python">import sqlalchemy
 
 
 class Result(object):
@@ -82,7 +92,8 @@ class Statement(object):
                 &#34;to the module&#39;s connect method, or pass a SQLAlchemy engine &#34;
                 &#39;to the set_engine method.&#39;)
 
-        r = self.engine.execute(text(self.sql), **params)
+        t = sqlalchemy.sql.text(self.sql)
+        r = self.engine.execute(t, **params)
         return self.result.transform(r)</code></pre>
 </details>
 </section>
@@ -91,115 +102,6 @@ class Statement(object):
 <section>
 </section>
 <section>
-<h2 class="section-title" id="header-functions">Functions</h2>
-<dl>
-<dt id="pugsql.statement.text"><code class="name flex">
-<span>def <span class="ident">text</span></span>(<span>text, bind=None, bindparams=None, typemap=None, autocommit=None)</span>
-</code></dt>
-<dd>
-<section class="desc"><p>Construct a new :class:<code>.TextClause</code> clause, representing
-a textual SQL string directly.</p>
-<p>E.g.::</p>
-<pre><code>from sqlalchemy import text
-
-t = text("SELECT * FROM users")
-result = connection.execute(t)
-</code></pre>
-<p>The advantages :func:<code>.text</code> provides over a plain string are
-backend-neutral support for bind parameters, per-statement
-execution options, as well as
-bind parameter and result-column typing behavior, allowing
-SQLAlchemy type constructs to play a role when executing
-a statement that is specified literally.
-The construct can also
-be provided with a <code>.c</code> collection of column elements, allowing
-it to be embedded in other SQL expression constructs as a subquery.</p>
-<p>Bind parameters are specified by name, using the format <code>:name</code>.
-E.g.::</p>
-<pre><code>t = text("SELECT * FROM users WHERE id=:user_id")
-result = connection.execute(t, user_id=12)
-</code></pre>
-<p>For SQL statements where a colon is required verbatim, as within
-an inline string, use a backslash to escape::</p>
-<pre><code>t = text("SELECT * FROM users WHERE name='\:username'")
-</code></pre>
-<p>The :class:<code>.TextClause</code> construct includes methods which can
-provide information about the bound parameters as well as the column
-values which would be returned from the textual statement, assuming
-it's an executable SELECT type of statement.
-The
-:meth:<code>.TextClause.bindparams</code> method is used to provide bound
-parameter detail, and :meth:<code>.TextClause.columns</code> method allows
-specification of return columns including names and types::</p>
-<pre><code>t = text("SELECT * FROM users WHERE id=:user_id").\
-        bindparams(user_id=7).\
-        columns(id=Integer, name=String)
-
-for id, name in connection.execute(t):
-    print(id, name)
-</code></pre>
-<p>The :func:<code>.text</code> construct is used in cases when
-a literal string SQL fragment is specified as part of a larger query,
-such as for the WHERE clause of a SELECT statement::</p>
-<pre><code>s = select([users.c.id, users.c.name]).where(text("id=:user_id"))
-result = connection.execute(s, user_id=12)
-</code></pre>
-<p>:func:<code>.text</code> is also used for the construction
-of a full, standalone statement using plain text.
-As such, SQLAlchemy refers
-to it as an :class:<code>.Executable</code> object, and it supports
-the :meth:<code>Executable.execution_options</code> method.
-For example,
-a :func:<code>.text</code> construct that should be subject to "autocommit"
-can be set explicitly so using the
-:paramref:<code>.Connection.execution_options.autocommit</code> option::</p>
-<pre><code>t = text("EXEC my_procedural_thing()").\
-        execution_options(autocommit=True)
-</code></pre>
-<p>Note that SQLAlchemy's usual "autocommit" behavior applies to
-:func:<code>.text</code> constructs implicitly - that is, statements which begin
-with a phrase such as <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>,
-or a variety of other phrases specific to certain backends, will
-be eligible for autocommit if no transaction is in progress.</p>
-<p>:param text:
-the text of the SQL statement to be created.
-use <code>:&lt;param&gt;</code>
-to specify bind parameters; they will be compiled to their
-engine-specific format.</p>
-<p>!!! warning "Warning:&ensp;The :paramref:<code>.text.text</code> argument to :func:<code>.text</code> can be passed as a Python string argument, which will be treated as <strong>trusted SQL text</strong> and rendered as given.
-<strong>DO NOT PASS UNTRUSTED INPUT TO THIS PARAMETER</strong>."</p>
-<p>:param autocommit: whether or not to set the "autocommit" execution
-option for this :class:<code>.TextClause</code> object.</p>
-<p>!!! deprecated "Deprecated since version:&ensp;0.6 The :paramref:<code>.text.autocommit</code> parameter is deprecated and will be removed in a future release.
-Please use the :paramref:<code>.Connection.execution_options.autocommit</code> parameter in conjunction with the :meth:<code>.Executable.execution_options</code> method."</p>
-<p>:param bind:
-an optional connection or engine to be used for this text query.</p>
-<p>:param bindparams:
-A list of :func:<code>.bindparam</code> instances used to
-provide information about parameters embedded in the statement.</p>
-<p>!!! deprecated "Deprecated since version:&ensp;0.9 The :paramref:<code>.text.bindparams</code> parameter is deprecated and will be removed in a future release.
-Please refer to the :meth:<code>.TextClause.bindparams</code> method."</p>
-<p>E.g.::</p>
-<pre><code>  stmt = text("SELECT * FROM table WHERE id=:id",
-            bindparams=[bindparam('id', value=5, type_=Integer)])
-</code></pre>
-<p>:param typemap:
-A dictionary mapping the names of columns represented in the columns
-clause of a <code>SELECT</code> statement to type objects.</p>
-<p>!!! deprecated "Deprecated since version:&ensp;0.9 The :paramref:<code>.text.typemap</code> parameter is deprecated and will be removed in a future release.
-Please refer to the :meth:<code>.TextClause.columns</code> method."</p>
-<p>E.g.::</p>
-<pre><code>  stmt = text("SELECT * FROM table",
-                typemap={'id': Integer, 'name': String},
-            )
-</code></pre>
-<div class="admonition seealso">
-<p class="admonition-title">Seealso</p>
-<p>:ref:<code>sqlexpression_text</code> - in the Core tutorial</p>
-<p>:ref:<code>orm_tutorial_literal_sql</code> - in the ORM tutorial</p>
-</div></section>
-</dd>
-</dl>
 </section>
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
@@ -403,7 +305,8 @@ Please refer to the :meth:<code>.TextClause.columns</code> method."</p>
                 &#34;to the module&#39;s connect method, or pass a SQLAlchemy engine &#34;
                 &#39;to the set_engine method.&#39;)
 
-        r = self.engine.execute(text(self.sql), **params)
+        t = sqlalchemy.sql.text(self.sql)
+        r = self.engine.execute(t, **params)
         return self.result.transform(r)</code></pre>
 </details>
 <h3>Methods</h3>
@@ -433,11 +336,6 @@ Please refer to the :meth:<code>.TextClause.columns</code> method."</p>
 <li><h3>Super-module</h3>
 <ul>
 <li><code><a title="pugsql" href="index.html">pugsql</a></code></li>
-</ul>
-</li>
-<li><h3><a href="#header-functions">Functions</a></h3>
-<ul class="">
-<li><code><a title="pugsql.statement.text" href="#pugsql.statement.text">text</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
