@@ -8,3 +8,6 @@ poetry run pdoc \
        --template-dir=docs/_pdoc \
        --force \
        pugsql
+
+# update data for the jekyll site
+curl -sL https://pypi.python.org/pypi/pugsql/json > docs/_data/pypi.json
