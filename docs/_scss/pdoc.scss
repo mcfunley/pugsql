@@ -2,6 +2,10 @@ $banner-height: 6rem;
 $pdoc-mobile-stop: 700px;
 
 #banner {
+    font-family: Montserrat;
+    font-weight: 400;
+    font-style: normal;
+
     background-color: $red;
     height: $banner-height;
     text-shadow: $header-text-shadow;
