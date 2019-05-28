@@ -1,6 +1,7 @@
 $navlink-left-pad: 3rem;
 
 nav {
+    border: 1px solid fade-out($blue, 30%);
     background-color: $blue;
     @extend %paragraph;
 
@@ -8,9 +9,12 @@ nav {
 	font-size: 1.4rem;
     }
 
-    a, a:visited, a:hover, a:focus {
+    a, a:visited {
 	text-decoration: none;
 	color: $white;
+    }
+    a:hover, a:focus {
+	color: lighten($blue, 30%);
     }
 
     ol {
@@ -25,6 +29,7 @@ nav {
 	    padding-left: $navlink-left-pad / 2;
 	    vertical-align: middle;
 	}
+
 	li:first-child {
 	    padding-left: 0;
 	}
@@ -32,7 +37,7 @@ nav {
 	li:before {
 	    content: '|';
 	    padding-right: $navlink-left-pad / 2;
-	    color: darken($blue, 20%);
+	    color: darken($blue, 10%);
 	}
 
 	li:first-child:before {

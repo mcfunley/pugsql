@@ -21,8 +21,18 @@
         </header>
         <nav>
             <ol>
+                {% if page.id == 'index' %}
+                <li class="active"><a href="/">Home</a></li>
+                {% else %}
                 <li><a href="/">Home</a></li>
+                {% endif %}
+
+                {% if page.id == 'tutorial' %}
+                <li class="active"><a href="/tutorial">Tutorial</a></li>
+                {% else %}
                 <li><a href="/tutorial">Tutorial</a></li>
+                {% endif %}
+
                 <li><a href="/doc/0.1.7/pugsql">Documentation</a></li>
                 <li><a href="https://github.com/mcfunley/pugsql">Source</a></li>
             </ol>

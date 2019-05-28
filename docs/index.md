@@ -1,6 +1,7 @@
 ---
 title: SQL is Extremely Good, Actually
 description: PugSQL is a Python library for interacting with your database using SQL.
+id: index
 ---
 
 PugSQL is a simple Python interface for using parameterized SQL, in files, with [any  SQLAlchemy-supported database](https://docs.sqlalchemy.org/en/13/dialects/index.html).

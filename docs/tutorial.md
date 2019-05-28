@@ -1,5 +1,6 @@
 ---
 title: Tutorial
+id: tutorial
 ---
 This primer covers the basics of using PugSQL. **PugSQL is still in beta, and might be missing a few things.**
 
