@@ -1,5 +1,5 @@
 <div id="banner">
-  <a href="https://pugsql.org">
+  <a href="/">
     <img src="/assets/images/pug.png">
     <h1>PugSQL</h1>
   </a>
