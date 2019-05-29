@@ -10,7 +10,7 @@ class Result(object):
 
     @property
     def display_type(self):
-        raise NotImplemented()
+        raise NotImplementedError()
 
 
 class One(Result):
@@ -72,7 +72,6 @@ class Statement(object):
         self.engine = None
         self._text = sqlalchemy.sql.text(self.sql)
 
-
     def set_engine(self, engine):
         self.engine = engine
 
@@ -87,7 +86,8 @@ class Statement(object):
         return self.result.transform(r)
 
     def _param_names(self):
-        kfn = lambda p: self.sql.index(':' + p)
+        def kfn(p):
+            return self.sql.index(':' + p)
         return sorted(self._text._bindparams.keys(), key=kfn)
 
     def __str__(self):
