@@ -6,4 +6,4 @@
 - [ ] Understand interpolated parameters.
 - [ ] Support multiple queries per file.
 - [ ] Support loading single sql files.
-- [ ] Support paramter typing ... somehow. (Maybe `:param` annotation comments?).
+- [ ] Support parameter typing ... somehow. (Maybe `:param` annotation comments?).
