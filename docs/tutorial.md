@@ -87,7 +87,7 @@ If for some reason you need to reset PugSQL, you can empty it out like so:
 ```python
 import pugsql
 
-pugsql.get_modules.clear()
+pugsql.get_modules().clear()
 ```
 
 That's it! Good luck!
