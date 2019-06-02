@@ -2,7 +2,7 @@
 
 ## development
 * Effective function signature is shown with `str(statement)` or `repr(statement)`.
-* Added an `:insert` return type which returns the ID of the last row inserted, for engines which support it (thanks to [Jelle Besseling](https://jelle.besseli.ng/)]).
+* Added an `:insert` return type which returns the ID of the last row inserted, for engines which support it (thanks to [Jelle Besseling](https://jelle.besseli.ng/)).
 
 ## 0.1.7
 * Added the `pugsql.get_modules()` API.
