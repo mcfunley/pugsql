@@ -41,6 +41,15 @@ class Affected(Result):
         return 'rowcount'
 
 
+class Insert(Result):
+    def transform(self, r):
+        return r.lastrowid
+
+    @property
+    def display_type(self):
+        return 'insert'
+
+
 class Raw(Result):
     def transform(self, r):
         return r

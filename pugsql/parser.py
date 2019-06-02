@@ -112,6 +112,8 @@ def _set_result(cpr, ktok):
         cpr['result'] = statement.Many()
     elif keyword == ':affected' or keyword == ':n':
         cpr['result'] = statement.Affected()
+    elif keyword == ':insert':
+        cpr['result'] = statement.Insert()
     elif keyword != ':raw':
         raise ParserError("unrecognized keyword '%s'" % keyword, ktok)
 
