@@ -40,3 +40,11 @@ class PugsqlTest(TestCase):
                 ValueError,
                 match='Directory not found: does/not/exist'):
             module('does/not/exist')
+
+    def test_empty_many(self):
+        self.assertEqual(
+            [],
+            list(self.fixtures.search_users(username='asdfjasdj')))
+
+    def test_null_one(self):
+        self.assertIsNone(self.fixtures.user_for_id(user_id=4123423))

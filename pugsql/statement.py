@@ -15,7 +15,10 @@ class Result(object):
 
 class One(Result):
     def transform(self, r):
-        return { k: v for k, v in zip(r.keys(), r.first()) }
+        row = r.first()
+        if row:
+            return { k: v for k, v in zip(r.keys(), row) }
+        return None
 
     @property
     def display_type(self):
