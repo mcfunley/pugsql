@@ -1,6 +1,6 @@
 # Release History
 
-## development
+## 0.1.8
 * Effective function signature is shown with `str(statement)` or `repr(statement)`.
 * Added an `:insert` return type which returns the ID of the last row inserted, for engines which support it (thanks to [Jelle Besseling](https://jelle.besseli.ng/)).
 * `:one` queries resulting in null no longer break (#10)
