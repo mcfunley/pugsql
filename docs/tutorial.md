@@ -43,6 +43,12 @@ update users set username = :username
 where user_id = :user_id
 ```
 
+The `:insert` return type returns the ID of the row inserted (in supported engines only, currently):
+
+```sql
+-- :name update_username :insert
+insert into users (username) values (:username)
+```
 
 ### Making a PugSQL Module
 
