@@ -13,7 +13,7 @@ in files. A minimal usage example:
 from . import compiler
 
 
-__version__ = '0.1.8'
+__version__ = '0.1.9'
 
 
 def module(sqlpath):
