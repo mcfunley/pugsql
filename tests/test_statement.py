@@ -1,4 +1,4 @@
-from pugsql import parser
+from pugsql import parser, exceptions
 from pugsql.statement import Raw, Statement
 import pytest
 from unittest import TestCase
@@ -10,9 +10,12 @@ def test_raw():
 
 
 class StatementTest(TestCase):
-    def test_no_engine(self):
-        s = Statement('foo', 'select 1', '', Raw())
-        self.assertRaises(RuntimeError, lambda: s())
+    def test_no_module(self):
+        with pytest.raises(
+                RuntimeError,
+                match='This statement is not associated with a module'):
+            s = Statement('foo', 'select 1', '', Raw())
+            s()
 
     def test_no_name(self):
         with pytest.raises(ValueError, match='Statement must have a name.'):
@@ -42,11 +45,11 @@ class StatementTest(TestCase):
                 match='Statement must have a result type.'):
             Statement('foo', 'select 1', '', None)
 
-    def test_sets_engine(self):
-        e = Mock()
+    def test_sets_module(self):
+        m = Mock()
         s = Statement('foo', 'select 1', '', Raw())
-        s.set_engine(e)
-        self.assertEqual(e, s.engine)
+        s.set_module(m)
+        self.assertEqual(m, s._module)
 
     def test_filename(self):
         s = Statement('foo', 'select 1', '', Raw(), 'path/foobar.sql')

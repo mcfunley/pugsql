@@ -1,17 +1,18 @@
-from pugsql import module, compiler
+import pugsql
+from pugsql import compiler, exceptions
 import pytest
 from unittest import TestCase
 
 
 def test_module():
     compiler.modules.clear()
-    assert module('tests/sql').sqlpath == 'tests/sql'
+    assert pugsql.module('tests/sql').sqlpath == 'tests/sql'
 
 
 class PugsqlTest(TestCase):
     def setUp(self):
-        compiler.modules.clear()
-        self.fixtures = module('tests/sql/fixtures')
+        pugsql.get_modules().clear()
+        self.fixtures = pugsql.module('tests/sql/fixtures')
         self.fixtures.connect('sqlite:///./tests/data/fixtures.sqlite3')
 
     def test_get_one(self):
@@ -39,7 +40,7 @@ class PugsqlTest(TestCase):
         with pytest.raises(
                 ValueError,
                 match='Directory not found: does/not/exist'):
-            module('does/not/exist')
+            pugsql.module('does/not/exist')
 
     def test_empty_many(self):
         self.assertEqual(
@@ -48,3 +49,42 @@ class PugsqlTest(TestCase):
 
     def test_null_one(self):
         self.assertIsNone(self.fixtures.user_for_id(user_id=4123423))
+
+    def test_rolling_back_transaction(self):
+        class FooException(RuntimeError):
+            pass
+
+        try:
+            with self.fixtures.transaction():
+                self.fixtures.update_username(user_id=1, username='foo')
+                self.assertEqual(
+                    { 'username': 'foo', 'user_id': 1 },
+                    self.fixtures.user_for_id(user_id=1))
+
+                raise FooException()
+        except FooException:
+            pass
+
+        self.assertEqual(
+            { 'username': 'mcfunley', 'user_id': 1 },
+            self.fixtures.user_for_id(user_id=1))
+
+    def test_nesting_transactions(self):
+        with self.fixtures.transaction():
+            with self.fixtures.transaction():
+                self.assertEqual(
+                    { 'username': 'mcfunley', 'user_id': 1 },
+                    self.fixtures.user_for_id(user_id=1))
+
+    def test_transaction_not_connected(self):
+        fixtures = pugsql.module('tests/sql/fixtures')
+        fixtures.disconnect()
+        with pytest.raises(exceptions.NoConnectionError):
+            with fixtures.transaction():
+                pass
+
+    def test_not_connected(self):
+        fixtures = pugsql.module('tests/sql/fixtures')
+        fixtures.disconnect()
+        with pytest.raises(exceptions.NoConnectionError):
+            fixtures.user_for_id(user_id=1)

@@ -81,20 +81,18 @@ class Statement(object):
         self.doc = doc
         self.result = result
         self.filename = filename
-        self.engine = None
+        self._module = None
         self._text = sqlalchemy.sql.text(self.sql)
 
-    def set_engine(self, engine):
-        self.engine = engine
+    def set_module(self, module):
+        self._module = module
 
     def __call__(self, **params):
-        if self.engine is None:
+        if self._module is None:
             raise RuntimeError(
-                'No connection engine is configured. Pass a connection string '
-                "to the module's connect method, or pass a SQLAlchemy engine "
-                'to the set_engine method.')
+                'This statement is not associated with a module')
 
-        r = self.engine.execute(self._text, **params)
+        r = self._module._execute(self._text, **params)
         return self.result.transform(r)
 
     def _param_names(self):

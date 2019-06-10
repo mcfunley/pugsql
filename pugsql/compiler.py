@@ -2,9 +2,13 @@
 Code that processes SQL files and returns modules of database functions.
 """
 from . import parser, context
+from .exceptions import NoConnectionError
+from contextlib import contextmanager
 from glob import glob
 import os
 from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+import threading
 
 
 __pdoc__ = {}
@@ -29,6 +33,12 @@ class Module(object):
         self.sqlpath = sqlpath
         self._statements = {}
 
+        self._engine = None
+        self._sessionmaker = None
+
+        self._locals = threading.local()
+        self._locals.session = None
+
         for sqlfile in glob(os.path.join(self.sqlpath, '*sql')):
             with open(sqlfile, 'r') as f:
                 pugsql = f.read()
@@ -40,8 +50,61 @@ class Module(object):
                     'defined in %s.' % (
                         sqlfile, s.name, self._statements[s.name].filename))
 
+            s.set_module(self)
+
             setattr(self, s.name, s)
             self._statements[s.name] = s
+
+    @contextmanager
+    def transaction(self):
+        """
+        Returns a session that manages a transaction scope, in which
+        many statements can be run. Statements run on this module will
+        automatically use this transaction. The normal use case  is to use this
+        like a context manager, rather than interact with the result:
+
+            foo = pugsql.module('sql/foo')
+            with foo.transaction():
+                x = foo.get_x(x_id=1234)
+                foo.update_x(x_id=1234, x+1)
+
+            # when the context manager exits, the transaction is committed.
+            # if an exception occurs, it is rolled back.
+
+        The transaction is active for statements executed on the current thread
+        only.
+
+        For engines that support SAVEPOINT, calling this method a second time
+        begins a nested transaction.
+
+        For more info, see here:
+        https://docs.sqlalchemy.org/en/13/orm/session_transaction.html
+        """
+        if not self._locals.session:
+            if not self._sessionmaker:
+                raise NoConnectionError()
+
+            self._locals.session = self._sessionmaker()
+
+        session = self._locals.session
+        try:
+            yield session
+            session.commit()
+        except Exception as e:
+            session.rollback()
+            raise e
+        finally:
+            session.close()
+            self._locals.session = None
+
+    def _execute(self, clause, **params):
+        if self._locals.session:
+            return self._locals.session.execute(clause, params)
+
+        if not self._engine:
+            raise NoConnectionError()
+
+        return self._engine.execute(clause, **params)
 
     def connect(self, connstr):
         """
@@ -60,8 +123,15 @@ class Module(object):
 
         See also: https://docs.sqlalchemy.org/en/13/core/connections.html
         """
-        for s in self._statements.values():
-            s.set_engine(engine)
+        self._engine = engine
+        self._sessionmaker = sessionmaker(bind=engine)
+
+    def disconnect(self):
+        """
+        Disassociates the module from any connection it was previously given.
+        """
+        self._engine = None
+        self._sessionmaker = None
 
 
 __pdoc__['Module.sqlpath'] = (

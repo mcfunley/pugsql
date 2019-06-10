@@ -30,3 +30,14 @@ class ParserError(ValueError):
 __pdoc__['ParserError.token'] = (
     'The `pugsql.lexer.Token` indicating the position of the error '
     'encountered during parsing.')
+
+
+class NoConnectionError(RuntimeError):
+    """
+    Exception raised when a PugSQL module is not connected to a database.
+    """
+    def __init__(self):
+        super(NoConnectionError, self).__init__(
+            'No connection engine is configured. Pass a connection string '
+            "to the module's connect method, or pass a SQLAlchemy engine "
+            'to the set_engine method.')
