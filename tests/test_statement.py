@@ -1,4 +1,4 @@
-from pugsql import parser, exceptions
+from pugsql import parser
 from pugsql.statement import Raw, Statement
 import pytest
 from unittest import TestCase
