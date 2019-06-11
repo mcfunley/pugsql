@@ -80,7 +80,7 @@ class Module(object):
         For more info, see here:
         https://docs.sqlalchemy.org/en/13/orm/session_transaction.html
         """
-        if not self._locals.session:
+        if not hasattr(self._locals, 'session') or not self._locals.session:
             if not self._sessionmaker:
                 raise NoConnectionError()
 
