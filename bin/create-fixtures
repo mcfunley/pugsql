@@ -1,0 +1,4 @@
+#!/bin/bash
+
+rm tests/data/fixtures.sqlite3
+sqlite3 tests/data/fixtures.sqlite3 < tests/data/fixtures.sql

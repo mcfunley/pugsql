@@ -32,10 +32,12 @@ class PugsqlTest(TestCase):
             self.fixtures.update_username(user_id=3, username='dottie'))
 
     def test_insert(self):
-        pk = self.fixtures.insert_user(username='little_pug')
-        self.assertEqual(
-            {'username': 'little_pug', 'user_id': pk},
-            self.fixtures.user_for_id(user_id=pk))
+        with self.fixtures.transaction() as t:
+            pk = self.fixtures.insert_user(username='little_pug')
+            self.assertEqual(
+                {'username': 'little_pug', 'user_id': pk},
+                self.fixtures.user_for_id(user_id=pk))
+            t.rollback()
 
     def test_bad_path(self):
         with pytest.raises(
