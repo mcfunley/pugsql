@@ -92,7 +92,7 @@ You can use the `transaction` method on `Module` objects to define a transaction
 ```python
 with queries.transaction():
     c = queries.get_counter(counter_id=1234)
-	queries.update_counter(counter_id=1234, value=c+1)
+    queries.update_counter(counter_id=1234, value=c+1)
 ```
 
 The return value of the `transaction` method is a [SQLAlchemy Session object](https://docs.sqlalchemy.org/en/13/orm/session.html). So, for example, to manually roll back you could write:
