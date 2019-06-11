@@ -100,7 +100,7 @@ The return value of the `transaction` method is a [SQLAlchemy Session object](ht
 ```python
 with queries.transaction() as t:
     queries.foo()
-	t.rollback()
+    t.rollback()
 ```
 
 Transactions can be nested, when the underlying engine supports `SAVEPOINT`.
