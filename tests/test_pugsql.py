@@ -1,6 +1,7 @@
 import pugsql
 from pugsql import compiler, exceptions
 import pytest
+import threading
 from unittest import TestCase
 
 
@@ -88,3 +89,19 @@ class PugsqlTest(TestCase):
         fixtures.disconnect()
         with pytest.raises(exceptions.NoConnectionError):
             fixtures.user_for_id(user_id=1)
+
+    def test_initialized_other_thread(self):
+        self.fixtures = None
+        pugsql.get_modules().clear()
+
+        def init():
+            self.fixtures = pugsql.module('tests/sql/fixtures')
+            self.fixtures.connect('sqlite:///./tests/data/fixtures.sqlite3')
+
+        t = threading.Thread(target=init)
+        t.start()
+        t.join()
+
+        self.assertEqual(
+            { 'username': 'mcfunley', 'user_id': 1 },
+            self.fixtures.user_for_id(user_id=1))
