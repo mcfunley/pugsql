@@ -97,7 +97,7 @@ class Module(object):
             self._locals.session = None
 
     def _execute(self, clause, **params):
-        if self._locals.session:
+        if getattr(self._locals, 'session', None):
             return self._locals.session.execute(clause, params)
 
         if not self._engine:
