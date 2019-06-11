@@ -37,7 +37,6 @@ class Module(object):
         self._sessionmaker = None
 
         self._locals = threading.local()
-        self._locals.session = None
 
         for sqlfile in glob(os.path.join(self.sqlpath, '*sql')):
             with open(sqlfile, 'r') as f:
@@ -80,7 +79,7 @@ class Module(object):
         For more info, see here:
         https://docs.sqlalchemy.org/en/13/orm/session_transaction.html
         """
-        if not self._locals.session:
+        if not getattr(self._locals, 'session', None):
             if not self._sessionmaker:
                 raise NoConnectionError()
 
@@ -98,7 +97,7 @@ class Module(object):
             self._locals.session = None
 
     def _execute(self, clause, **params):
-        if self._locals.session:
+        if getattr(self._locals, 'session', None):
             return self._locals.session.execute(clause, params)
 
         if not self._engine:
