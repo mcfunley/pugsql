@@ -85,6 +85,26 @@ queries.update_username(user_id=42, username='joestrummer')
 
 The return values depend on the result type specified in the SQL file. Records are returned as Python dictionaries, and the number of affected rows is returned as an integer.
 
+### Transactions
+
+You can use the `transaction` method on `Module` objects to define a transaction block:
+
+```python
+with queries.transaction():
+    c = queries.get_counter(counter_id=1234)
+	queries.update_counter(counter_id=1234, value=c+1)
+```
+
+The return value of the `transaction` method is a [SQLAlchemy Session object](https://docs.sqlalchemy.org/en/13/orm/session.html). So, for example, to manually roll back you could write:
+
+```python
+with queries.transaction() as t:
+    queries.foo()
+	t.rollback()
+```
+
+Transactions can be nested, when the underlying engine supports `SAVEPOINT`.
+
 
 ### Resetting PugSQL
 
