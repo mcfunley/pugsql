@@ -24,7 +24,7 @@ user = queries.find_user(user_id=42)
 In the example above, the query would be specified like this:
 
 ```sql
---- :name find_user :one
+-- :name find_user :one
 select * from users where user_id = :user_id
 ```
 
