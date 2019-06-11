@@ -1,5 +1,9 @@
 # Release History
 
+## 0.1.10
+* Fixed #11, exception when a PugSQL module is initialized on another thread.
+* Documentation fixes.
+
 ## 0.1.9
 * Added support for `Module.transaction()`, which returns a context manager which maintains thread-local transaction scope.
 
