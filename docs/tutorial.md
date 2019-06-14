@@ -14,14 +14,17 @@ pip install pugsql
 
 ### Writing SQL Files
 
-The premise of PugSQL is that the best way to cope with the reality of database ownership is to write SQL. In a PugSQL project, you'll just have a set of `.sql` files in a directory. Like this:
+The premise of PugSQL is that the best way to cope with the reality of database
+ownership is to write SQL. In a PugSQL project, you'll just have a set of `.sql`
+files in a directory. Like this:
 
 ```bash
 $ ls queries/
 search_users.sql    update_username.sql    user_for_id.sql
 ```
 
-PugSQL SQL files use special leading comments to specify the names of the queries, and the desired return types. Queries can return a single row:
+PugSQL SQL files use special leading comments to specify the names of the queries,
+and the desired return types. Queries can return a single row:
 
 ```sql
 -- :name user_for_id :one
@@ -43,12 +46,24 @@ update users set username = :username
 where user_id = :user_id
 ```
 
-The `:insert` return type returns the ID of the row inserted (in supported engines only, currently):
+The `:scalar` return type returns the first value in the first row:
+
+```sql
+-- :name get_username :scalar
+select username from users where user_id = :user_id
+```
+
+The `:insert` return type returns the ID of the row inserted. In engines that
+support `lastrowid`, this works:
 
 ```sql
 -- :name update_username :insert
 insert into users (username) values (:username)
 ```
+
+With engines that do not support `lastrowid`, `:insert` falls back to the same
+behavior as `:scalar`.
+
 
 ### Making a PugSQL Module
 
