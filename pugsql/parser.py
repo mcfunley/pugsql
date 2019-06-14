@@ -114,6 +114,8 @@ def _set_result(cpr, ktok):
         cpr['result'] = statement.Affected()
     elif keyword == ':insert':
         cpr['result'] = statement.Insert()
+    elif keyword == ':scalar':
+        cpr['result'] = statement.Scalar()
     elif keyword != ':raw':
         raise ParserError("unrecognized keyword '%s'" % keyword, ktok)
 

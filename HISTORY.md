@@ -1,7 +1,11 @@
 # Release History
 
+## 0.1.11
+* Added the `:scalar` return type, which returns the first value in the first row.
+* The `:insert` return type defaults to `:scalar` behavior when a DBAPI does not support `lastrowid` ([#7](https://github.com/mcfunley/pugsql/issues/7).
+
 ## 0.1.10
-* Fixed #11, exception when a PugSQL module is initialized on another thread.
+* Fixed [#11](https://github.com/mcfunley/pugsql/issues/11), exception when a PugSQL module is initialized on another thread.
 * Documentation fixes.
 
 ## 0.1.9

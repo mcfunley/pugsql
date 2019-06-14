@@ -39,6 +39,12 @@ class PugsqlTest(TestCase):
                 self.fixtures.user_for_id(user_id=pk))
             t.rollback()
 
+    def test_scalar(self):
+        self.assertEqual('mcfunley', self.fixtures.username_for_id(user_id=1))
+
+    def test_scalar_null(self):
+        self.assertIsNone(self.fixtures.username_for_id(user_id=666))
+
     def test_bad_path(self):
         with pytest.raises(
                 ValueError,

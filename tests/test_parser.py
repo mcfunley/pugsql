@@ -65,6 +65,12 @@ class OneLinerTest(TestCase):
     def test_long_raw(self):
         self.assertIsInstance(self.parse('long-raw').result, statement.Raw)
 
+    def test_insert(self):
+        self.assertIsInstance(self.parse('insert').result, statement.Insert)
+
+    def test_scalar(self):
+        self.assertIsInstance(self.parse('scalar').result, statement.Scalar)
+
 
 class MultilineTest(TestCase):
     def parse(self, path):
@@ -95,8 +101,13 @@ class MultilineTest(TestCase):
             self.parse('long-many').result, statement.Many)
 
     def test_long_raw(self):
-        self.assertIsInstance(
-            self.parse('raw').result, statement.Raw)
+        self.assertIsInstance(self.parse('raw').result, statement.Raw)
+
+    def test_insert(self):
+        self.assertIsInstance(self.parse('insert').result, statement.Insert)
+
+    def test_scalar(self):
+        self.assertIsInstance(self.parse('scalar').result, statement.Scalar)
 
 
 class ParserErrorTest(TestCase):

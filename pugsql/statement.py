@@ -44,9 +44,23 @@ class Affected(Result):
         return 'rowcount'
 
 
-class Insert(Result):
+class Scalar(Result):
     def transform(self, r):
-        return r.lastrowid
+        row = r.first()
+        if not row:
+            return None
+        return row[0]
+
+    @property
+    def display_type(self):
+        return 'scalar'
+
+
+class Insert(Scalar):
+    def transform(self, r):
+        if hasattr(r, 'lastrowid'):
+            return r.lastrowid
+        return super(Insert, self).transform(r)
 
     @property
     def display_type(self):
