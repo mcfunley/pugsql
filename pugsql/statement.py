@@ -2,6 +2,7 @@
 Compiled SQL function objects.
 """
 import sqlalchemy
+import threading
 
 
 class Result(object):
@@ -105,16 +106,31 @@ class Statement(object):
         self.filename = filename
         self._module = None
         self._text = sqlalchemy.sql.text(self.sql)
+        self._lock = threading.Lock()
+        self._statement_val = None
 
     def set_module(self, module):
         self._module = module
 
-    def __call__(self, **params):
+    def _assert_module(self):
         if self._module is None:
             raise RuntimeError(
                 'This statement is not associated with a module')
 
-        r = self._module._execute(self._text, **params)
+    def _statement(self):
+        if self._statement_val is not None:
+            return self._statement_val
+
+        with self._lock:
+            if self._statement_val is not None:
+                return self._statement_val
+            self._statement_val = self._text
+
+        return self._statement_val
+
+    def __call__(self, *multiparams, **params):
+        self._assert_module()
+        r = self._module._execute(self._statement(), *multiparams, **params)
         return self.result.transform(r)
 
     def _param_names(self):

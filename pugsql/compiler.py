@@ -96,14 +96,14 @@ class Module(object):
             session.close()
             self._locals.session = None
 
-    def _execute(self, clause, **params):
+    def _execute(self, clause, *multiparams, **params):
         if getattr(self._locals, 'session', None):
-            return self._locals.session.execute(clause, params)
+            return self._locals.session.execute(clause, multiparams or params)
 
         if not self._engine:
             raise NoConnectionError()
 
-        return self._engine.execute(clause, **params)
+        return self._engine.execute(clause, *multiparams, **params)
 
     @property
     def _dialect(self):
