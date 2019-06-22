@@ -4,7 +4,7 @@ certain features that depend on the dialect, which is not known in the first
 parse/compile phase.
 """
 
-def compile(sql):
+def compile(sql, dialect):
     """
     JIT-compiles the given raw SQL string. Returns a prepared statement,
     or None if no transformation is necessary.

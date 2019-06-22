@@ -132,7 +132,7 @@ class Statement(object):
     def _jit(self):
         needs_jit = self.result.supports_tuples
         if needs_jit:
-            return jit.compile(self.sql) or self._text
+            return jit.compile(self.sql, self._module._dialect) or self._text
         return self._text
 
     def __call__(self, *multiparams, **params):
