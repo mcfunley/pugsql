@@ -9,6 +9,10 @@ class Result(object):
         raise NotImplementedError()
 
     @property
+    def supports_tuples(self):
+        return False
+
+    @property
     def display_type(self):
         raise NotImplementedError()
 
@@ -61,6 +65,10 @@ class Insert(Scalar):
         if hasattr(r, 'lastrowid'):
             return r.lastrowid
         return super(Insert, self).transform(r)
+
+    @property
+    def supports_tuples(self):
+        return True
 
     @property
     def display_type(self):
