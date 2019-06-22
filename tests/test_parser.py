@@ -175,7 +175,7 @@ class ParserErrorTest(TestCase):
                 'select 1')
 
 
-class ResultLineWhitespceTest(TestCase):
+class ResultLineWhitespaceTest(TestCase):
     def test_works_leading_whitespace(self):
         s = parser.parse(
             '-- :name foo\n'
