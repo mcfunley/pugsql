@@ -1,6 +1,7 @@
 """
 Compiled SQL function objects.
 """
+from . import jit
 import sqlalchemy
 import threading
 
@@ -124,9 +125,15 @@ class Statement(object):
         with self._lock:
             if self._statement_val is not None:
                 return self._statement_val
-            self._statement_val = self._text
+            self._statement_val = self._jit()
 
         return self._statement_val
+
+    def _jit(self):
+        needs_jit = self.result.supports_tuples
+        if needs_jit:
+            return jit.compile(self.sql) or self._text
+        return self._text
 
     def __call__(self, *multiparams, **params):
         self._assert_module()
