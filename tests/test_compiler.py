@@ -36,7 +36,7 @@ class ModuleTest(TestCase):
     def test_dialect_no_connection(self):
         m = compiler._module('tests/sql')
         with pytest.raises(exceptions.NoConnectionError):
-            x = m._dialect
+            _ = m._dialect
 
     def test_dialect_works(self):
         m = compiler._module('tests/sql')
