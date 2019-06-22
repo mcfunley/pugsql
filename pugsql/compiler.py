@@ -105,6 +105,15 @@ class Module(object):
 
         return self._engine.execute(clause, **params)
 
+    @property
+    def _dialect(self):
+        """
+        Gets the dialect for the SQLAlchemy engine.
+        """
+        if not self._engine:
+            raise NoConnectionError()
+        return self._engine.dialect
+
     def connect(self, connstr):
         """
         Sets the connection string for SQL functions on this module.

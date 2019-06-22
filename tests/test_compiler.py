@@ -1,4 +1,4 @@
-from pugsql import compiler
+from pugsql import compiler, exceptions
 import pytest
 from unittest import TestCase
 
@@ -27,3 +27,18 @@ class BasicCompilerTest(TestCase):
             'tests/sql/duplicate-name/foo2.sql.')
         with pytest.raises(ValueError, match=msg):
             compiler._module('tests/sql/duplicate-name')
+
+
+class ModuleTest(TestCase):
+    def setUp(self):
+        compiler.modules.clear()
+
+    def test_dialect_no_connection(self):
+        m = compiler._module('tests/sql')
+        with pytest.raises(exceptions.NoConnectionError):
+            x = m._dialect
+
+    def test_dialect_works(self):
+        m = compiler._module('tests/sql')
+        m.connect('sqlite:///./tests/data/fixtures.sqlite3')
+        self.assertEqual(m._dialect.paramstyle, 'qmark')
