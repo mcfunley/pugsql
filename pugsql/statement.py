@@ -1,7 +1,6 @@
 """
 Compiled SQL function objects.
 """
-from . import jit
 import sqlalchemy
 import threading
 
@@ -9,10 +8,6 @@ import threading
 class Result(object):
     def transform(self, r):
         raise NotImplementedError()
-
-    @property
-    def supports_tuples(self):
-        return False
 
     @property
     def display_type(self):
@@ -69,10 +64,6 @@ class Insert(Scalar):
         return super(Insert, self).transform(r)
 
     @property
-    def supports_tuples(self):
-        return True
-
-    @property
     def display_type(self):
         return 'insert'
 
@@ -107,8 +98,6 @@ class Statement(object):
         self.filename = filename
         self._module = None
         self._text = sqlalchemy.sql.text(self.sql)
-        self._lock = threading.Lock()
-        self._statement_val = None
 
     def set_module(self, module):
         self._module = module
@@ -118,26 +107,9 @@ class Statement(object):
             raise RuntimeError(
                 'This statement is not associated with a module')
 
-    def _statement(self):
-        if self._statement_val is not None:
-            return self._statement_val
-
-        with self._lock:
-            if self._statement_val is not None:
-                return self._statement_val
-            self._statement_val = self._jit()
-
-        return self._statement_val
-
-    def _jit(self):
-        needs_jit = self.result.supports_tuples
-        if needs_jit:
-            return jit.compile(self.sql, self._module._dialect) or self._text
-        return self._text
-
     def __call__(self, *multiparams, **params):
         self._assert_module()
-        r = self._module._execute(self._statement(), *multiparams, **params)
+        r = self._module._execute(self._text, *multiparams, **params)
         return self.result.transform(r)
 
     def _param_names(self):
