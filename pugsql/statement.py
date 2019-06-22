@@ -2,7 +2,6 @@
 Compiled SQL function objects.
 """
 import sqlalchemy
-import threading
 
 
 class Result(object):
