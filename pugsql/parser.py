@@ -8,6 +8,14 @@ from itertools import takewhile
 import re
 
 
+_one = statement.One()
+_many = statement.Many()
+_affected = statement.Affected()
+_scalar = statement.Scalar()
+_insert = statement.Insert()
+_raw = statement.Raw()
+
+
 def parse(pugsql, ctx=None):
     """
     Processes the SQL string given in `pugsql` and returns a valid
@@ -41,7 +49,7 @@ def parse(pugsql, ctx=None):
 def _parse_comments(comments):
     cpr = {
         'name': None,
-        'result': statement.Raw(),
+        'result': _raw,
         'doc': None,
         'unconsumed': [],
     }
@@ -107,15 +115,15 @@ def _set_result(cpr, ktok):
     keyword = tokens['keyword'].value
 
     if keyword == ':one' or keyword == ':1':
-        cpr['result'] = statement.One()
+        cpr['result'] = _one
     elif keyword == ':many' or keyword == ':*':
-        cpr['result'] = statement.Many()
+        cpr['result'] = _many
     elif keyword == ':affected' or keyword == ':n':
-        cpr['result'] = statement.Affected()
+        cpr['result'] = _affected
     elif keyword == ':insert':
-        cpr['result'] = statement.Insert()
+        cpr['result'] = _insert
     elif keyword == ':scalar':
-        cpr['result'] = statement.Scalar()
+        cpr['result'] = _scalar
     elif keyword != ':raw':
         raise ParserError("unrecognized keyword '%s'" % keyword, ktok)
 

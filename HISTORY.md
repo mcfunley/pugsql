@@ -1,5 +1,8 @@
 # Release History
 
+## dev
+* Parsed statements use very slightly less memory.
+
 ## 0.1.11
 * Added the `:scalar` return type, which returns the first value in the first row.
 * The `:insert` return type defaults to `:scalar` behavior when a DBAPI does not support `lastrowid` ([#7](https://github.com/mcfunley/pugsql/issues/7).
