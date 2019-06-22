@@ -31,6 +31,18 @@ class PugsqlTest(TestCase):
             1,
             self.fixtures.update_username(user_id=3, username='dottie'))
 
+    def test_multi_insert(self):
+        with self.fixtures.transaction() as t:
+            self.fixtures.insert_user(
+                { 'username': 'joe' },
+                { 'username': 'paul' },
+                { 'username': 'topper' },
+                { 'username': 'mick' })
+
+            sr = list(self.fixtures.search_users(username='topper'))
+            self.assertEqual('topper', sr[0]['username'])
+            t.rollback()
+
     def test_insert(self):
         with self.fixtures.transaction() as t:
             pk = self.fixtures.insert_user(username='little_pug')

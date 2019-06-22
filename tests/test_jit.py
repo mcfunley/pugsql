@@ -11,3 +11,7 @@ class CompileTest(TestCase):
         self.assertIsNone(
             jit.compile('select * from foo where bar = :bar',
                         dialect))
+
+    def test_nothing_insert_with_no_tuple(self):
+        self.assertIsNone(
+            jit.compile('insert into foo (id, x) values (:id, :x)', dialect))
