@@ -1,6 +1,6 @@
 # Release History
 
-## dev
+## 0.1.12
 * Added support for passing `multiparams` through to SQLAlchemy's `execute` method, which among other things makes multi-row inserts work.
 * Parsed statements use very slightly less memory.
 
