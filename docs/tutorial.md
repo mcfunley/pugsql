@@ -120,6 +120,25 @@ with queries.transaction() as t:
 
 Transactions can be nested, when the underlying engine supports `SAVEPOINT`.
 
+### Multi-row Inserts
+
+You can do multi-row inserts by first specifying the values as keyword arguments,
+as you would normally:
+
+```sql
+-- :name create_foo :insert
+insert into foo (id, val) values (:id, :val)
+```
+
+You can then pass many `dicts` to the resulting function, like this:
+
+```python
+queries.create_foo([
+  { 'id': 2, 'val': 'x' },
+  { 'id': 3, 'val': 'y' },
+  { 'id': 4, 'val': 'z' },
+])
+```
 
 ### Resetting PugSQL
 
