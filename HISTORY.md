@@ -1,12 +1,12 @@
 # Release History
 
 ## 0.1.12
-* Added support for passing `multiparams` through to SQLAlchemy's `execute` method, which among other things makes multi-row inserts work.
+* Added support for passing `multiparams` through to SQLAlchemy's `execute` method, which among other things makes multi-row inserts work ([#9](https://github.com/mcfunley/pugsql/issues/9)).
 * Parsed statements use very slightly less memory.
 
 ## 0.1.11
 * Added the `:scalar` return type, which returns the first value in the first row.
-* The `:insert` return type defaults to `:scalar` behavior when a DBAPI does not support `lastrowid` ([#7](https://github.com/mcfunley/pugsql/issues/7).
+* The `:insert` return type defaults to `:scalar` behavior when a DBAPI does not support `lastrowid` ([#7](https://github.com/mcfunley/pugsql/issues/7)).
 
 ## 0.1.10
 * Fixed [#11](https://github.com/mcfunley/pugsql/issues/11), exception when a PugSQL module is initialized on another thread.
