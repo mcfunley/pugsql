@@ -10,6 +10,7 @@ import threading
 
 _locals = threading.local()
 
+
 @contextmanager
 def _compile_context(multiparams, params):
     _locals.compile_context = {
@@ -32,7 +33,7 @@ def _visit_bindparam(element, compiler, **kw):
 
 
 def _is_expanding_param(element, cc):
-    if not element.key in cc['params']:
+    if element.key not in cc['params']:
         return False
     return isinstance(cc['params'][element.key], (tuple, list))
 
