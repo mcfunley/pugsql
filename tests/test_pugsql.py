@@ -31,6 +31,23 @@ class PugsqlTest(TestCase):
             1,
             self.fixtures.update_username(user_id=3, username='dottie'))
 
+    def test_where_in(self):
+        result = self.fixtures.find_by_usernames(usernames=('oscar', 'dottie'))
+        self.assertEqual(
+            [{'user_id': 2, 'username': 'oscar'},
+             {'user_id': 3, 'username': 'dottie'}],
+            list(result))
+
+    def test_where_in_multiple_parameters(self):
+        result = self.fixtures.find_by_username_or_id(
+            user_id=1,
+            usernames=('oscar', 'dottie'))
+        self.assertEqual(
+            [{'user_id': 1, 'username': 'mcfunley'},
+             {'user_id': 2, 'username': 'oscar'},
+             {'user_id': 3, 'username': 'dottie'}],
+            list(result))
+
     def test_multi_insert(self):
         with self.fixtures.transaction() as t:
             self.fixtures.insert_user(

@@ -1,7 +1,40 @@
 """
 Compiled SQL function objects.
 """
+from contextlib import contextmanager
 import sqlalchemy
+from sqlalchemy.ext.compiler import compiles
+from sqlalchemy.sql.expression import BindParameter
+import threading
+
+
+_locals = threading.local()
+
+@contextmanager
+def _compile_context(multiparams, params):
+    _locals.compile_context = {
+        'multiparams': multiparams,
+        'params': params,
+    }
+    try:
+        yield
+    finally:
+        _locals.compile_context = None
+
+
+@compiles(BindParameter)
+def _visit_bindparam(element, compiler, **kw):
+    cc = getattr(_locals, 'compile_context', None)
+    if cc:
+        if _is_expanding_param(element, cc):
+            element.expanding = True
+    return compiler.visit_bindparam(element)
+
+
+def _is_expanding_param(element, cc):
+    if not element.key in cc['params']:
+        return False
+    return isinstance(cc['params'][element.key], (tuple, list))
 
 
 class Result(object):
@@ -108,7 +141,8 @@ class Statement(object):
 
     def __call__(self, *multiparams, **params):
         self._assert_module()
-        r = self._module._execute(self._text, *multiparams, **params)
+        with _compile_context(multiparams, params):
+            r = self._module._execute(self._text, *multiparams, **params)
         return self.result.transform(r)
 
     def _param_names(self):
