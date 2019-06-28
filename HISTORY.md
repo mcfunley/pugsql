@@ -1,5 +1,8 @@
 # Release History
 
+## 0.1.13
+* `IN` clauses now work. Passing a tuple or a list as the value of a named parameter will automatically treat the parameter as an expanding (i.e. `(?, ?, ?, ?)`, etc) bind parameter.
+
 ## 0.1.12
 * Added support for passing `multiparams` through to SQLAlchemy's `execute` method, which among other things makes multi-row inserts work ([#9](https://github.com/mcfunley/pugsql/issues/9)).
 * Parsed statements use very slightly less memory.

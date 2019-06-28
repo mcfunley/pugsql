@@ -140,6 +140,28 @@ queries.create_foo(
 )
 ```
 
+### IN clauses
+Passing a tuple or a list as the value of a parameter will automatically treat
+that parameter as a sequence in the resulting sql. For example, you can write
+this query:
+
+```sql
+-- :name find_by_usernames :many
+select * from users where username in :usernames
+```
+
+And invoke the method like this:
+
+```python
+results = queries.find_by_usernames(usernames=('foo', 'bar'))
+```
+
+This will result in the following query being sent to the database:
+
+```sql
+select * from users where username in ('foo', 'bar');
+```
+
 ### Resetting PugSQL
 
 If for some reason you need to reset PugSQL, you can empty it out like so:
