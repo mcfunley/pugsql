@@ -133,11 +133,11 @@ insert into foo (id, val) values (:id, :val)
 You can then pass many `dicts` to the resulting function, like this:
 
 ```python
-queries.create_foo([
+queries.create_foo(
   { 'id': 2, 'val': 'x' },
   { 'id': 3, 'val': 'y' },
   { 'id': 4, 'val': 'z' },
-])
+)
 ```
 
 ### Resetting PugSQL
