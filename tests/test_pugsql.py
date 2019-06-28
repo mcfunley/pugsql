@@ -38,6 +38,13 @@ class PugsqlTest(TestCase):
              {'user_id': 3, 'username': 'dottie'}],
             list(result))
 
+    def test_where_in_list(self):
+        result = self.fixtures.find_by_usernames(usernames=['oscar', 'dottie'])
+        self.assertEqual(
+            [{'user_id': 2, 'username': 'oscar'},
+             {'user_id': 3, 'username': 'dottie'}],
+            list(result))
+
     def test_where_in_multiple_parameters(self):
         result = self.fixtures.find_by_username_or_id(
             user_id=1,
