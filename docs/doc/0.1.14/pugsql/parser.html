@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.6.2" />
+<title>pugsql.parser API documentation</title>
+<meta name="description" content="Code that consumes PugSQL-dialect sql strings and returns validated
+`pugsql.statement.Statement` objects." />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<link href="https://fonts.googleapis.com/css?family=Montserrat|Roboto&display=swap" rel="stylesheet">
+<link href="/assets/pdoc.css" rel="stylesheet">
+</head>
+<body>
+<div id="banner">
+<a href="/">
+<img src="/assets/images/pug.png">
+<h1>PugSQL</h1>
+</a>
+<h3>
+v0.1.14
+<span>documentation</span>
+</h3>
+</div>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pugsql.parser</code></h1>
+</header>
+<section id="section-intro">
+<p>Code that consumes PugSQL-dialect sql strings and returns validated
+<a title="pugsql.statement.Statement" href="statement.html#pugsql.statement.Statement"><code>Statement</code></a> objects.</p>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">&#34;&#34;&#34;
+Code that consumes PugSQL-dialect sql strings and returns validated
+`pugsql.statement.Statement` objects.
+&#34;&#34;&#34;
+from . import lexer, statement, context
+from .exceptions import ParserError
+from itertools import takewhile
+import re
+
+
+_one = statement.One()
+_many = statement.Many()
+_affected = statement.Affected()
+_scalar = statement.Scalar()
+_insert = statement.Insert()
+_raw = statement.Raw()
+
+
+def parse(pugsql, ctx=None):
+    &#34;&#34;&#34;
+    Processes the SQL string given in `pugsql` and returns a valid
+    `pugsql.statement.Statement` object.
+
+    Will raise a `pugsql.exceptions.ParserError` in any number of cases in
+    which the PugSQL metadata isn&#39;t valid. However, this does not parse and
+    validate the SQL statement.
+
+    `ctx` is a context object provided by the `pugsql.context.Context`
+    function, or `None`. If it is `None` a default context is created which
+    will indicate that the SQL is being parsed from a literal string.
+    &#34;&#34;&#34;
+    ctx = ctx or context.Context(&#39;&lt;literal&gt;&#39;)
+
+    stream = lexer.lex(pugsql, ctx)
+    leading_comments = list(takewhile(lambda t: t.tag == &#39;C&#39;, stream))
+    rest = stream[len(leading_comments):]
+
+    cpr = _parse_comments(leading_comments)
+    sql = &#39;\n&#39;.join(cpr[&#39;unconsumed&#39;] + [token.value for token in rest])
+
+    return statement.Statement(
+        name=cpr[&#39;name&#39;],
+        sql=sql,
+        doc=cpr[&#39;doc&#39;],
+        result=cpr[&#39;result&#39;],
+        filename=ctx.sqlfile if ctx.sqlfile != &#39;&lt;literal&gt;&#39; else None)
+
+
+def _parse_comments(comments):
+    cpr = {
+        &#39;name&#39;: None,
+        &#39;result&#39;: _raw,
+        &#39;doc&#39;: None,
+        &#39;unconsumed&#39;: [],
+    }
+
+    for comment_token in comments:
+        toks = lexer.lex_comment(comment_token)
+        if not toks:
+            cpr[&#39;unconsumed&#39;].append(comment_token.value)
+        elif toks[&#39;keyword&#39;].value == &#39;:name&#39;:
+            _consume_name(cpr, toks[&#39;rest&#39;])
+        elif toks[&#39;keyword&#39;].value == &#39;:result&#39;:
+            _consume_result(cpr, toks[&#39;rest&#39;])
+        else:
+            cpr[&#39;unconsumed&#39;].append(comment_token.value)
+
+    return cpr
+
+
+def _consume_result(cpr, rest):
+    if not rest.value:
+        raise ParserError(&#39;expected keyword&#39;, rest)
+    _set_result(cpr, rest)
+
+
+def _consume_name(cpr, rest):
+    tokens = lexer.lex_name(rest)
+    if not tokens:
+        raise ParserError(&#39;expected a query name.&#39;, rest)
+
+    name = tokens[&#39;name&#39;].value
+    if not _is_legal_name(name):
+        raise ParserError(
+            &#34;&#39;%s&#39; is not a legal Python function name.&#34; % name,
+            tokens[&#39;name&#39;])
+
+    cpr[&#39;name&#39;] = name
+
+    if not tokens[&#39;keyword&#39;].value:
+        if tokens[&#39;rest&#39;].value:
+            raise ParserError(
+                &#39;encountered unexpected input after query name.&#39;,
+                tokens[&#39;rest&#39;])
+        return
+
+    if tokens[&#39;rest&#39;].value:
+        raise ParserError(
+            &#39;encountered unexpected input after result type.&#39;,
+            tokens[&#39;rest&#39;])
+
+    _set_result(cpr, tokens[&#39;keyword&#39;])
+
+
+def _set_result(cpr, ktok):
+    tokens = lexer.lex_result(ktok)
+    if not tokens:
+        raise ParserError(&#39;expected keyword&#39;, ktok)
+
+    if tokens[&#39;rest&#39;].value:
+        raise ParserError(
+            &#39;encountered unexpected input after result type&#39;,
+            tokens[&#39;rest&#39;])
+
+    keyword = tokens[&#39;keyword&#39;].value
+
+    if keyword == &#39;:one&#39; or keyword == &#39;:1&#39;:
+        cpr[&#39;result&#39;] = _one
+    elif keyword == &#39;:many&#39; or keyword == &#39;:*&#39;:
+        cpr[&#39;result&#39;] = _many
+    elif keyword == &#39;:affected&#39; or keyword == &#39;:n&#39;:
+        cpr[&#39;result&#39;] = _affected
+    elif keyword == &#39;:insert&#39;:
+        cpr[&#39;result&#39;] = _insert
+    elif keyword == &#39;:scalar&#39;:
+        cpr[&#39;result&#39;] = _scalar
+    elif keyword != &#39;:raw&#39;:
+        raise ParserError(&#34;unrecognized keyword &#39;%s&#39;&#34; % keyword, ktok)
+
+
+def _is_legal_name(value):
+    return re.match(r&#39;^[a-zA-Z_][a-zA-Z0-9_]+$&#39;, value) is not None</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="pugsql.parser.parse"><code class="name flex">
+<span>def <span class="ident">parse</span></span>(<span>pugsql, ctx=None)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Processes the SQL string given in <a title="pugsql" href="index.html"><code>pugsql</code></a> and returns a valid
+<a title="pugsql.statement.Statement" href="statement.html#pugsql.statement.Statement"><code>Statement</code></a> object.</p>
+<p>Will raise a <a title="pugsql.exceptions.ParserError" href="exceptions.html#pugsql.exceptions.ParserError"><code>ParserError</code></a> in any number of cases in
+which the PugSQL metadata isn't valid. However, this does not parse and
+validate the SQL statement.</p>
+<p><code>ctx</code> is a context object provided by the <a title="pugsql.context.Context" href="context.html#pugsql.context.Context"><code>Context()</code></a>
+function, or <code>None</code>. If it is <code>None</code> a default context is created which
+will indicate that the SQL is being parsed from a literal string.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def parse(pugsql, ctx=None):
+    &#34;&#34;&#34;
+    Processes the SQL string given in `pugsql` and returns a valid
+    `pugsql.statement.Statement` object.
+
+    Will raise a `pugsql.exceptions.ParserError` in any number of cases in
+    which the PugSQL metadata isn&#39;t valid. However, this does not parse and
+    validate the SQL statement.
+
+    `ctx` is a context object provided by the `pugsql.context.Context`
+    function, or `None`. If it is `None` a default context is created which
+    will indicate that the SQL is being parsed from a literal string.
+    &#34;&#34;&#34;
+    ctx = ctx or context.Context(&#39;&lt;literal&gt;&#39;)
+
+    stream = lexer.lex(pugsql, ctx)
+    leading_comments = list(takewhile(lambda t: t.tag == &#39;C&#39;, stream))
+    rest = stream[len(leading_comments):]
+
+    cpr = _parse_comments(leading_comments)
+    sql = &#39;\n&#39;.join(cpr[&#39;unconsumed&#39;] + [token.value for token in rest])
+
+    return statement.Statement(
+        name=cpr[&#39;name&#39;],
+        sql=sql,
+        doc=cpr[&#39;doc&#39;],
+        result=cpr[&#39;result&#39;],
+        filename=ctx.sqlfile if ctx.sqlfile != &#39;&lt;literal&gt;&#39; else None)</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pugsql" href="index.html">pugsql</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="pugsql.parser.parse" href="#pugsql.parser.parse">parse</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.2</a>.</p>
+</footer>
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-139602329-3"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-139602329-3');
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
