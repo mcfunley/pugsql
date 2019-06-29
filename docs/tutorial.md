@@ -141,7 +141,7 @@ queries.create_foo(
 ```
 
 ### IN clauses
-Passing a tuple or a list as the value of a parameter will automatically treat
+Passing a `tuple`, `list`, or `set` as the value of a parameter will automatically treat
 that parameter as a sequence in the resulting sql. For example, you can write
 this query:
 

@@ -1,5 +1,8 @@
 # Release History
 
+## 0.1.14
+* `IN` clauses also accept `set` parameters (in addition to `tuple` and `list`).
+
 ## 0.1.13
 * `IN` clauses now work. Passing a tuple or a list as the value of a named parameter will automatically treat the parameter as an expanding (i.e. `(?, ?, ?, ?)`, etc) bind parameter.
 

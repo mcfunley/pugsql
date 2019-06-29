@@ -142,9 +142,19 @@ class Statement(object):
 
     def __call__(self, *multiparams, **params):
         self._assert_module()
+        multiparams, params = self._convert_params(multiparams, params)
         with _compile_context(multiparams, params):
             r = self._module._execute(self._text, *multiparams, **params)
         return self.result.transform(r)
+
+    def _convert_params(self, multiparams, params):
+        def conv(x):
+            if isinstance(x, set):
+                return tuple(x)
+            return x
+        return (
+            [conv(p) for p in multiparams],
+            { k: conv(v) for k, v in params.items() })
 
     def _param_names(self):
         def kfn(p):
