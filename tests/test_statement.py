@@ -94,3 +94,25 @@ class StrTest(TestCase):
         self.assertEqual(
             'pugsql.statement.Statement: foo() :: rowcount',
             str(s))
+
+
+class StatementFilenameErrorTest(TestCase):
+    def test_no_name(self):
+        msg = 'Statement must have a name. In: foo/bar.sql'
+        with pytest.raises(ValueError, match=msg):
+            Statement(None, 'foo', '', Raw(), 'foo/bar.sql')
+
+    def test_sql_none(self):
+        msg = 'Statement must have a SQL string. In: foo/bar.sql'
+        with pytest.raises(ValueError, match=msg):
+            Statement('foo', None, '', Raw(), 'foo/bar.sql')
+
+    def test_sql_empty(self):
+        msg = 'SQL string cannot be empty. In: foo/bar.sql'
+        with pytest.raises(ValueError, match=msg):
+            Statement('foo', '', '', Raw(), 'foo/bar.sql')
+
+    def test_result_none(self):
+        msg = 'Statement must have a result type. In: foo/bar.sql'
+        with pytest.raises(ValueError, match=msg):
+            Statement('foo', 'select 1', '', None, 'foo/bar.sql')

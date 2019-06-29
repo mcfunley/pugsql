@@ -112,17 +112,19 @@ class Raw(Result):
 
 class Statement(object):
     def __init__(self, name, sql, doc, result, filename=None):
+        self.filename = filename
+
         if not name:
-            raise ValueError('Statement must have a name.')
+            self._value_err('Statement must have a name.')
 
         if sql is None:
-            raise ValueError('Statement must have a SQL string.')
+            self._value_err('Statement must have a SQL string.')
         sql = sql.strip()
         if not len(sql):
-            raise ValueError('SQL string cannot be empty.')
+            self._value_err('SQL string cannot be empty.')
 
         if not result:
-            raise ValueError('Statement must have a result type.')
+            self._value_err('Statement must have a result type.')
 
         self.name = name
         self.sql = sql
@@ -131,6 +133,11 @@ class Statement(object):
         self.filename = filename
         self._module = None
         self._text = sqlalchemy.sql.text(self.sql)
+
+    def _value_err(self, msg):
+        if self.filename:
+            raise ValueError('%s In: %s' % (msg, self.filename))
+        raise ValueError(msg)
 
     def set_module(self, module):
         self._module = module
