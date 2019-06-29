@@ -1,6 +1,7 @@
 #!/bin/bash
 
-python -c "import pugsql; print('v'+pugsql.__version__)" > docs/_pdoc/version.mako
+moduleversion=$(python -c "import pugsql; print(pugsql.__version__)")
+echo "v$moduleversion" > docs/_pdoc/version.mako
 
 poetry run pdoc \
        --html \
@@ -10,4 +11,9 @@ poetry run pdoc \
        pugsql
 
 # update data for the jekyll site
-curl -sL https://pypi.python.org/pypi/pugsql/json > docs/_data/pypi.json
+while : ; do
+    curl -sL https://pypi.python.org/pypi/pugsql/json > docs/_data/pypi.json
+    echo "Waiting for PyPI to match..."
+    [[ $(jq .info.version docs/_data/pypi.json) = $moduleversion ]] || break
+    sleep 2
+done;

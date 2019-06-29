@@ -2,17 +2,21 @@
 
 set -euo pipefail
 
+# code release
 poetry run pytest
 poetry run flake8
 poetry build
 poetry install
 bin/checkrelease.py
+git tag -a v$(bin/printversion) -m "Tagging release $(bin/printversion)"
+git push
+git push --tags
+poetry publish
+
+# update docs on the website
 bin/build-docs
 git add .
 if ! [ -z "$(git status --porcelain)" ]; then
     git commit -m "updating documentation"
 fi
-git tag -a v$(bin/printversion) -m "Tagging release $(bin/printversion)"
 git push
-git push --tags
-poetry publish
