@@ -156,3 +156,17 @@ class PugsqlTest(TestCase):
         self.assertEqual(
             { 'username': 'mcfunley', 'user_id': 1 },
             self.fixtures.user_for_id(user_id=1))
+
+    def test_iterable(self):
+        self.assertEqual(
+            {
+                self.fixtures.find_by_username_or_id,
+                self.fixtures.find_by_usernames,
+                self.fixtures.insert_user,
+                self.fixtures.search_users,
+                self.fixtures.update_username,
+                self.fixtures.user_for_id,
+                self.fixtures.username_for_id,
+            },
+            set(q for q in self.fixtures)
+        )
