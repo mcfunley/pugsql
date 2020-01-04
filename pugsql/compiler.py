@@ -141,6 +141,9 @@ class Module(object):
         self._engine = None
         self._sessionmaker = None
 
+    def __iter__(self):
+        return iter(self._statements.values())
+
 
 __pdoc__['Module.sqlpath'] = (
     'The path that the `pugsql.compiler.Module` was loaded from.')
