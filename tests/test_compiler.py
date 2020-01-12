@@ -28,6 +28,13 @@ class BasicCompilerTest(TestCase):
         with pytest.raises(ValueError, match=msg):
             compiler._module('tests/sql/duplicate-name')
 
+    def test_reserved_function_name(self):
+        msg = (
+            'Error loading tests/sql/reserved/disconnect.sql - the function '
+            'name "disconnect" is reserved. Please choose another name.')
+        with pytest.raises(ValueError, match=msg):
+            compiler._module('tests/sql/reserved')
+
 
 class ModuleTest(TestCase):
     def setUp(self):

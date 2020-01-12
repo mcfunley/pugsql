@@ -44,6 +44,11 @@ class Module(object):
             s = parser.parse(pugsql, ctx=context.Context(sqlfile))
 
             if hasattr(self, s.name):
+                if s.name not in self._statements:
+                    raise ValueError(
+                        'Error loading %s - the function name "%s" is '
+                        'reserved. Please choose another name.' % (
+                            sqlfile, s.name))
                 raise ValueError(
                     'Error loading %s - a SQL function named %s was already '
                     'defined in %s.' % (
