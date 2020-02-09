@@ -2,3 +2,4 @@ dist
 docs/_site
 pugsql.egg-info
 notes
+__pycache__

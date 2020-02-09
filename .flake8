@@ -1,3 +1,4 @@
 # -*- mode: conf; -*-
 [flake8]
 ignore = E201,E202,E231
+max-line-length = 100
