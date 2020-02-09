@@ -177,6 +177,8 @@ class PugsqlTest(TestCase):
         from datetime import datetime
 
         self.fixtures.disconnect()
-        self.fixtures.connect('sqlite:///./tests/data/fixtures.sqlite3', connect_args={'detect_types': sqlite3.PARSE_DECLTYPES})
+        self.fixtures.connect(
+            'sqlite:///./tests/data/fixtures.sqlite3',
+            connect_args={'detect_types': sqlite3.PARSE_DECLTYPES})
         date = self.fixtures.find_date(id=1)
         self.assertIs(datetime, type(date['created']))
