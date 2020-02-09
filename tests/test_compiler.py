@@ -1,4 +1,4 @@
-from pugsql import compiler, exceptions
+from pugsql import compiler, exceptions, statement
 import pytest
 from unittest import TestCase
 
@@ -41,6 +41,8 @@ class BasicCompilerTest(TestCase):
         self.assertEqual(m.multiline_statement.name, 'multiline_statement')
         self.assertEqual(m.extra_comments.name, 'extra_comments')
         self.assertEqual(m.interstitial_comments.name, 'interstitial_comments')
+        self.assertEqual(m.multiline_syntax.name, 'multiline_syntax')
+        self.assertIsInstance(m.multiline_syntax.result, statement.Many)
 
 
 class ModuleTest(TestCase):
