@@ -1,5 +1,8 @@
 # Release History
 
+## 0.1.18
+* Custom connection `kwargs` are passed through to `create_engine`, thanks to [Brad Greenlee](https://github.com/bgreenlee).
+
 ## 0.1.17
 * Added support for multiple statements per file thanks to [Brad Greenlee](https://github.com/bgreenlee).
 
