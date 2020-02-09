@@ -55,9 +55,11 @@ class Module(object):
                             'reserved. Please choose another name.' % (
                                 sqlfile, s.name))
                     raise ValueError(
-                        'Error loading %s - a SQL function named %s was already '
-                        'defined in %s.' % (
-                            sqlfile, s.name, self._statements[s.name].filename))
+                        'Error loading %s - a SQL function named %s was '
+                        'already defined in %s.' % (
+                            sqlfile,
+                            s.name,
+                            self._statements[s.name].filename))
 
                 s.set_module(self)
 
