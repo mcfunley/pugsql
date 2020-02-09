@@ -1,5 +1,8 @@
 # Release History
 
+## 0.1.17
+* Added support for multiple statements per file thanks to [Brad Greenlee](https://github.com/bgreenlee).
+
 ## 0.1.16
 * Fixed [#28](https://github.com/mcfunley/pugsql/issues/28) - better errors when trying to use a query name that is already defined as a method on the `Module` class.
 * Modules are now iterable (thanks to [Haoyu Qiu](https://github.com/timothyqiu)).
