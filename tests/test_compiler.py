@@ -35,6 +35,13 @@ class BasicCompilerTest(TestCase):
         with pytest.raises(ValueError, match=msg):
             compiler._module('tests/sql/reserved')
 
+    def test_multiple_statements_per_file(self):
+        m = compiler._module('tests/sql')
+        self.assertEqual(m.basic_statement.name, 'basic_statement')
+        self.assertEqual(m.multiline_statement.name, 'multiline_statement')
+        self.assertEqual(m.extra_comments.name, 'extra_comments')
+        self.assertEqual(m.interstitial_comments.name, 'interstitial_comments')
+
 
 class ModuleTest(TestCase):
     def setUp(self):

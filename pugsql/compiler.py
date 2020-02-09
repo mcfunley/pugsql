@@ -9,6 +9,7 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import threading
+import re
 
 
 __pdoc__ = {}
@@ -41,23 +42,27 @@ class Module(object):
         for sqlfile in glob(os.path.join(self.sqlpath, '*sql')):
             with open(sqlfile, 'r') as f:
                 pugsql = f.read()
-            s = parser.parse(pugsql, ctx=context.Context(sqlfile))
 
-            if hasattr(self, s.name):
-                if s.name not in self._statements:
+            # handle multiple statements per file
+            statements = re.split(r'\n+(?=--\s*:name)', pugsql)
+            for statement in statements:
+                s = parser.parse(statement, ctx=context.Context(sqlfile))
+
+                if hasattr(self, s.name):
+                    if s.name not in self._statements:
+                        raise ValueError(
+                            'Error loading %s - the function name "%s" is '
+                            'reserved. Please choose another name.' % (
+                                sqlfile, s.name))
                     raise ValueError(
-                        'Error loading %s - the function name "%s" is '
-                        'reserved. Please choose another name.' % (
-                            sqlfile, s.name))
-                raise ValueError(
-                    'Error loading %s - a SQL function named %s was already '
-                    'defined in %s.' % (
-                        sqlfile, s.name, self._statements[s.name].filename))
+                        'Error loading %s - a SQL function named %s was already '
+                        'defined in %s.' % (
+                            sqlfile, s.name, self._statements[s.name].filename))
 
-            s.set_module(self)
+                s.set_module(self)
 
-            setattr(self, s.name, s)
-            self._statements[s.name] = s
+                setattr(self, s.name, s)
+                self._statements[s.name] = s
 
     @contextmanager
     def transaction(self):

@@ -64,6 +64,8 @@ insert into users (username) values (:username)
 With engines that do not support `lastrowid`, `:insert` falls back to the same
 behavior as `:scalar`.
 
+You may include multiple queries per file.
+
 
 ### Making a PugSQL Module
 
