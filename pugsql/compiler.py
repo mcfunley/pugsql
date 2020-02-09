@@ -119,14 +119,14 @@ class Module(object):
             raise NoConnectionError()
         return self._engine.dialect
 
-    def connect(self, connstr):
+    def connect(self, connstr, **kwargs):
         """
         Sets the connection string for SQL functions on this module.
 
         See https://docs.sqlalchemy.org/en/13/core/engines.html for examples of
         legal connection strings for different databases.
         """
-        self.set_engine(create_engine(connstr))
+        self.set_engine(create_engine(connstr, **kwargs))
 
     def set_engine(self, engine):
         """

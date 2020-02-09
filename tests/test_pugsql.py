@@ -167,6 +167,16 @@ class PugsqlTest(TestCase):
                 self.fixtures.update_username,
                 self.fixtures.user_for_id,
                 self.fixtures.username_for_id,
+                self.fixtures.find_date,
             },
             set(q for q in self.fixtures)
         )
+
+    def test_pass_connect_args(self):
+        import sqlite3
+        from datetime import datetime
+
+        self.fixtures.disconnect()
+        self.fixtures.connect('sqlite:///./tests/data/fixtures.sqlite3', connect_args={'detect_types': sqlite3.PARSE_DECLTYPES})
+        date = self.fixtures.find_date(id=1)
+        self.assertIs(datetime, type(date['created']))
