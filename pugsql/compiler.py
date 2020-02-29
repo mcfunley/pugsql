@@ -21,7 +21,7 @@ class Module(object):
     """
     sqlpath = None
 
-    def __init__(self, sqlpath):
+    def __init__(self, sqlpath, encoding=None):
         """
         Loads functions found in the *sql files specified by `sqlpath` into
         properties on this object.
@@ -40,7 +40,7 @@ class Module(object):
         self._locals = threading.local()
 
         for sqlfile in glob(os.path.join(self.sqlpath, '*sql')):
-            with open(sqlfile, 'r') as f:
+            with open(sqlfile, 'r', encoding=encoding) as f:
                 pugsql = f.read()
 
             # handle multiple statements per file
@@ -164,12 +164,12 @@ __pdoc__['Module.sqlpath'] = (
 modules = {}
 
 
-def _module(sqlpath):
+def _module(sqlpath, encoding=None):
     """
     Compiles a new `pugsql.compiler.Module`, or returns a cached one. Use the
     `pugsql.module` function instead of this one.
     """
     global modules
     if sqlpath not in modules:
-        modules[sqlpath] = Module(sqlpath)
+        modules[sqlpath] = Module(sqlpath, encoding=encoding)
     return modules[sqlpath]
