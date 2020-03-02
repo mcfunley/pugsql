@@ -16,7 +16,7 @@ from . import compiler
 __version__ = '0.1.18'
 
 
-def module(sqlpath):
+def module(sqlpath, encoding=None):
     """
     Compiles a set of SQL files in the directory specified by sqlpath, and
     returns a module. The module contains a function for each named query
@@ -32,7 +32,7 @@ def module(sqlpath):
     The results of this function are cached, so multiple calls giving the same
     sqlpath are safe and return the same module object.
     """
-    return compiler._module(sqlpath)
+    return compiler._module(sqlpath, encoding=encoding)
 
 
 def get_modules():
