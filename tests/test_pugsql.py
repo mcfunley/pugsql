@@ -182,3 +182,10 @@ class PugsqlTest(TestCase):
             connect_args={'detect_types': sqlite3.PARSE_DECLTYPES})
         date = self.fixtures.find_date(id=1)
         self.assertIs(datetime, type(date['created']))
+
+    def test_positional_args_mistake(self):
+        with pytest.raises(
+                exceptions.InvalidArgumentError,
+                match='Pass keyword arguments to statements'):
+            self.fixtures.find_by_username_or_id(
+                1, ('oscar', 'dottie'))

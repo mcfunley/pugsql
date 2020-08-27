@@ -1,6 +1,7 @@
 """
 Compiled SQL function objects.
 """
+from .exceptions import InvalidArgumentError
 from contextlib import contextmanager
 import sqlalchemy
 from sqlalchemy.ext.compiler import compiles
@@ -151,7 +152,14 @@ class Statement(object):
         self._assert_module()
         multiparams, params = self._convert_params(multiparams, params)
         with _compile_context(multiparams, params):
-            r = self._module._execute(self._text, *multiparams, **params)
+            try:
+                r = self._module._execute(self._text, *multiparams, **params)
+            except AttributeError as e:
+                if str(e) == "'tuple' object has no attribute 'keys'":
+                    raise InvalidArgumentError(
+                        'Pass keyword arguments to statements (received '
+                        'positional arguments).')
+                raise
         return self.result.transform(r)
 
     def _convert_params(self, multiparams, params):

@@ -1,5 +1,9 @@
 # Release History
 
+## 0.1.19
+* Better exception feedback when calling statements incorrectly with positional arguments.
+* Added some development setup notes to the README.
+
 ## 0.1.18
 * Custom connection `kwargs` are passed through to `create_engine`, thanks to [Brad Greenlee](https://github.com/bgreenlee).
 

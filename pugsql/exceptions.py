@@ -41,3 +41,9 @@ class NoConnectionError(RuntimeError):
             'No connection engine is configured. Pass a connection string '
             "to the module's connect method, or pass a SQLAlchemy engine "
             'to the set_engine method.')
+
+
+class InvalidArgumentError(AttributeError):
+    """
+    Exception raised when a PugSQL statement is called with incorrect arguments.
+    """
