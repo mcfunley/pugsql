@@ -1,6 +1,7 @@
 # Release History
 
 ## 0.1.19
+* An `encoding` parameter for interpreting sql files can be passed when creating a pugsql module, thanks to [newturok](https://github.com/newturok).
 * Better exception feedback when calling statements incorrectly with positional arguments.
 * Added some development setup notes to the README.
 
