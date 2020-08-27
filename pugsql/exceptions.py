@@ -45,5 +45,6 @@ class NoConnectionError(RuntimeError):
 
 class InvalidArgumentError(AttributeError):
     """
-    Exception raised when a PugSQL statement is called with incorrect arguments.
+    Exception raised when a PugSQL statement is called with incorrect
+    arguments.
     """
