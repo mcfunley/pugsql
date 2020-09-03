@@ -13,7 +13,7 @@ in files. A minimal usage example:
 from . import compiler
 
 
-__version__ = '0.1.19'
+__version__ = '0.2.0'
 
 
 def module(sqlpath, encoding=None):
@@ -32,4 +32,4 @@ def module(sqlpath, encoding=None):
     return compiler.Module(sqlpath, encoding=encoding)
 
 
-__all__ = ['__version__', 'module', 'get_modules',]
+__all__ = ['__version__', 'module',]

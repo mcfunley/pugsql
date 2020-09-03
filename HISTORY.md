@@ -1,5 +1,8 @@
 # Release History
 
+## 0.2.0
+* Dropped automatic caching of modules. See [#19](https://github.com/mcfunley/pugsql/issues/19) for discussion.
+
 ## 0.1.19
 * An `encoding` parameter for interpreting sql files can be passed when creating a pugsql module, thanks to [newturok](https://github.com/newturok).
 * Better exception feedback when calling statements incorrectly with positional arguments.
