@@ -23,9 +23,9 @@ def lex(pugsql, ctx):
     Splits the provided multiline PugSQL string into
     """
     def generate(pugsql, ctx):
-        for l in pugsql.splitlines():
+        for line in pugsql.splitlines():
             ctx = context.advance(ctx, lines=1)
-            yield _categorize(l, ctx)
+            yield _categorize(line, ctx)
     return list(generate(pugsql, ctx))
 
 

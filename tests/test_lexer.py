@@ -5,8 +5,8 @@ from unittest import TestCase
 ctx = context.Context('<literal>')
 
 
-def at(l, c):
-    return context.Context(ctx.sqlfile, l, c)
+def at(line, col):
+    return context.Context(ctx.sqlfile, line, col)
 
 
 class LexTest(TestCase):
