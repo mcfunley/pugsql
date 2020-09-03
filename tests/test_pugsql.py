@@ -6,7 +6,7 @@ from unittest import TestCase
 
 
 def test_module():
-    assert pugsql.module('tests/sql').sqlpath == 'tests/sql'
+    assert pugsql.module('tests/sql').sqlpaths == {'tests/sql',}
 
 
 class PugsqlTest(TestCase):

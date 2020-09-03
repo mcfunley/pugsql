@@ -19,27 +19,40 @@ class Module(object):
     """
     Holds a set of SQL functions loaded from files.
     """
-    sqlpath = None
+    sqlpaths = None
 
     def __init__(self, sqlpath, encoding=None):
         """
         Loads functions found in the *sql files specified by `sqlpath` into
-        properties on this object.
+        properties on this object. An `encoding` for the files can optionally
+        be provided.
 
         The named sql functions in files should be unique.
         """
+        self.sqlpaths = set()
+        self._statements = {}
+        self._engine = None
+        self._sessionmaker = None
+        self._locals = threading.local()
+
+        self.add_queries(sqlpath, encoding=encoding)
+
+    def add_queries(self, *paths, encoding=None):
+        """
+        Adds queries from *sql files in one or more `paths` to the module.
+        An `encoding` for the files can optionally be provided.
+
+        The named sql functions in files should be unique.
+        """
+        for p in paths:
+            self._add_path(p, encoding=encoding)
+        self.sqlpaths |= set(paths)
+
+    def _add_path(self, sqlpath, encoding=None):
         if not os.path.isdir(sqlpath):
             raise ValueError('Directory not found: %s' % sqlpath)
 
-        self.sqlpath = sqlpath
-        self._statements = {}
-
-        self._engine = None
-        self._sessionmaker = None
-
-        self._locals = threading.local()
-
-        for sqlfile in glob(os.path.join(self.sqlpath, '*sql')):
+        for sqlfile in glob(os.path.join(sqlpath, '*sql')):
             with open(sqlfile, 'r', encoding=encoding) as f:
                 pugsql = f.read()
 
@@ -157,5 +170,5 @@ class Module(object):
         return iter(self._statements.values())
 
 
-__pdoc__['Module.sqlpath'] = (
-    'The path that the `pugsql.compiler.Module` was loaded from.')
+__pdoc__['Module.sqlpaths'] = (
+    'A list of paths that the `pugsql.compiler.Module` was loaded from.')

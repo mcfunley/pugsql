@@ -1,5 +1,8 @@
 # Release History
 
+## 0.2.1
+* Added support for adding queries from another path to a module (see [#29](https://github.com/mcfunley/pugsql/issues/29)).
+
 ## 0.2.0
 * Dropped automatic caching of modules. See [#19](https://github.com/mcfunley/pugsql/issues/19) for discussion.
 

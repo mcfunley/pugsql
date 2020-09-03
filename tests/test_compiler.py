@@ -8,9 +8,9 @@ class BasicCompilerTest(TestCase):
         m = compiler.Module('tests/sql')
         self.assertEqual(m.username_for_id.name, 'username_for_id')
 
-    def test_sets_sqlpath(self):
+    def test_sets_sqlpaths(self):
         m = compiler.Module('tests/sql')
-        self.assertEqual('tests/sql', m.sqlpath)
+        self.assertEqual({'tests/sql',}, m.sqlpaths)
 
     def test_function_redefinition(self):
         msg = (
@@ -47,3 +47,10 @@ class ModuleTest(TestCase):
         m = compiler.Module('tests/sql')
         m.connect('sqlite:///./tests/data/fixtures.sqlite3')
         self.assertEqual(m._dialect.paramstyle, 'qmark')
+
+    def test_add_queries(self):
+        m = compiler.Module('tests/sql/mod1')
+        m.add_queries('tests/sql/mod2')
+        self.assertEqual({ 'tests/sql/mod1', 'tests/sql/mod2' }, m.sqlpaths)
+        self.assertIsInstance(m.scalar, statement.Statement)
+        self.assertIsInstance(m.insert, statement.Statement)
