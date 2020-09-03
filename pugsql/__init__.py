@@ -28,24 +28,8 @@ def module(sqlpath, encoding=None):
         # connect to the database and use the sql queries as functions
         queries.connect(connection_string)
         queries.update_username(user_id=42, username='mcfunley')
-
-    The results of this function are cached, so multiple calls giving the same
-    sqlpath are safe and return the same module object.
     """
-    return compiler._module(sqlpath, encoding=encoding)
-
-
-def get_modules():
-    """
-    Returns a dict of all modules currently loaded by pugsql. Clearing or
-    otherwise modifying this dict will reset (or modify) the underlying data.
-
-    For example, this call would reset pugsql so that repeated calls to
-    `pugsql.module` will reload files from disk:
-
-        pugsql.get_modules().clear()
-    """
-    return compiler.modules
+    return compiler.Module(sqlpath, encoding=encoding)
 
 
 __all__ = ['__version__', 'module', 'get_modules',]

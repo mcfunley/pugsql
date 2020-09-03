@@ -4,21 +4,13 @@ from unittest import TestCase
 
 
 class BasicCompilerTest(TestCase):
-    def setUp(self):
-        compiler.modules.clear()
-
     def test_setsattr(self):
-        m = compiler._module('tests/sql')
+        m = compiler.Module('tests/sql')
         self.assertEqual(m.username_for_id.name, 'username_for_id')
 
     def test_sets_sqlpath(self):
-        m = compiler._module('tests/sql')
+        m = compiler.Module('tests/sql')
         self.assertEqual('tests/sql', m.sqlpath)
-
-    def test_caches_modules(self):
-        self.assertEqual(
-            compiler._module('tests/sql'),
-            compiler._module('tests/sql'))
 
     def test_function_redefinition(self):
         msg = (
@@ -26,17 +18,17 @@ class BasicCompilerTest(TestCase):
             'named foo was already defined in '
             'tests/sql/duplicate-name/foo2.sql.')
         with pytest.raises(ValueError, match=msg):
-            compiler._module('tests/sql/duplicate-name')
+            compiler.Module('tests/sql/duplicate-name')
 
     def test_reserved_function_name(self):
         msg = (
             'Error loading tests/sql/reserved/disconnect.sql - the function '
             'name "disconnect" is reserved. Please choose another name.')
         with pytest.raises(ValueError, match=msg):
-            compiler._module('tests/sql/reserved')
+            compiler.Module('tests/sql/reserved')
 
     def test_multiple_statements_per_file(self):
-        m = compiler._module('tests/sql')
+        m = compiler.Module('tests/sql')
         self.assertEqual(m.basic_statement.name, 'basic_statement')
         self.assertEqual(m.multiline_statement.name, 'multiline_statement')
         self.assertEqual(m.extra_comments.name, 'extra_comments')
@@ -46,15 +38,12 @@ class BasicCompilerTest(TestCase):
 
 
 class ModuleTest(TestCase):
-    def setUp(self):
-        compiler.modules.clear()
-
     def test_dialect_no_connection(self):
-        m = compiler._module('tests/sql')
+        m = compiler.Module('tests/sql')
         with pytest.raises(exceptions.NoConnectionError):
             _ = m._dialect
 
     def test_dialect_works(self):
-        m = compiler._module('tests/sql')
+        m = compiler.Module('tests/sql')
         m.connect('sqlite:///./tests/data/fixtures.sqlite3')
         self.assertEqual(m._dialect.paramstyle, 'qmark')

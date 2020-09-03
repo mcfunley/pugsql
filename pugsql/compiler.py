@@ -159,17 +159,3 @@ class Module(object):
 
 __pdoc__['Module.sqlpath'] = (
     'The path that the `pugsql.compiler.Module` was loaded from.')
-
-
-modules = {}
-
-
-def _module(sqlpath, encoding=None):
-    """
-    Compiles a new `pugsql.compiler.Module`, or returns a cached one. Use the
-    `pugsql.module` function instead of this one.
-    """
-    global modules
-    if sqlpath not in modules:
-        modules[sqlpath] = Module(sqlpath, encoding=encoding)
-    return modules[sqlpath]

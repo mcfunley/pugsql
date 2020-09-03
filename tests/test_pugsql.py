@@ -1,18 +1,16 @@
 import pugsql
-from pugsql import compiler, exceptions
+from pugsql import exceptions
 import pytest
 import threading
 from unittest import TestCase
 
 
 def test_module():
-    compiler.modules.clear()
     assert pugsql.module('tests/sql').sqlpath == 'tests/sql'
 
 
 class PugsqlTest(TestCase):
     def setUp(self):
-        pugsql.get_modules().clear()
         self.fixtures = pugsql.module('tests/sql/fixtures')
         self.fixtures.connect('sqlite:///./tests/data/fixtures.sqlite3')
 
@@ -143,7 +141,6 @@ class PugsqlTest(TestCase):
 
     def test_initialized_other_thread(self):
         self.fixtures = None
-        pugsql.get_modules().clear()
 
         def init():
             self.fixtures = pugsql.module('tests/sql/fixtures')
