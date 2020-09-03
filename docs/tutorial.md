@@ -164,14 +164,4 @@ This will result in the following query being sent to the database:
 select * from users where username in ('foo', 'bar');
 ```
 
-### Resetting PugSQL
-
-If for some reason you need to reset PugSQL, you can empty it out like so:
-
-```python
-import pugsql
-
-pugsql.get_modules().clear()
-```
-
 That's it! Good luck!
