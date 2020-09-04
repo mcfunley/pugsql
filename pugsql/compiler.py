@@ -20,6 +20,7 @@ class Module(object):
     Holds a set of SQL functions loaded from files.
     """
     sqlpaths = None
+    engine = None
 
     def __init__(self, sqlpath, encoding=None):
         """
@@ -31,7 +32,6 @@ class Module(object):
         """
         self.sqlpaths = set()
         self._statements = {}
-        self._engine = None
         self._sessionmaker = None
         self._locals = threading.local()
 
@@ -125,19 +125,19 @@ class Module(object):
         if getattr(self._locals, 'session', None):
             return self._locals.session.execute(clause, multiparams or params)
 
-        if not self._engine:
+        if not self.engine:
             raise NoConnectionError()
 
-        return self._engine.execute(clause, *multiparams, **params)
+        return self.engine.execute(clause, *multiparams, **params)
 
     @property
     def _dialect(self):
         """
         Gets the dialect for the SQLAlchemy engine.
         """
-        if not self._engine:
+        if not self.engine:
             raise NoConnectionError()
-        return self._engine.dialect
+        return self.engine.dialect
 
     def connect(self, connstr, **kwargs):
         """
@@ -146,9 +146,9 @@ class Module(object):
         See https://docs.sqlalchemy.org/en/13/core/engines.html for examples of
         legal connection strings for different databases.
         """
-        self.set_engine(create_engine(connstr, **kwargs))
+        self.setengine(create_engine(connstr, **kwargs))
 
-    def set_engine(self, engine):
+    def setengine(self, engine):
         """
         Sets the SQLAlchemy engine for SQL functions on this module. This can
         be used instead of the connect method, when more customization of the
@@ -156,14 +156,14 @@ class Module(object):
 
         See also: https://docs.sqlalchemy.org/en/13/core/connections.html
         """
-        self._engine = engine
+        self.engine = engine
         self._sessionmaker = sessionmaker(bind=engine)
 
     def disconnect(self):
         """
         Disassociates the module from any connection it was previously given.
         """
-        self._engine = None
+        self.engine = None
         self._sessionmaker = None
 
     def __iter__(self):
@@ -172,3 +172,5 @@ class Module(object):
 
 __pdoc__['Module.sqlpaths'] = (
     'A list of paths that the `pugsql.compiler.Module` was loaded from.')
+__pdoc__['Module.engine'] = (
+    'The sqlalchemy engine object being used by the `pugsql.compiler.Module`.')
