@@ -113,7 +113,6 @@ class Module(object):
         session = self._locals.session
         try:
             yield session
-            session.commit()
         except Exception as e:
             session.rollback()
             raise e

@@ -186,3 +186,17 @@ class PugsqlTest(TestCase):
                 match='Pass keyword arguments to statements'):
             self.fixtures.find_by_username_or_id(
                 1, ('oscar', 'dottie'))
+
+    def test_nesting_transactions_rollback(self):
+        id: int = None
+        with self.fixtures.transaction() as tr1:
+            id = self.fixtures.insert_user(username='little_bug')
+            with self.fixtures.transaction():
+                self.assertEqual(
+                    { 'username': 'mcfunley', 'user_id': 1 },
+                    self.fixtures.user_for_id(user_id=1))
+            tr1.rollback()
+        # TODO
+        self.assertNotEqual(
+            {'username': 'little_bug', 'user_id': id},
+            self.fixtures.user_for_id(user_id=id))
