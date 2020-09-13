@@ -190,3 +190,23 @@ class PugsqlTest(TestCase):
     def test_three_dashes(self):
         pytest.skip('fails - see issue #13')
         pugsql.module('tests/sql/extra-dashes')
+
+    def test_nesting_transactions_rollback(self):
+        id: int = None
+        id2: int = None
+        with self.fixtures.transaction() as tr1:
+            id = self.fixtures.insert_user(username='little_bug')
+            with self.fixtures.transaction() as tr2:
+                self.assertEqual(
+                    { 'username': 'mcfunley', 'user_id': 1 },
+                    self.fixtures.user_for_id(user_id=1))
+                id2 = self.fixtures.insert_user(username='little_bug2')
+                tr2.commit()
+            tr1.rollback()
+        # TODO
+        self.assertNotEqual(
+            {'username': 'little_bug', 'user_id': id},
+            self.fixtures.user_for_id(user_id=id))
+        self.assertNotEqual(
+            {'username': 'little_bug2', 'user_id': id2},
+            self.fixtures.user_for_id(user_id=id))

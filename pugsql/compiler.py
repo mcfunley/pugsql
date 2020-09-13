@@ -110,16 +110,24 @@ class Module(object):
 
             self._locals.session = self._sessionmaker()
 
-        session = self._locals.session
-        try:
-            yield session
-            session.commit()
-        except Exception as e:
-            session.rollback()
-            raise e
-        finally:
-            session.close()
-            self._locals.session = None
+            session = self._locals.session
+            try:
+                yield session
+                session.commit()
+            except Exception as e:
+                session.rollback()
+                raise e
+            finally:
+                session.close()
+                self._locals.session = None
+        else:
+            session = self._locals.session.begin_nested()
+            try:
+                yield session
+            except Exception as e:
+                session.rollback()
+                raise e
+
 
     def _execute(self, clause, *multiparams, **params):
         if getattr(self._locals, 'session', None):
