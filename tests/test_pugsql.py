@@ -1,6 +1,8 @@
+from packaging import version
 import pugsql
 from pugsql import exceptions
 import pytest
+import sys
 import threading
 from unittest import TestCase
 
@@ -10,6 +12,12 @@ def test_module():
 
 
 class PugsqlTest(TestCase):
+    def skip_if_py35(self, msg):
+        pyver = version.parse('%s.%s' % (
+            sys.version_info.major, sys.version_info.minor))
+        if pyver < version.parse('3.6'):
+            pytest.skip(msg)
+
     def setUp(self):
         self.fixtures = pugsql.module('tests/sql/fixtures')
         self.fixtures.connect('sqlite:///./tests/data/fixtures.sqlite3')
@@ -193,6 +201,8 @@ class PugsqlTest(TestCase):
         pugsql.module('tests/sql/extra-dashes')
 
     def test_nesting_transactions_rollback(self):
+        self.skip_if_py35('Python 3.5 sqlite does not support savepoint')
+
         id = None
         id2 = None
         with self.fixtures.transaction() as tr1:
@@ -213,6 +223,8 @@ class PugsqlTest(TestCase):
             self.fixtures.user_for_id(user_id=id))
 
     def test_nesting_transactions_rollback_inner(self):
+        self.skip_if_py35('Python 3.5 sqlite does not support savepoint')
+
         with self.fixtures.transaction() as outer:
             self.fixtures.insert_user(username='scratch1')
             with self.fixtures.transaction() as inner:
