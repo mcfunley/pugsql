@@ -128,6 +128,8 @@ class PugsqlTest(TestCase):
             self.fixtures.user_for_id(user_id=1))
 
     def test_nesting_transactions(self):
+        self.skip_if_py35('Python 3.5 sqlite does not support savepoint')
+
         with self.fixtures.transaction():
             with self.fixtures.transaction():
                 self.assertEqual(
