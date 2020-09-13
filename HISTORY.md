@@ -1,5 +1,8 @@
 # Release History
 
+## 0.2.3
+* Fixes Python 3.5 tests which were broken in 0.2.2
+
 ## 0.2.2
 * Support for nested transactions [#40](https://github.com/mcfunley/pugsql/issues/40) thanks to [Hosein Yeganloo](https://github.com/Yeganloo).
 * Modules expose the [SQLAlchemy engine](https://docs.sqlalchemy.org/en/13/core/connections.html#sqlalchemy.engine.Engine) they are using ([#5](https://github.com/mcfunley/pugsql/issues/5)).
