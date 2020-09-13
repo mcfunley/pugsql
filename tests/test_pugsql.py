@@ -10,16 +10,9 @@ def test_module():
 
 
 class PugsqlTest(TestCase):
-    def cleanup_scratch_data(self):
-        self.fixtures.delete_by_usernames(usernames={ 'foo', 'bar' })
-
     def setUp(self):
         self.fixtures = pugsql.module('tests/sql/fixtures')
         self.fixtures.connect('sqlite:///./tests/data/fixtures.sqlite3')
-        self.cleanup_scratch_data()
-
-    def tearDown(self):
-        self.cleanup_scratch_data()
 
     def test_get_one(self):
         self.assertEqual(
@@ -225,8 +218,9 @@ class PugsqlTest(TestCase):
             with self.fixtures.transaction() as inner:
                 self.fixtures.insert_user(username='scratch2')
                 inner.rollback()
-            outer.commit()
 
-        committed = self.fixtures.find_by_usernames(
-            usernames={ 'scratch1', 'scratch2' })
-        self.assertEqual({ u['username'] for u in committed }, { 'scratch1' })
+            users = { u['username'] for u in
+                      self.fixtures.find_by_usernames(
+                          usernames={ 'scratch1', 'scratch2' }) }
+            self.assertEqual(users, { 'scratch1' })
+            outer.rollback()
