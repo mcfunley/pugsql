@@ -1,7 +1,7 @@
 # Release History
 
 ## 0.2.3
-* Fixes Python 3.5 tests which were broken in 0.2.2
+* Fixes Python 3.5 tests which were broken in 0.2.2. Began release testing with 3.8.
 
 ## 0.2.2
 * Support for nested transactions [#40](https://github.com/mcfunley/pugsql/issues/40) thanks to [Hosein Yeganloo](https://github.com/Yeganloo).
