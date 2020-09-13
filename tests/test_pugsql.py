@@ -186,3 +186,7 @@ class PugsqlTest(TestCase):
                 match='Pass keyword arguments to statements'):
             self.fixtures.find_by_username_or_id(
                 1, ('oscar', 'dottie'))
+
+    def test_three_dashes(self):
+        pytest.skip('fails - see issue #13')
+        pugsql.module('tests/sql/extra-dashes')
