@@ -1,5 +1,8 @@
 # Release History
 
+## 0.2.2
+* Modules expose the [SQLAlchemy engine](https://docs.sqlalchemy.org/en/13/core/connections.html#sqlalchemy.engine.Engine) they are using ([#5](https://github.com/mcfunley/pugsql/issues/5)).
+
 ## 0.2.1
 * Added support for adding queries from another path to a module (see [#29](https://github.com/mcfunley/pugsql/issues/29)).
 
