@@ -27,6 +27,21 @@ class PugsqlTest(TestCase):
             { 'username': 'mcfunley', 'user_id': 1 },
             self.fixtures.user_for_id(user_id=1))
 
+    def test_set_identifier(self):
+        self.assertEqual(
+            { 'username': 'mcfunley', 'user_id': 1 },
+            self.fixtures.identifier(table_name='users'))
+
+    def test_set_identifier_invalid(self):
+        from pugsql.exceptions import InvalidArgumentError
+
+        with pytest.raises(
+                InvalidArgumentError,
+                match='Invalid SQL identifier table_name "users;"'):
+            self.assertEqual(
+                { 'username': 'mcfunley', 'user_id': 1 },
+                self.fixtures.identifier(table_name='users;'))
+
     def test_many(self):
         self.assertEqual(
             [{ 'username': 'oscar', 'user_id': 2 },],
@@ -170,6 +185,7 @@ class PugsqlTest(TestCase):
                 self.fixtures.find_by_username_or_id,
                 self.fixtures.find_by_usernames,
                 self.fixtures.insert_user,
+                self.fixtures.identifier,
                 self.fixtures.search_users,
                 self.fixtures.update_username,
                 self.fixtures.user_for_id,

@@ -19,6 +19,16 @@ class LexTest(TestCase):
             [l1, l2],
             lexer.lex(open('tests/sql/basic.sql', 'r').read(), ctx))
 
+    def test_basic_identifier(self):
+        l1 = lexer.Token('C', '-- :name identifier :1', at(1, 1))
+        l2 = lexer.Token(
+            'Q', 'select * from {{table_name}} limit 1',
+            at(2, 1))
+        self.assertEqual(
+            [l1, l2],
+            lexer.lex(open('tests/sql/identifier.sql', 'r').read(), ctx))
+
+
     def test_leading_comment_whitespace(self):
         l1 = lexer.Token('C', '-- :name username_for_id :1', at(1, 4))
         l2 = lexer.Token(

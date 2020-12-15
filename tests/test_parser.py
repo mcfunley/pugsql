@@ -18,6 +18,11 @@ class SqlTests(TestCase):
             parse('basic').sql,
             'select username from users where user_id = :user_id')
 
+    def test_identifier(self):
+        self.assertEqual(
+            parse('identifier').sql,
+            'select * from {{table_name}} limit 1')
+
     def test_extra_comments(self):
         self.assertEqual(
             parse('extra-comments').sql,

@@ -10,13 +10,13 @@ class BasicCompilerTest(TestCase):
 
     def test_sets_sqlpaths(self):
         m = compiler.Module('tests/sql')
-        self.assertEqual({'tests/sql',}, m.sqlpaths)
+        self.assertEqual({'tests/sql', }, m.sqlpaths)
 
     def test_function_redefinition(self):
         msg = (
-            'Error loading tests/sql/duplicate-name/foo.sql - a SQL function '
+            'Error loading tests/sql/duplicate-name/foo2.sql - a SQL function '
             'named foo was already defined in '
-            'tests/sql/duplicate-name/foo2.sql.')
+            'tests/sql/duplicate-name/foo.sql.')
         with pytest.raises(ValueError, match=msg):
             compiler.Module('tests/sql/duplicate-name')
 

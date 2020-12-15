@@ -1,13 +1,17 @@
 """
 Compiled SQL function objects.
 """
-from .exceptions import InvalidArgumentError
-from contextlib import contextmanager
-import sqlalchemy
-from sqlalchemy.ext.compiler import compiles
-from sqlalchemy.sql.expression import BindParameter
+import re
 import threading
 
+from contextlib import contextmanager
+
+import sqlalchemy
+
+from .exceptions import InvalidArgumentError
+
+from sqlalchemy.ext.compiler import compiles
+from sqlalchemy.sql.expression import BindParameter
 
 _locals = threading.local()
 
@@ -133,7 +137,9 @@ class Statement(object):
         self.result = result
         self.filename = filename
         self._module = None
-        self._text = sqlalchemy.sql.text(self.sql)
+
+    def _text(self, text):
+        return sqlalchemy.sql.text(text)
 
     def _value_err(self, msg):
         if self.filename:
@@ -153,7 +159,23 @@ class Statement(object):
         multiparams, params = self._convert_params(multiparams, params)
         with _compile_context(multiparams, params):
             try:
-                r = self._module._execute(self._text, *multiparams, **params)
+                # Inject any identifier parameters now
+                expanded_sql = self.sql
+                for (pname, pval) in params.items():
+                    key = pname.join(['{{', '}}'])
+                    if key in expanded_sql:
+
+                        if re.fullmatch(r'[a-zA-Z][0-9a-zA-Z_@$]+', pval):
+                            expanded_sql = expanded_sql.replace(key, pval)
+                        else:
+                            raise InvalidArgumentError(
+                                'Invalid SQL identifier ' +
+                                pname + ' "' + pval + '"')
+
+                r = self._module._execute(
+                    self._text(expanded_sql),
+                    *multiparams,
+                    **params)
             except AttributeError as e:
                 if str(e) == "'tuple' object has no attribute 'keys'":
                     raise InvalidArgumentError(
@@ -174,7 +196,7 @@ class Statement(object):
     def _param_names(self):
         def kfn(p):
             return self.sql.index(':' + p)
-        return sorted(self._text._bindparams.keys(), key=kfn)
+        return sorted(self._text(self.sql)._bindparams.keys(), key=kfn)
 
     def __str__(self):
         paramstr = ', '.join(['%s=None' % k for k in self._param_names()])
