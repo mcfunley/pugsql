@@ -90,7 +90,7 @@ The easiest way to connect to a database is to just call the `connect` method on
 queries.connect('postgresql://mcfunley@localhost/dbname')
 ```
 
-For more advanced uses, you can also pass a [SQLAlchemy Engine object](https://docs.sqlalchemy.org/en/13/core/connections.html#sqlalchemy.engine.Engine) to the `set_engine` method on the module instead.
+For more advanced uses, you can also pass a [SQLAlchemy Engine object](https://docs.sqlalchemy.org/en/13/core/connections.html#sqlalchemy.engine.Engine) to the `setengine` method on the module instead.
 
 ### Running Queries
 
