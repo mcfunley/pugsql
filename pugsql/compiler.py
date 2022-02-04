@@ -3,11 +3,12 @@ Code that processes SQL files and returns modules of database functions.
 """
 from . import parser, context
 from .exceptions import NoConnectionError
-from contextlib import contextmanager
+from contextlib import contextmanager, suppress
 from glob import glob
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.exc import ResourceClosedError
 import threading
 import re
 
@@ -127,6 +128,9 @@ class Module(object):
             except Exception as e:
                 session.rollback()
                 raise e
+            else:
+                with suppress(ResourceClosedError):
+                    session.commit()
 
     def _execute(self, clause, *multiparams, **params):
         if getattr(self._locals, 'session', None):
