@@ -1,2 +1,2 @@
 -- :name insert_returning_star :one
-insert into test (foo) values (:foo) returning *;
+insert into test.test (foo) values (:foo) returning *;

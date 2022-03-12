@@ -1,2 +1,2 @@
 -- :name insert_returning :insert
-insert into test (foo) values (:foo) returning id;
+insert into test.test (foo) values (:foo) returning id;

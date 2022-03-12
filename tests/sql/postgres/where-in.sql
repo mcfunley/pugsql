@@ -1,2 +1,2 @@
 -- :name where_in :many
-select * from public.test where foo in :foo
+select * from test.test where foo in :foo

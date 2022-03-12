@@ -13,3 +13,7 @@ install:
 script:
   - poetry run pytest
   - poetry run flake8
+services:
+  - postgresql
+env:
+  - PGUSER=postgres
