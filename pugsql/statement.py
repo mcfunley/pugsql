@@ -151,16 +151,34 @@ class Statement(object):
     def __call__(self, *multiparams, **params):
         self._assert_module()
         multiparams, params = self._convert_params(multiparams, params)
+        self._validateMultiparams(params, multiparams)
         with _compile_context(multiparams, params):
             try:
                 r = self._module._execute(self._text, *multiparams, **params)
             except AttributeError as e:
                 if str(e) == "'tuple' object has no attribute 'keys'":
-                    raise InvalidArgumentError(
-                        'Pass keyword arguments to statements (received '
-                        'positional arguments).')
+                    self._positionalArgError()
                 raise
         return self.result.transform(r)
+
+    def _validateMultiparams(self, params, multiparams):
+        # try to catch some common usage mistakes
+        if not len(multiparams):
+            return
+
+        if len(params):
+            # currently never supported to pass both positional args and keywords
+            self._positionalArgError()
+
+        for p in multiparams:
+            # multiparams are allowed when they're tuples/rows/etc to be e.g. inserted
+            if not type(p) in { dict, list, set }:
+                self._positionalArgError()
+
+    def _positionalArgError(self):
+        raise InvalidArgumentError(
+            'Pass keyword arguments to statements (received '
+            'positional arguments).')
 
     def _convert_params(self, multiparams, params):
         def conv(x):

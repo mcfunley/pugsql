@@ -1,6 +1,7 @@
 # Release History
 
 ## 0.2.4
+* Improved feedback when mistakenly passing positional arguments to statements that don't support it.
 * Dropped support for Python 3.5 and 3.6.
 * Added test coverage for some postgres-specific tests.
 * Migrated test suite from TravisCI to GitHub Actions.
