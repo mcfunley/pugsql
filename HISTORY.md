@@ -1,5 +1,11 @@
 # Release History
 
+## 0.2.4
+* Dropped support for Python 3.5 and 3.6.
+* Added test coverage for some postgres-specific tests.
+* Migrated test suite from TravisCI to GitHub Actions.
+* Fixed broken test suite on Python 3.10
+
 ## 0.2.3
 * Fixes Python 3.5 tests which were broken in 0.2.2. Began release testing with 3.8.
 

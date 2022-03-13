@@ -22,6 +22,7 @@ to your virtualenv:
 
     pip install --upgrade pip
     pip install poetry
+    poetry install
 
 The test suite is largely written against sqlite, and also currently includes some postgresql coverage.
 To get postgres on a mac,
