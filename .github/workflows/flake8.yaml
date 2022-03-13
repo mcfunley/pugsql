@@ -3,7 +3,7 @@ name: Linting
 on: [push]
 
 jobs:
-  test:
+  lint:
     runs-on: ubuntu-latest
 
     steps:
