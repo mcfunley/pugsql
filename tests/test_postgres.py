@@ -36,3 +36,27 @@ class PostgresqlTest(TestCase):
 
         ids = [r['id'] for r in self.fixtures.where_in(foo=('abcd', '99999',))]
         self.assertEqual({ 1, 2 }, set(ids))
+
+    def test_transaction(self):
+        with self.fixtures.transaction():
+            self.fixtures.upsert_foo(id=1, foo='abcd')
+        self.assertEqual('abcd', self.fixtures.get_foo(id=1))
+
+    def test_nested_transactions(self):
+        with self.fixtures.transaction():
+            self.fixtures.upsert_foo(id=1, foo='abcd')
+
+            with self.fixtures.transaction():
+                self.fixtures.upsert_foo(id=1, foo='bar')
+
+        self.assertEqual('bar', self.fixtures.get_foo(id=1))
+
+    def test_rolling_back_nested_transactions(self):
+        with self.fixtures.transaction():
+            self.fixtures.upsert_foo(id=1, foo='abcd')
+
+            with self.fixtures.transaction() as t:
+                self.fixtures.upsert_foo(id=1, foo='bar')
+                t.rollback()
+
+        self.assertEqual('abcd', self.fixtures.get_foo(id=1))
