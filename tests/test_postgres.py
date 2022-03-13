@@ -7,8 +7,10 @@ from unittest import TestCase
 class PostgresqlTest(TestCase):
     def setUp(self):
         user = os.getenv('PGUSER') or getuser()
+        pw = os.getenv('PGPASS')
+        user_pass = user if pw is None else f'{user}:{pw}'
         self.fixtures = pugsql.module('tests/sql/postgres')
-        self.fixtures.connect('postgresql+pg8000://%s@127.0.0.1' % user)
+        self.fixtures.connect(f'postgresql+pg8000://{user_pass}@127.0.0.1')
         self.fixtures.setup()
 
     def test_multi_upsert(self):
