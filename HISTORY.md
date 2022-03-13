@@ -1,6 +1,7 @@
 # Release History
 
 ## 0.2.4
+* Transactions are now automatically committed when leaving a transaction context when using nested transactions, thanks to [Oleksandr Fedorov](https://github.com/o-fedorov/).
 * Improved feedback when mistakenly passing positional arguments to statements that don't support it.
 * Dropped support for Python 3.5 and 3.6.
 * Added test coverage for some postgres-specific tests.
