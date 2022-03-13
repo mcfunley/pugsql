@@ -167,11 +167,13 @@ class Statement(object):
             return
 
         if len(params):
-            # currently never supported to pass both positional args and keywords
+            # currently never supported to pass both positional args and
+            # keywords
             self._positionalArgError()
 
         for p in multiparams:
-            # multiparams are allowed when they're tuples/rows/etc to be e.g. inserted
+            # multiparams are allowed when they're tuples/rows/etc to be e.g.
+            # inserted
             if not type(p) in { dict, list, set }:
                 self._positionalArgError()
 
