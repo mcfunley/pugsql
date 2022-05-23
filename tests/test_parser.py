@@ -109,6 +109,11 @@ class MultilineTest(TestCase):
     def test_scalar(self):
         self.assertIsInstance(self.parse('scalar').result, statement.Scalar)
 
+    def test_has_commentary(self):
+        s = self.parse('has-commentary')
+        self.assertIsInstance(s.result, statement.Scalar)
+        self.assertEqual(s.name, 'has_commentary')
+
 
 class ParserErrorTest(TestCase):
     def test_no_name(self):
