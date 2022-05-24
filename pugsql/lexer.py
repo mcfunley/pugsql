@@ -20,7 +20,7 @@ __pdoc__['Token.context'] = ('A `pugsql.context.Context` for tracking source '
 
 def lex(pugsql, ctx):
     """
-    Splits the provided multiline PugSQL string into
+    Splits the provided multiline PugSQL string into Tokens.
     """
     def generate(pugsql, ctx):
         for line in pugsql.splitlines():

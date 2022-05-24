@@ -32,7 +32,7 @@ def parse(pugsql, ctx=None):
     ctx = ctx or context.Context('<literal>')
 
     stream = lexer.lex(pugsql, ctx)
-    leading_comments = list(takewhile(lambda t: t.tag == 'C', stream))
+    leading_comments = _leading_comments(stream)
     rest = stream[len(leading_comments):]
 
     cpr = _parse_comments(leading_comments)
@@ -44,6 +44,13 @@ def parse(pugsql, ctx=None):
         doc=cpr['doc'],
         result=cpr['result'],
         filename=ctx.sqlfile if ctx.sqlfile != '<literal>' else None)
+
+
+def _leading_comments(stream):
+    def is_comment(t):
+        # allow blank whitespace lines in the leading comment
+        return t.tag == 'C' or t.value == '' or re.match(r'^\s+$', t.value)
+    return list(takewhile(is_comment, stream))
 
 
 def _parse_comments(comments):

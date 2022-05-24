@@ -114,6 +114,11 @@ class MultilineTest(TestCase):
         self.assertIsInstance(s.result, statement.Scalar)
         self.assertEqual(s.name, 'has_commentary')
 
+    def test_has_commentary_whitespace(self):
+        s = self.parse('has-commentary-whitespace')
+        self.assertIsInstance(s.result, statement.Scalar)
+        self.assertEqual(s.name, 'has_commentary_whitespace')
+
 
 class ParserErrorTest(TestCase):
     def test_no_name(self):
