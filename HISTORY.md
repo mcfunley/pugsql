@@ -1,5 +1,8 @@
 # Release History
 
+## HEAD
+* Now accepting interstitial whitespace in the leading comment block.
+
 ## 0.2.4
 * Transactions are now automatically committed when leaving a transaction context when using nested transactions, thanks to [Oleksandr Fedorov](https://github.com/o-fedorov/).
 * Improved feedback when mistakenly passing positional arguments to statements that don't support it.
