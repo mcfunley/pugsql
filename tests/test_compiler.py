@@ -14,9 +14,9 @@ class BasicCompilerTest(TestCase):
 
     def test_function_redefinition(self):
         msg = (
-            'Error loading tests/sql/duplicate-name/foo.sql - a SQL function '
+            'Error loading tests/sql/duplicate-name/foo2.sql - a SQL function '
             'named foo was already defined in '
-            'tests/sql/duplicate-name/foo2.sql.')
+            'tests/sql/duplicate-name/foo.sql.')
         with pytest.raises(ValueError, match=msg):
             compiler.Module('tests/sql/duplicate-name')
 

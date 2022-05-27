@@ -53,7 +53,7 @@ class Module(object):
         if not os.path.isdir(sqlpath):
             raise ValueError('Directory not found: %s' % sqlpath)
 
-        for sqlfile in glob(os.path.join(sqlpath, '*sql')):
+        for sqlfile in sorted(glob(os.path.join(sqlpath, '*sql'))):
             with open(sqlfile, 'r', encoding=encoding) as f:
                 pugsql = f.read()
 
