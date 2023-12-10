@@ -134,12 +134,21 @@ class Module(object):
 
     def _execute(self, clause, *multiparams, **params):
         if getattr(self._locals, 'session', None):
-            return self._locals.session.execute(clause, multiparams or params)
+            with self._locals.session.connect() as conn:
+                result = conn.execute(clause)
+                print(result)
+                return result
+            # return self._locals.session.execute(clause, multiparams or params)
 
         if not self.engine:
             raise NoConnectionError()
 
-        return self.engine.execute(clause, *multiparams, **params)
+        print("in local")
+        #return self.engine.execute(clause, *multiparams, **params)
+        with self.engine.connect() as conn:
+            result = conn.execute(clause)
+            print(result)
+            return result
 
     @property
     def _dialect(self):

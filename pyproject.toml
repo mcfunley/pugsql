@@ -17,15 +17,18 @@ readme = "pypi-readme.md"
 
 [tool.poetry.dependencies]
 python = ">=3.7"
-sqlalchemy = "^1.3"
+sqlalchemy = "^2.0"
 
 [tool.poetry.dev-dependencies]
 pdoc3 = "^0.6.2"
-pg8000 = "^1.13"
-packaging = "^20.4"
-pytest = "^7.1.0"
-flake8 = "^4.0.1"
+pg8000 = "^1.30"
+packaging = "^23.2"
+pytest = "^7.2.0"
+flake8 = "^6.1.1"
 
 [build-system]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
+
+[project]
+version = "0.1.0"
