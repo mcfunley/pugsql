@@ -20,6 +20,7 @@ class Module(object):
     """
     Holds a set of SQL functions loaded from files.
     """
+
     sqlpaths = None
     engine = None
 
@@ -51,14 +52,14 @@ class Module(object):
 
     def _add_path(self, sqlpath, encoding=None):
         if not os.path.isdir(sqlpath):
-            raise ValueError('Directory not found: %s' % sqlpath)
+            raise ValueError("Directory not found: %s" % sqlpath)
 
-        for sqlfile in sorted(glob(os.path.join(sqlpath, '*sql'))):
-            with open(sqlfile, 'r', encoding=encoding) as f:
+        for sqlfile in sorted(glob(os.path.join(sqlpath, "*sql"))):
+            with open(sqlfile, "r", encoding=encoding) as f:
                 pugsql = f.read()
 
             # handle multiple statements per file
-            statements = re.split(r'\n+(?=--\s*:name)', pugsql)
+            statements = re.split(r"\n+(?=--\s*:name)", pugsql)
             for statement in statements:
                 s = parser.parse(statement, ctx=context.Context(sqlfile))
 
@@ -66,14 +67,13 @@ class Module(object):
                     if s.name not in self._statements:
                         raise ValueError(
                             'Error loading %s - the function name "%s" is '
-                            'reserved. Please choose another name.' % (
-                                sqlfile, s.name))
+                            "reserved. Please choose another name." % (sqlfile, s.name)
+                        )
                     raise ValueError(
-                        'Error loading %s - a SQL function named %s was '
-                        'already defined in %s.' % (
-                            sqlfile,
-                            s.name,
-                            self._statements[s.name].filename))
+                        "Error loading %s - a SQL function named %s was "
+                        "already defined in %s."
+                        % (sqlfile, s.name, self._statements[s.name].filename)
+                    )
 
                 s.set_module(self)
 
@@ -105,7 +105,7 @@ class Module(object):
         For more info, see here:
         https://docs.sqlalchemy.org/en/13/orm/session_transaction.html
         """
-        if not getattr(self._locals, 'session', None):
+        if not getattr(self._locals, "session", None):
             if not self._sessionmaker:
                 raise NoConnectionError()
 
@@ -133,16 +133,19 @@ class Module(object):
                     session.commit()
 
     def _execute(self, clause, *multiparams, **params):
-        if getattr(self._locals, 'session', None):
-            with self._locals.session.connect() as conn:
-                result = conn.execute(clause)
+        if getattr(self._locals, "session", None):
+            with self._locals.session as conn:
+                result = conn.execute(clause, multiparams or params)
                 return result
+            # with self._locals.commit()session as conn:
+            #     result = conn.execute(clause)
+            #     return result
 
         if not self.engine:
             raise NoConnectionError()
 
         with self.engine.connect() as conn:
-            result = conn.execute(clause)
+            result = conn.execute(clause, multiparams or params)
             return result
 
     @property
@@ -185,7 +188,9 @@ class Module(object):
         return iter(self._statements.values())
 
 
-__pdoc__['Module.sqlpaths'] = (
-    'A list of paths that the `pugsql.compiler.Module` was loaded from.')
-__pdoc__['Module.engine'] = (
-    'The sqlalchemy engine object being used by the `pugsql.compiler.Module`.')
+__pdoc__[
+    "Module.sqlpaths"
+] = "A list of paths that the `pugsql.compiler.Module` was loaded from."
+__pdoc__[
+    "Module.engine"
+] = "The sqlalchemy engine object being used by the `pugsql.compiler.Module`."
