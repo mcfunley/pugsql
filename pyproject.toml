@@ -21,10 +21,10 @@ sqlalchemy = "^2.0"
 
 [tool.poetry.dev-dependencies]
 pdoc3 = "^0.6.2"
-pg8000 = "^1.30"
+pg8000 = "^1.29"
 packaging = "^23.2"
 pytest = "^7.2.0"
-flake8 = "^6.1.0"
+flake8 = "^5.0.4"
 
 [build-system]
 requires = ["poetry>=0.12"]
