@@ -15,7 +15,9 @@ jobs:
       - uses: abatilo/actions-poetry@v2.1.3
 
       - name: install dependencies
-        run: poetry install
+        run: |
+          poetry lock
+          poetry install
 
       - name: flake8
         run: poetry run flake8
