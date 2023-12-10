@@ -136,18 +136,13 @@ class Module(object):
         if getattr(self._locals, 'session', None):
             with self._locals.session.connect() as conn:
                 result = conn.execute(clause)
-                print(result)
                 return result
-            # return self._locals.session.execute(clause, multiparams or params)
 
         if not self.engine:
             raise NoConnectionError()
 
-        print("in local")
-        #return self.engine.execute(clause, *multiparams, **params)
         with self.engine.connect() as conn:
             result = conn.execute(clause)
-            print(result)
             return result
 
     @property
