@@ -27,12 +27,12 @@ jobs:
           - 5432:5432
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
-      - uses: abatilo/actions-poetry@v2.1.3
+      - uses: abatilo/actions-poetry@v2
 
       - name: install dependencies
         run: poetry install
