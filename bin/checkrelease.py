@@ -1,9 +1,10 @@
 #!/usr/bin/env python
-import pkg_resources
-import pugsql
+import importlib.metadata
 import sys
 
-dver = pkg_resources.get_distribution('pugsql').version
+import pugsql
+
+dver = importlib.metadata.version('pugsql')
 initver = pugsql.__version__
 
 if dver != initver:

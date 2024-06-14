@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import pkg_resources
 import sys
+from importlib import metadata
 
-sys.stdout.write(pkg_resources.get_distribution('pugsql').version)
+sys.stdout.write(metadata.version('pugsql'))
