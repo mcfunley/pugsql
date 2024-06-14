@@ -1,6 +1,6 @@
 # Release History
 
-## HEAD
+## 0.3.0
 * Upgraded sqlalchemy version to >2.0.
 * Dropped support for Python before 3.8.1.
 * Now accepting interstitial whitespace in the leading comment block.
