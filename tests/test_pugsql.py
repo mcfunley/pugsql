@@ -1,8 +1,10 @@
-import pugsql
-from pugsql import exceptions
-import pytest
 import threading
 from unittest import TestCase
+
+import pytest
+
+import pugsql
+from pugsql import exceptions
 
 
 def test_module():
@@ -174,10 +176,16 @@ class PugsqlTest(TestCase):
         import sqlite3
         from datetime import datetime
 
+        def _convert_timestamp(ts):
+            return datetime.strptime(ts.decode("utf-8"), "%Y-%m-%d %H:%M:%S")
+        sqlite3.register_converter('TIMESTAMP', _convert_timestamp)
+
         self.fixtures.disconnect()
         self.fixtures.connect(
             'sqlite:///./tests/data/fixtures.sqlite3',
-            connect_args={'detect_types': sqlite3.PARSE_DECLTYPES})
+            connect_args={
+                'detect_types': sqlite3.PARSE_DECLTYPES,
+            })
         date = self.fixtures.find_date(id=1)
         self.assertIs(datetime, type(date['created']))
 
