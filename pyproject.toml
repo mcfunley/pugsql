@@ -22,10 +22,10 @@ sqlalchemy = ">=2.0"
 
 [tool.poetry.group.dev.dependencies]
 flake8 = "^7.0.0"
-pdoc3 = "^0.6.2"
 pg8000 = "^1.13"
 packaging = "^20.4"
 pytest = "^7.1.0"
+pdoc3 = "^0.10.0"
 
 
 [build-system]

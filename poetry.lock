@@ -286,12 +286,13 @@ pyparsing = ">=2.0.2"
 
 [[package]]
 name = "pdoc3"
-version = "0.6.4"
+version = "0.10.0"
 description = "Auto-generate API documentation for Python projects."
 optional = false
-python-versions = ">= 3.5"
+python-versions = ">= 3.6"
 files = [
-    {file = "pdoc3-0.6.4.tar.gz", hash = "sha256:85cbb0de17d1306157d19b08b67ad84817098c12ad9f92ec203b79d0307b6a25"},
+    {file = "pdoc3-0.10.0-py3-none-any.whl", hash = "sha256:ba45d1ada1bd987427d2bf5cdec30b2631a3ff5fb01f6d0e77648a572ce6028b"},
+    {file = "pdoc3-0.10.0.tar.gz", hash = "sha256:5f22e7bcb969006738e1aa4219c75a32f34c2d62d46dc9d2fb2d3e0b0287e4b7"},
 ]
 
 [package.dependencies]
@@ -552,4 +553,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8.1"
-content-hash = "c9393a80c52a39f8e05a4b4ba008193bc714ef9f41d6a48e1c3a509f63bf74bc"
+content-hash = "e21bc5732aefa12db5e834f5d1ad4e2a4b1b2d0218624b94b9567544171568b9"
