@@ -1,17 +1,18 @@
 """
 Code that processes SQL files and returns modules of database functions.
 """
-from . import parser, context
-from .exceptions import NoConnectionError
+import os
+import re
+import threading
 from contextlib import contextmanager, suppress
 from glob import glob
-import os
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.exc import ResourceClosedError
-import threading
-import re
 
+from sqlalchemy import create_engine
+from sqlalchemy.exc import ResourceClosedError
+from sqlalchemy.orm import sessionmaker
+
+from . import context, parser
+from .exceptions import NoConnectionError
 
 __pdoc__ = {}
 
@@ -139,7 +140,13 @@ class Module(object):
         if not self.engine:
             raise NoConnectionError()
 
-        return self.engine.execute(clause, *multiparams, **params)
+        with self.engine.connect() as conn:
+            if multiparams:
+                result = conn.execute(clause, *multiparams)
+            else:
+                result = conn.execute(clause, params)
+            conn.commit()
+            return result
 
     @property
     def _dialect(self):
