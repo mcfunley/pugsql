@@ -12,8 +12,7 @@ in files. A minimal usage example:
 """
 from . import compiler
 
-
-__version__ = '0.2.4'
+__version__ = '0.3.0'
 
 
 def module(sqlpath, encoding=None):
