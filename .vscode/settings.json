@@ -1,0 +1,9 @@
+{
+    "[python]":{
+        "editor.formatOnType": false,
+        "editor.formatOnSave": false,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports":  "never"
+        },
+    }
+}
