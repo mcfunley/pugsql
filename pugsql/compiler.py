@@ -135,7 +135,10 @@ class Module(object):
 
     def _execute(self, clause, *multiparams, **params):
         if getattr(self._locals, 'session', None):
-            return self._locals.session.execute(clause, multiparams or params)
+            if multiparams:
+                return self._locals.session.execute(clause, *multiparams)
+            else:
+                return self._locals.session.execute(clause, params)
 
         if not self.engine:
             raise NoConnectionError()

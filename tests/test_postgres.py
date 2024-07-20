@@ -13,6 +13,14 @@ class PostgresqlTest(TestCase):
         self.fixtures.connect(f'postgresql+pg8000://{user_pass}@127.0.0.1')
         self.fixtures.setup()
 
+    def test_multi_upsert_in_transaction(self):
+        with self.fixtures.transaction():
+            self.fixtures.multi_upsert([
+                { 'id': 65, 'foo': 'yyy' },
+                { 'id': 99, 'foo': '99999' }])
+
+            self.assertEqual('yyy', self.fixtures.get_foo(id=65))
+
     def test_multi_upsert(self):
         self.fixtures.multi_upsert([
             { 'id': 1, 'foo': 'abcd' },

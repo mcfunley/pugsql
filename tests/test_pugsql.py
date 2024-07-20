@@ -64,11 +64,12 @@ class PugsqlTest(TestCase):
 
     def test_multi_insert(self):
         with self.fixtures.transaction() as t:
-            self.fixtures.insert_user(
+            self.fixtures.insert_user([
                 { 'username': 'joe' },
                 { 'username': 'paul' },
                 { 'username': 'topper' },
-                { 'username': 'mick' })
+                { 'username': 'mick' }
+            ])
 
             sr = list(self.fixtures.search_users(username='topper'))
             self.assertEqual('topper', sr[0]['username'])
