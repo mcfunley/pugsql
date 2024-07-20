@@ -1,5 +1,8 @@
 # Release History
 
+## HEAD
+* Multi-row inserts are always passed as a single list argument, e.g. `module.create([ { 'x': 1 }, { 'x': 2 }])`. Previously this was inconsisent when running inside or outside a transaction. See [#73](https://github.com/mcfunley/pugsql/issues/73) for discussion. Thanks to [Guillaume Pelletier](https://github.com/epgui)!
+
 ## 0.3.0
 * Upgraded sqlalchemy version to >2.0.
 * Dropped support for Python before 3.8.1.
