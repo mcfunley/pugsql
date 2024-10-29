@@ -41,22 +41,21 @@
             {{ content }}
         </div>
         <footer>
-            <ul class="social-list">
-                <li>
+            <div class="social-list">
+                <span>
                     <a class="github-button"
                        href="https://github.com/mcfunley/pugsql"
                        data-size="large" aria-label="Get the Source on GitHub">
                         Get the Source on GitHub
                     </a>
-                </li>
-                <li>
-                    <a class="twitter-follow-button"
-                       href="https://twitter.com/mcfunley"
-                       data-show-count="false" data-size="large">
-                        Follow @mcfunley
+                </span>
+                <span class="share">
+                    <a class="bsky" href="https://bsky.app/profile/mcfunley.bsky.social">
+                        <svg fill="none" viewBox="0 0 64 57" width="17.96px" style="width: 17.96px; height: 16px;"><path fill="#0085ff" d="M13.873 3.805C21.21 9.332 29.103 20.537 32 26.55v15.882c0-.338-.13.044-.41.867-1.512 4.456-7.418 21.847-20.923 7.944-7.111-7.32-3.819-14.64 9.125-16.85-7.405 1.264-15.73-.825-18.014-9.015C1.12 23.022 0 8.51 0 6.55 0-3.268 8.579-.182 13.873 3.805ZM50.127 3.805C42.79 9.332 34.897 20.537 32 26.55v15.882c0-.338.13.044.41.867 1.512 4.456 7.418 21.847 20.923 7.944 7.111-7.32 3.819-14.64-9.125-16.85 7.405 1.264 15.73-.825 18.014-9.015C62.88 23.022 64 8.51 64 6.55c0-9.818-8.578-6.732-13.873-2.745Z"></path></svg>
+                        <span class="handle">@mcfunley.bsky.social</span>
                     </a>
-                </li>
-            </ul>
+                </span>
+            </div>
             <span>
                 <p>
                     <a class="club" href="http://dotclub.club">The .club Club</a> has talks and
@@ -69,22 +68,6 @@
         </footer>
 
         <script async defer src="https://buttons.github.io/buttons.js"></script>
-        <script>
-            window.twttr = (function(d, s, id) {
-                var js, fjs = d.getElementsByTagName(s)[0],
-                    t = window.twttr || {};
-                if (d.getElementById(id)) return t;
-                js = d.createElement(s);
-                js.id = id;
-                js.src = "https://platform.twitter.com/widgets.js";
-                fjs.parentNode.insertBefore(js, fjs);
-                t._e = [];
-                t.ready = function(f) {
-                    t._e.push(f);
-                };
-                return t;
-            }(document, "script", "twitter-wjs"));
-        </script>
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139602329-3"></script>
         <script>
             window.dataLayer = window.dataLayer || [];

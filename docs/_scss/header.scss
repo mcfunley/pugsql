@@ -60,33 +60,18 @@ $footer-social-stop: 500px;
 
 
 footer {
-    padding: 3rem 0;
-    @media only screen and (max-width: $gutter-stop) {
-	padding: 3rem 1rem;
-    }
-
-    .social-list {
-	line-height: 4rem;
-	margin: 0 auto;
-	padding: 0;
-	list-style-type: none;
-
-	@media only screen and (min-width: $footer-social-stop) {
-	    display: table;
+	padding: 3rem 0;
+	@media only screen and (max-width: $gutter-stop) {
+		padding: 3rem 1rem;
 	}
 
-	li {
-	    @media only screen and (min-width: $footer-social-stop) {
-		display: table-cell;
-		padding-right: 2rem;
-	    }
+	.social-list {
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
 	}
-    }
-    .social-list:last-child {
-	padding-right: 0;
-    }
 
-    a.club, a.club:visited, a.club:hover, a.club:focus {
-	color: $white;
-    }
+	a.club, a.club:visited, a.club:hover, a.club:focus {
+		color: $white;
+	}
 }

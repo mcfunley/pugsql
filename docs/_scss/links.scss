@@ -8,3 +8,31 @@
 	color: darken($link, 10%);
     }
 }
+
+
+.bsky {
+    display: inline-flex;
+    align-items: center;
+  }
+  .bsky .handle {
+    margin-left: 5px;
+  }
+  .share a, .share a:visited {
+    color: $slate;
+    background-color: $white;
+    font-weight: 600;
+    text-decoration: none;
+
+    border-radius: 0.25em;
+    border: 1px solid #d1d9e0;
+    padding: 5px 10px;
+    line-height: 16px;
+    font-size: 12px;
+  }
+  .share a:hover {
+    text-decoration: none;
+    color: #555;
+  }
+  .share {
+    height: 31px;
+  }
