@@ -205,7 +205,6 @@ class PugsqlTest(TestCase):
                 1, usernames=('oscar', 'dottie'))
 
     def test_three_dashes(self):
-        pytest.skip('fails - see issue #13')
         pugsql.module('tests/sql/extra-dashes')
 
     def test_nesting_transactions_rollback(self):

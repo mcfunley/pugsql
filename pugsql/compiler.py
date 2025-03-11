@@ -59,7 +59,7 @@ class Module(object):
                 pugsql = f.read()
 
             # handle multiple statements per file
-            statements = re.split(r'\n+(?=--\s*:name)', pugsql)
+            statements = re.split(r'\n+(?=--+\s*:name)', pugsql)
             for statement in statements:
                 s = parser.parse(statement, ctx=context.Context(sqlfile))
 
