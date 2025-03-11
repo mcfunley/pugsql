@@ -1,2 +1,2 @@
---- :name foo :one
+--- :name foo :scalar
 select 1

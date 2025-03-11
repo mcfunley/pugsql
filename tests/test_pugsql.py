@@ -205,7 +205,9 @@ class PugsqlTest(TestCase):
                 1, usernames=('oscar', 'dottie'))
 
     def test_three_dashes(self):
-        pugsql.module('tests/sql/extra-dashes')
+        m = pugsql.module('tests/sql/extra-dashes')
+        m.connect('sqlite:///./tests/data/fixtures.sqlite3')
+        self.assertEqual(1, m.foo())
 
     def test_nesting_transactions_rollback(self):
         id = None
