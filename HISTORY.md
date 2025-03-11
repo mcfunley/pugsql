@@ -1,5 +1,6 @@
 # Release History
 ## HEAD
+* Adds support for Python 3.13.
 * Drops support for Python 3.8.
 
 ## 0.3.2
