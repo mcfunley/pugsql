@@ -17,7 +17,7 @@ readme = "pypi-readme.md"
 
 [tool.poetry.dependencies]
 python = ">=3.9"
-sqlalchemy = ">=2.0"
+sqlalchemy = ">=2.0.31"
 
 
 [tool.poetry.group.dev.dependencies]
