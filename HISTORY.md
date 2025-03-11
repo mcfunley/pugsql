@@ -1,4 +1,7 @@
 # Release History
+## HEAD
+* Drops support for Python 3.8.
+
 ## 0.3.2
 * Comments can start with more than two dashes (see [#13]). Thanks to [Fredrick Averpil](https://github.com/fredrikaverpil)!
 
