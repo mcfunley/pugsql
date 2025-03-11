@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 moduleversion=$(python -c "import pugsql; print(pugsql.__version__)")
 echo "v$moduleversion" > docs/_pdoc/version.mako
