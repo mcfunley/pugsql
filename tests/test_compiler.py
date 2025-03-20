@@ -27,6 +27,13 @@ class BasicCompilerTest(TestCase):
         with pytest.raises(ValueError, match=msg):
             compiler.Module('tests/sql/reserved')
 
+    def test_filename_in_sql_header_comment(self):
+        m = compiler.Module('tests/sql')
+        self.assertEqual(
+            m.username_for_id.sql,
+            '-- pugsql function username_for_id in file tests/sql/basic.sql\n'
+            'select username from users where user_id = :user_id')
+
     def test_multiple_statements_per_file(self):
         m = compiler.Module('tests/sql')
         self.assertEqual(m.basic_statement.name, 'basic_statement')

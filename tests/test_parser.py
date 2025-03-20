@@ -16,11 +16,13 @@ class SqlTests(TestCase):
     def test_query(self):
         self.assertEqual(
             parse('basic').sql,
+            '-- pugsql function username_for_id in file <literal>\n'
             'select username from users where user_id = :user_id')
 
     def test_extra_comments(self):
         self.assertEqual(
             parse('extra-comments').sql,
+            '-- pugsql function foobar in file <literal>\n'
             '-- some extra commentary\nselect * from foo where bar = :bar')
 
 

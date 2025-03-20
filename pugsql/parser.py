@@ -36,7 +36,8 @@ def parse(pugsql, ctx=None):
     rest = stream[len(leading_comments):]
 
     cpr = _parse_comments(leading_comments)
-    sql = '\n'.join(cpr['unconsumed'] + [token.value for token in rest])
+    hdr = ['-- pugsql function %s in file %s' % (cpr['name'], ctx.sqlfile)]
+    sql = '\n'.join(hdr + cpr['unconsumed'] + [token.value for token in rest])
 
     return statement.Statement(
         name=cpr['name'],
