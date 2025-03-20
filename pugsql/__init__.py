@@ -10,9 +10,10 @@ in files. A minimal usage example:
     queries.update_username(user_id=42, username='mcfunley')
 
 """
+
 from . import compiler
 
-__version__ = '0.3.4'
+__version__ = "0.3.4"
 
 
 def module(sqlpath, encoding=None):
@@ -31,4 +32,7 @@ def module(sqlpath, encoding=None):
     return compiler.Module(sqlpath, encoding=encoding)
 
 
-__all__ = ['__version__', 'module',]
+__all__ = [
+    "__version__",
+    "module",
+]

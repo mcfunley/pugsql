@@ -10,6 +10,7 @@ class ParserError(ValueError):
     """
     Exception raised when syntax errors are encountered parsing PugSQL files.
     """
+
     token = None
 
     def __init__(self, message, token):
@@ -19,28 +20,34 @@ class ParserError(ValueError):
         the file, line, and column of the error.
         """
         super(ParserError, self).__init__(
-            'Error in %s:%s:%s - %s' % (
+            "Error in %s:%s:%s - %s"
+            % (
                 token.context.sqlfile,
                 token.context.line,
                 token.context.col,
-                message))
+                message,
+            )
+        )
         self.token = token
 
 
-__pdoc__['ParserError.token'] = (
-    'The `pugsql.lexer.Token` indicating the position of the error '
-    'encountered during parsing.')
+__pdoc__["ParserError.token"] = (
+    "The `pugsql.lexer.Token` indicating the position of the error "
+    "encountered during parsing."
+)
 
 
 class NoConnectionError(RuntimeError):
     """
     Exception raised when a PugSQL module is not connected to a database.
     """
+
     def __init__(self):
         super(NoConnectionError, self).__init__(
-            'No connection engine is configured. Pass a connection string '
+            "No connection engine is configured. Pass a connection string "
             "to the module's connect method, or pass a SQLAlchemy engine "
-            'to the set_engine method.')
+            "to the set_engine method."
+        )
 
 
 class InvalidArgumentError(AttributeError):

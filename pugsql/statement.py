@@ -1,13 +1,15 @@
 """
 Compiled SQL function objects.
 """
-from .exceptions import InvalidArgumentError
+
+import threading
 from contextlib import contextmanager
+
 import sqlalchemy
 from sqlalchemy.ext.compiler import compiles
 from sqlalchemy.sql.expression import BindParameter
-import threading
 
+from .exceptions import InvalidArgumentError
 
 _locals = threading.local()
 
@@ -15,8 +17,8 @@ _locals = threading.local()
 @contextmanager
 def _compile_context(multiparams, params):
     _locals.compile_context = {
-        'multiparams': multiparams,
-        'params': params,
+        "multiparams": multiparams,
+        "params": params,
     }
     try:
         yield
@@ -26,7 +28,7 @@ def _compile_context(multiparams, params):
 
 @compiles(BindParameter)
 def _visit_bindparam(element, compiler, **kw):
-    cc = getattr(_locals, 'compile_context', None)
+    cc = getattr(_locals, "compile_context", None)
     if cc:
         if _is_expanding_param(element, cc):
             element.expanding = True
@@ -34,9 +36,9 @@ def _visit_bindparam(element, compiler, **kw):
 
 
 def _is_expanding_param(element, cc):
-    if element.key not in cc['params']:
+    if element.key not in cc["params"]:
         return False
-    return isinstance(cc['params'][element.key], (tuple, list))
+    return isinstance(cc["params"][element.key], (tuple, list))
 
 
 class Result(object):
@@ -52,22 +54,22 @@ class One(Result):
     def transform(self, r):
         row = r.first()
         if row:
-            return { k: v for k, v in zip(r.keys(), row) }
+            return {k: v for k, v in zip(r.keys(), row)}
         return None
 
     @property
     def display_type(self):
-        return 'row'
+        return "row"
 
 
 class Many(Result):
     def transform(self, r):
         ks = r.keys()
-        return ({ k: v for k, v in zip(ks, row)} for row in r.fetchall())
+        return ({k: v for k, v in zip(ks, row)} for row in r.fetchall())
 
     @property
     def display_type(self):
-        return 'rows'
+        return "rows"
 
 
 class Affected(Result):
@@ -76,7 +78,7 @@ class Affected(Result):
 
     @property
     def display_type(self):
-        return 'rowcount'
+        return "rowcount"
 
 
 class Scalar(Result):
@@ -88,18 +90,18 @@ class Scalar(Result):
 
     @property
     def display_type(self):
-        return 'scalar'
+        return "scalar"
 
 
 class Insert(Scalar):
     def transform(self, r):
-        if hasattr(r, 'lastrowid'):
+        if hasattr(r, "lastrowid"):
             return r.lastrowid
         return super(Insert, self).transform(r)
 
     @property
     def display_type(self):
-        return 'insert'
+        return "insert"
 
 
 class Raw(Result):
@@ -108,7 +110,7 @@ class Raw(Result):
 
     @property
     def display_type(self):
-        return 'raw'
+        return "raw"
 
 
 class Statement(object):
@@ -116,16 +118,16 @@ class Statement(object):
         self.filename = filename
 
         if not name:
-            self._value_err('Statement must have a name.')
+            self._value_err("Statement must have a name.")
 
         if sql is None:
-            self._value_err('Statement must have a SQL string.')
+            self._value_err("Statement must have a SQL string.")
         sql = sql.strip()
         if not len(sql):
-            self._value_err('SQL string cannot be empty.')
+            self._value_err("SQL string cannot be empty.")
 
         if not result:
-            self._value_err('Statement must have a result type.')
+            self._value_err("Statement must have a result type.")
 
         self.name = name
         self.sql = sql
@@ -137,7 +139,7 @@ class Statement(object):
 
     def _value_err(self, msg):
         if self.filename:
-            raise ValueError('%s In: %s' % (msg, self.filename))
+            raise ValueError("%s In: %s" % (msg, self.filename))
         raise ValueError(msg)
 
     def set_module(self, module):
@@ -146,7 +148,8 @@ class Statement(object):
     def _assert_module(self):
         if self._module is None:
             raise RuntimeError(
-                'This statement is not associated with a module')
+                "This statement is not associated with a module"
+            )
 
     def __call__(self, *multiparams, **params):
         self._assert_module()
@@ -174,32 +177,39 @@ class Statement(object):
         for p in multiparams:
             # multiparams are allowed when they're tuples/rows/etc to be e.g.
             # inserted
-            if not type(p) in { dict, list, set }:
+            if not type(p) in {dict, list, set}:
                 self._positionalArgError()
 
     def _positionalArgError(self):
         raise InvalidArgumentError(
-            'Pass keyword arguments to statements (received '
-            'positional arguments).')
+            "Pass keyword arguments to statements (received "
+            "positional arguments)."
+        )
 
     def _convert_params(self, multiparams, params):
         def conv(x):
             if isinstance(x, set):
                 return tuple(x)
             return x
+
         return (
             [conv(p) for p in multiparams],
-            { k: conv(v) for k, v in params.items() })
+            {k: conv(v) for k, v in params.items()},
+        )
 
     def _param_names(self):
         def kfn(p):
-            return self.sql.index(':' + p)
+            return self.sql.index(":" + p)
+
         return sorted(self._text._bindparams.keys(), key=kfn)
 
     def __str__(self):
-        paramstr = ', '.join(['%s=None' % k for k in self._param_names()])
-        return 'pugsql.statement.Statement: %s(%s) :: %s' % (
-            self.name, paramstr, self.result.display_type)
+        paramstr = ", ".join(["%s=None" % k for k in self._param_names()])
+        return "pugsql.statement.Statement: %s(%s) :: %s" % (
+            self.name,
+            paramstr,
+            self.result.display_type,
+        )
 
     def __repr__(self):
         return str(self)

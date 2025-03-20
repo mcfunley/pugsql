@@ -1,10 +1,10 @@
 """
 Objects and methods used to keep track of positions in source files.
 """
+
 from collections import namedtuple
 
-
-_Context = namedtuple('Context', ['sqlfile', 'line', 'col'])
+_Context = namedtuple("Context", ["sqlfile", "line", "col"])
 
 
 def Context(sqlfile, line=0, col=1):

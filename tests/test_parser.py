@@ -1,8 +1,10 @@
 import sys
+from unittest import TestCase
+
+import pytest
+
 from pugsql import parser, statement
 from pugsql.exceptions import ParserError
-import pytest
-from unittest import TestCase
 
 
 def sql(path):

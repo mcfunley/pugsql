@@ -2,4 +2,4 @@
 import sys
 from importlib import metadata
 
-sys.stdout.write(metadata.version('pugsql'))
+sys.stdout.write(metadata.version("pugsql"))
