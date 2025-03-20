@@ -15,6 +15,13 @@ poetry run pdoc \
 while : ; do
     curl -sL https://pypi.python.org/pypi/pugsql/json > docs/_data/pypi.json
     echo "Waiting for PyPI to match..."
-    [[ $(jq .info.version docs/_data/pypi.json) = $moduleversion ]] || break
+
+    pypi_version=$(jq -r '.info.version' docs/_data/pypi.json)
+
+    if [[ "$pypi_version" == "$moduleversion" ]]; then
+        echo "PyPI version matches module version"
+        break
+    fi
+
     sleep 2
 done;
