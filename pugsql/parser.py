@@ -5,6 +5,7 @@ Code that consumes PugSQL-dialect sql strings and returns validated
 from . import lexer, statement, context
 from .exceptions import ParserError
 from itertools import takewhile
+import sys
 import re
 
 
@@ -36,7 +37,10 @@ def parse(pugsql, ctx=None):
     rest = stream[len(leading_comments):]
 
     cpr = _parse_comments(leading_comments)
-    hdr = ['-- pugsql function %s in file %s' % (cpr['name'], ctx.sqlfile)]
+
+    hdr = []
+    if sys.version_info[:2] > (3, 9):
+        hdr = ['-- pugsql function %s in file %s' % (cpr['name'], ctx.sqlfile)]
     sql = '\n'.join(hdr + cpr['unconsumed'] + [token.value for token in rest])
 
     return statement.Statement(

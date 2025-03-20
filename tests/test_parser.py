@@ -1,3 +1,4 @@
+import sys
 from pugsql import parser, statement
 from pugsql.exceptions import ParserError
 import pytest
@@ -13,12 +14,20 @@ def parse(path):
 
 
 class SqlTests(TestCase):
+    @pytest.mark.skipif(
+        sys.version_info[:2] < (3, 10),
+        reason='requires Python 3.10'
+    )
     def test_query(self):
         self.assertEqual(
             parse('basic').sql,
             '-- pugsql function username_for_id in file <literal>\n'
             'select username from users where user_id = :user_id')
 
+    @pytest.mark.skipif(
+        sys.version_info[:2] < (3, 10),
+        reason='requires Python 3.10'
+    )
     def test_extra_comments(self):
         self.assertEqual(
             parse('extra-comments').sql,

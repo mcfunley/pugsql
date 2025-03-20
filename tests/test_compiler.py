@@ -1,3 +1,4 @@
+import sys
 from pugsql import compiler, exceptions, statement
 import pytest
 from unittest import TestCase
@@ -27,6 +28,10 @@ class BasicCompilerTest(TestCase):
         with pytest.raises(ValueError, match=msg):
             compiler.Module('tests/sql/reserved')
 
+    @pytest.mark.skipif(
+        sys.version_info[:2] < (3, 10),
+        reason='requires Python 3.10'
+    )
     def test_filename_in_sql_header_comment(self):
         m = compiler.Module('tests/sql')
         self.assertEqual(
