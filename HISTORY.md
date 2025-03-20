@@ -1,4 +1,7 @@
 # Release History
+## 0.3.4
+* Executed queries now include a comment referencing the pugsql source file and line number ([#17](https://github.com/mcfunley/pugsql/issues/73)). Thanks to [Doeke Zanstra](https://github.com/doekman).
+
 ## 0.3.3
 * Adds support for Python 3.13.
 * Drops support for Python 3.8.
