@@ -7,6 +7,7 @@ import re
 import threading
 from contextlib import contextmanager, suppress
 from glob import glob
+from typing import Optional
 
 from sqlalchemy import create_engine
 from sqlalchemy.exc import ResourceClosedError
@@ -23,10 +24,10 @@ class Module(object):
     Holds a set of SQL functions loaded from files.
     """
 
-    sqlpaths: set = None
+    sqlpaths: set
     engine = None
 
-    def __init__(self, sqlpath: str, encoding=None):
+    def __init__(self, sqlpath: str, encoding: Optional[str] = None):
         """
         Loads functions found in the *sql files specified by `sqlpath` into
         properties on this object. An `encoding` for the files can optionally
@@ -41,7 +42,7 @@ class Module(object):
 
         self.add_queries(sqlpath, encoding=encoding)
 
-    def add_queries(self, *paths: str, encoding: str = None):
+    def add_queries(self, *paths: str, encoding: Optional[str] = None):
         """
         Adds queries from *sql files in one or more `paths` to the module.
         An `encoding` for the files can optionally be provided.
@@ -52,7 +53,7 @@ class Module(object):
             self._add_path(p, encoding=encoding)
         self.sqlpaths |= set(paths)
 
-    def _add_path(self, sqlpath: str, encoding: str = None):
+    def _add_path(self, sqlpath: str, encoding: Optional[str] = None):
         if not os.path.isdir(sqlpath):
             raise ValueError("Directory not found: %s" % sqlpath)
 
