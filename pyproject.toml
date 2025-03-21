@@ -26,6 +26,7 @@ pg8000 = "^1.13"
 packaging = "^20.4"
 pytest = "^7.1.0"
 pdoc3 = "^0.11.5"
+pyright = "^1.1.397"
 
 
 [build-system]
