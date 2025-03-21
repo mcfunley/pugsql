@@ -18,7 +18,7 @@ _insert = statement.Insert()
 _raw = statement.Raw()
 
 
-def parse(pugsql, ctx=None):
+def parse(pugsql: str, ctx: context.Context = None) -> statement.Statement:
     """
     Processes the SQL string given in `pugsql` and returns a valid
     `pugsql.statement.Statement` object.
@@ -53,15 +53,15 @@ def parse(pugsql, ctx=None):
     )
 
 
-def _leading_comments(stream):
-    def is_comment(t):
+def _leading_comments(stream: list[lexer.Token]) -> list[lexer.Token]:
+    def is_comment(t: lexer.Token) -> bool:
         # allow blank whitespace lines in the leading comment
         return t.tag == "C" or t.value == "" or re.match(r"^\s+$", t.value)
 
     return list(takewhile(is_comment, stream))
 
 
-def _parse_comments(comments):
+def _parse_comments(comments: list[lexer.Token]) -> dict:
     cpr = {
         "name": None,
         "result": _raw,
@@ -83,13 +83,13 @@ def _parse_comments(comments):
     return cpr
 
 
-def _consume_result(cpr, rest):
+def _consume_result(cpr: dict, rest: lexer.Token):
     if not rest.value:
         raise ParserError("expected keyword", rest)
     _set_result(cpr, rest)
 
 
-def _consume_name(cpr, rest):
+def _consume_name(cpr: dict, rest: lexer.Token):
     tokens = lexer.lex_name(rest)
     if not tokens:
         raise ParserError("expected a query name.", rest)
@@ -118,7 +118,7 @@ def _consume_name(cpr, rest):
     _set_result(cpr, tokens["keyword"])
 
 
-def _set_result(cpr, ktok):
+def _set_result(cpr: dict, ktok: lexer.Token):
     tokens = lexer.lex_result(ktok)
     if not tokens:
         raise ParserError("expected keyword", ktok)
@@ -144,5 +144,5 @@ def _set_result(cpr, ktok):
         raise ParserError("unrecognized keyword '%s'" % keyword, ktok)
 
 
-def _is_legal_name(value):
+def _is_legal_name(value: str) -> bool:
     return re.match(r"^[a-zA-Z_][a-zA-Z0-9_]+$", value) is not None
