@@ -4,6 +4,7 @@ Compiled SQL function objects.
 
 import threading
 from contextlib import contextmanager
+from typing import TYPE_CHECKING, Optional
 
 import sqlalchemy
 from sqlalchemy.ext.compiler import compiles
@@ -12,6 +13,9 @@ from sqlalchemy.sql.expression import BindParameter
 from .exceptions import InvalidArgumentError
 
 _locals = threading.local()
+
+if TYPE_CHECKING:
+    from .compiler import Module
 
 
 @contextmanager
@@ -46,7 +50,7 @@ class Result(object):
         raise NotImplementedError()
 
     @property
-    def display_type(self):
+    def display_type(self) -> str:
         raise NotImplementedError()
 
 
@@ -58,7 +62,7 @@ class One(Result):
         return None
 
     @property
-    def display_type(self):
+    def display_type(self) -> str:
         return "row"
 
 
@@ -68,7 +72,7 @@ class Many(Result):
         return ({k: v for k, v in zip(ks, row)} for row in r.fetchall())
 
     @property
-    def display_type(self):
+    def display_type(self) -> str:
         return "rows"
 
 
@@ -77,7 +81,7 @@ class Affected(Result):
         return r.rowcount
 
     @property
-    def display_type(self):
+    def display_type(self) -> str:
         return "rowcount"
 
 
@@ -89,7 +93,7 @@ class Scalar(Result):
         return row[0]
 
     @property
-    def display_type(self):
+    def display_type(self) -> str:
         return "scalar"
 
 
@@ -100,7 +104,7 @@ class Insert(Scalar):
         return super(Insert, self).transform(r)
 
     @property
-    def display_type(self):
+    def display_type(self) -> str:
         return "insert"
 
 
@@ -109,12 +113,19 @@ class Raw(Result):
         return r
 
     @property
-    def display_type(self):
+    def display_type(self) -> str:
         return "raw"
 
 
 class Statement(object):
-    def __init__(self, name, sql, doc, result, filename=None):
+    def __init__(
+        self,
+        name: str,
+        sql: str,
+        doc: str,
+        result: Result,
+        filename: Optional[str] = None,
+    ):
         self.filename = filename
 
         if not name:
@@ -142,22 +153,23 @@ class Statement(object):
             raise ValueError("%s In: %s" % (msg, self.filename))
         raise ValueError(msg)
 
-    def set_module(self, module):
+    def set_module(self, module: "Module"):
         self._module = module
 
-    def _assert_module(self):
+    def _assert_module(self) -> "Module":
         if self._module is None:
             raise RuntimeError(
                 "This statement is not associated with a module"
             )
+        return self._module
 
     def __call__(self, *multiparams, **params):
-        self._assert_module()
+        module = self._assert_module()
         multiparams, params = self._convert_params(multiparams, params)
         self._validateMultiparams(params, multiparams)
         with _compile_context(multiparams, params):
             try:
-                r = self._module._execute(self._text, *multiparams, **params)
+                r = module._execute(self._text, *multiparams, **params)
             except AttributeError as e:
                 if str(e) == "'tuple' object has no attribute 'keys'":
                     self._positionalArgError()

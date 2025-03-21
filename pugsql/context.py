@@ -7,7 +7,7 @@ from collections import namedtuple
 _Context = namedtuple("Context", ["sqlfile", "line", "col"])
 
 
-def Context(sqlfile: str, line: int = 0, col: int = 1):
+def Context(sqlfile: str, line: int = 0, col: int = 1) -> _Context:
     """
     Returns a context object, which is a named tuple with the following fields:
 

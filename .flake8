@@ -1,5 +1,5 @@
 # -*- mode: conf; -*-
 [flake8]
-ignore = E201,E202,E231,E203
+ignore = E201,E202,E231,E203,W503
 exclude =
     .venv

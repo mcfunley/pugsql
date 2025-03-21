@@ -6,6 +6,7 @@ Code that consumes PugSQL-dialect sql strings and returns validated
 import re
 import sys
 from itertools import takewhile
+from typing import Optional
 
 from . import context, lexer, statement
 from .exceptions import ParserError
@@ -18,7 +19,9 @@ _insert = statement.Insert()
 _raw = statement.Raw()
 
 
-def parse(pugsql: str, ctx: context.Context = None) -> statement.Statement:
+def parse(
+    pugsql: str, ctx: Optional[context._Context] = None
+) -> statement.Statement:
     """
     Processes the SQL string given in `pugsql` and returns a valid
     `pugsql.statement.Statement` object.
@@ -56,7 +59,11 @@ def parse(pugsql: str, ctx: context.Context = None) -> statement.Statement:
 def _leading_comments(stream: list[lexer.Token]) -> list[lexer.Token]:
     def is_comment(t: lexer.Token) -> bool:
         # allow blank whitespace lines in the leading comment
-        return t.tag == "C" or t.value == "" or re.match(r"^\s+$", t.value)
+        return (
+            t.tag == "C"
+            or t.value == ""
+            or (re.match(r"^\s+$", t.value) is not None)
+        )
 
     return list(takewhile(is_comment, stream))
 

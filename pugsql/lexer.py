@@ -21,12 +21,12 @@ __pdoc__["Token.context"] = (
 )
 
 
-def lex(pugsql: str, ctx: context.Context) -> list[Token]:
+def lex(pugsql: str, ctx: context._Context) -> list[Token]:
     """
     Splits the provided multiline PugSQL string into Tokens.
     """
 
-    def generate(pugsql: str, ctx: context.Context) -> Iterable[Token]:
+    def generate(pugsql: str, ctx: context._Context) -> Iterable[Token]:
         for line in pugsql.splitlines():
             ctx = context.advance(ctx, lines=1)
             yield _categorize(line, ctx)
@@ -114,7 +114,7 @@ def lex_result(token: Token) -> Optional[Dict[str, Token]]:
 
 
 def _whitespace_advance(
-    line: str, ctx: context.Context
-) -> Tuple[str, context.Context]:
+    line: str, ctx: context._Context
+) -> Tuple[str, context._Context]:
     ctx = context.advance(ctx, cols=len(line) - len(line.lstrip()))
     return line.strip(), ctx
