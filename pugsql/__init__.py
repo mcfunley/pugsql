@@ -16,7 +16,7 @@ from . import compiler
 __version__ = "0.3.5"
 
 
-def module(sqlpath, encoding=None):
+def module(sqlpath, encoding=None) -> compiler.Module:
     """
     Compiles a set of SQL files in the directory specified by sqlpath, and
     returns a module. The module contains a function for each named query

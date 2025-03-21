@@ -7,7 +7,7 @@ from collections import namedtuple
 _Context = namedtuple("Context", ["sqlfile", "line", "col"])
 
 
-def Context(sqlfile, line=0, col=1):
+def Context(sqlfile: str, line: int = 0, col: int = 1):
     """
     Returns a context object, which is a named tuple with the following fields:
 
@@ -21,7 +21,7 @@ def Context(sqlfile, line=0, col=1):
     return _Context(sqlfile, line, col)
 
 
-def advance(context, lines=0, cols=0):
+def advance(context: _Context, lines: int = 0, cols: int = 0):
     """
     Advances the provided context object to indicate a farther position in the
     same file. Passing `lines` advances lines, and passing `cols` advances

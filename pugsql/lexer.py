@@ -5,6 +5,7 @@ objects, keeping track of source location.
 
 import re
 from collections import namedtuple
+from typing import Dict, Iterable, Optional, Tuple
 
 from . import context
 
@@ -20,12 +21,12 @@ __pdoc__["Token.context"] = (
 )
 
 
-def lex(pugsql, ctx):
+def lex(pugsql: str, ctx: context.Context) -> list[Token]:
     """
     Splits the provided multiline PugSQL string into Tokens.
     """
 
-    def generate(pugsql, ctx):
+    def generate(pugsql: str, ctx: context.Context) -> Iterable[Token]:
         for line in pugsql.splitlines():
             ctx = context.advance(ctx, lines=1)
             yield _categorize(line, ctx)
@@ -33,7 +34,7 @@ def lex(pugsql, ctx):
     return list(generate(pugsql, ctx))
 
 
-def _categorize(line, ctx):
+def _categorize(line, ctx) -> Token:
     line, ctx = _whitespace_advance(line, ctx)
 
     if line.startswith("--"):
@@ -41,7 +42,7 @@ def _categorize(line, ctx):
     return Token("Q", line, ctx)
 
 
-def lex_comment(token):
+def lex_comment(token: Token) -> Optional[Dict[str, Token]]:
     m = re.match(
         r"(?P<lead>--+\s*)"
         r"(?P<keyword>\:[^ ]+)"
@@ -68,7 +69,7 @@ def lex_comment(token):
     }
 
 
-def lex_name(token):
+def lex_name(token: Token) -> Optional[Dict[str, Token]]:
     line, ctx = _whitespace_advance(token.value, token.context)
 
     m = re.match(
@@ -96,7 +97,7 @@ def lex_name(token):
     }
 
 
-def lex_result(token):
+def lex_result(token: Token) -> Optional[Dict[str, Token]]:
     line, ctx = _whitespace_advance(token.value, token.context)
     m = re.match(r"(?P<keyword>\:[^ ]+)" r"(?P<rest>.+)?", line)
 
@@ -112,6 +113,8 @@ def lex_result(token):
     }
 
 
-def _whitespace_advance(line, ctx):
+def _whitespace_advance(
+    line: str, ctx: context.Context
+) -> Tuple[str, context.Context]:
     ctx = context.advance(ctx, cols=len(line) - len(line.lstrip()))
     return line.strip(), ctx
