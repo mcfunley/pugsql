@@ -7,7 +7,8 @@ create schema test;
 
 create table test.test (
   id bigint not null primary key,
-  foo text
+  foo text,
+  arr int[]
 );
 
 commit;
