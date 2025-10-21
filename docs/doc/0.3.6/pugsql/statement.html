@@ -1,0 +1,878 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.11.5" />
+<title>pugsql.statement API documentation</title>
+<meta name="description" content="Compiled SQL function objects." />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet">
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<link href="https://fonts.googleapis.com/css?family=Montserrat|Roboto&display=swap" rel="stylesheet">
+<link href="/assets/pdoc.css" rel="stylesheet">
+</head>
+<body>
+<div id="banner">
+<a href="/">
+<img src="/assets/images/pug.png">
+<h1>PugSQL</h1>
+</a>
+<h3>
+v0.3.6
+<span>documentation</span>
+</h3>
+</div>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pugsql.statement</code></h1>
+</header>
+<section id="section-intro">
+<p>Compiled SQL function objects.</p>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">&#34;&#34;&#34;
+Compiled SQL function objects.
+&#34;&#34;&#34;
+
+import threading
+from contextlib import contextmanager
+from typing import TYPE_CHECKING, Optional
+
+import sqlalchemy
+from sqlalchemy.ext.compiler import compiles
+from sqlalchemy.sql.expression import BindParameter
+
+from .exceptions import InvalidArgumentError
+
+_locals = threading.local()
+
+if TYPE_CHECKING:
+    from .compiler import Module
+
+
+class ArrayLiteral(object):
+    def __init__(self, array):
+        self.array = list(array)
+
+
+@contextmanager
+def _compile_context(multiparams, params):
+    _locals.compile_context = {
+        &#34;multiparams&#34;: multiparams,
+        &#34;params&#34;: params,
+    }
+    try:
+        yield
+    finally:
+        _locals.compile_context = None
+
+
+@compiles(BindParameter)
+def _visit_bindparam(element, compiler, **kw):
+    cc = getattr(_locals, &#34;compile_context&#34;, None)
+    if cc:
+        if _is_expanding_param(element, cc):
+            element.expanding = True
+    return compiler.visit_bindparam(element)
+
+
+def _is_expanding_param(element, cc):
+    if element.key not in cc[&#34;params&#34;]:
+        return False
+    return isinstance(cc[&#34;params&#34;][element.key], tuple)
+
+
+class Result(object):
+    def transform(self, r):
+        raise NotImplementedError()
+
+    @property
+    def display_type(self) -&gt; str:
+        raise NotImplementedError()
+
+
+class One(Result):
+    def transform(self, r):
+        row = r.first()
+        if row:
+            return {k: v for k, v in zip(r.keys(), row)}
+        return None
+
+    @property
+    def display_type(self) -&gt; str:
+        return &#34;row&#34;
+
+
+class Many(Result):
+    def transform(self, r):
+        ks = r.keys()
+        return ({k: v for k, v in zip(ks, row)} for row in r.fetchall())
+
+    @property
+    def display_type(self) -&gt; str:
+        return &#34;rows&#34;
+
+
+class Affected(Result):
+    def transform(self, r):
+        return r.rowcount
+
+    @property
+    def display_type(self) -&gt; str:
+        return &#34;rowcount&#34;
+
+
+class Scalar(Result):
+    def transform(self, r):
+        row = r.first()
+        if not row:
+            return None
+        return row[0]
+
+    @property
+    def display_type(self) -&gt; str:
+        return &#34;scalar&#34;
+
+
+class Insert(Scalar):
+    def transform(self, r):
+        if hasattr(r, &#34;lastrowid&#34;):
+            return r.lastrowid
+        return super(Insert, self).transform(r)
+
+    @property
+    def display_type(self) -&gt; str:
+        return &#34;insert&#34;
+
+
+class Raw(Result):
+    def transform(self, r):
+        return r
+
+    @property
+    def display_type(self) -&gt; str:
+        return &#34;raw&#34;
+
+
+class Statement(object):
+    def __init__(
+        self,
+        name: str,
+        sql: str,
+        doc: str,
+        result: Result,
+        filename: Optional[str] = None,
+    ):
+        self.filename = filename
+
+        if not name:
+            self._value_err(&#34;Statement must have a name.&#34;)
+
+        if sql is None:
+            self._value_err(&#34;Statement must have a SQL string.&#34;)
+        sql = sql.strip()
+        if not len(sql):
+            self._value_err(&#34;SQL string cannot be empty.&#34;)
+
+        if not result:
+            self._value_err(&#34;Statement must have a result type.&#34;)
+
+        self.name = name
+        self.sql = sql
+        self.doc = doc
+        self.result = result
+        self.filename = filename
+        self._module = None
+        self._text = sqlalchemy.sql.text(self.sql)
+
+    def _value_err(self, msg):
+        if self.filename:
+            raise ValueError(&#34;%s In: %s&#34; % (msg, self.filename))
+        raise ValueError(msg)
+
+    def set_module(self, module: &#34;Module&#34;):
+        self._module = module
+
+    def _assert_module(self) -&gt; &#34;Module&#34;:
+        if self._module is None:
+            raise RuntimeError(
+                &#34;This statement is not associated with a module&#34;
+            )
+        return self._module
+
+    def __call__(self, *multiparams, **params):
+        module = self._assert_module()
+        multiparams, params = self._convert_params(multiparams, params)
+        self._validateMultiparams(params, multiparams)
+        with _compile_context(multiparams, params):
+            try:
+                r = module._execute(self._text, *multiparams, **params)
+            except AttributeError as e:
+                if str(e) == &#34;&#39;tuple&#39; object has no attribute &#39;keys&#39;&#34;:
+                    self._positionalArgError()
+                raise
+        return self.result.transform(r)
+
+    def _validateMultiparams(self, params, multiparams):
+        # try to catch some common usage mistakes
+        if not len(multiparams):
+            return
+
+        if len(params):
+            # currently never supported to pass both positional args and
+            # keywords
+            self._positionalArgError()
+
+        for p in multiparams:
+            # multiparams are allowed when they&#39;re tuples/rows/etc to be e.g.
+            # inserted
+            if not type(p) in {dict, list, set, tuple}:
+                self._positionalArgError()
+
+    def _positionalArgError(self):
+        raise InvalidArgumentError(
+            &#34;Pass keyword arguments to statements (received &#34;
+            &#34;positional arguments).&#34;
+        )
+
+    def _convert_params(self, multiparams, params):
+        def conv(x):
+            if isinstance(x, set) or isinstance(x, list):
+                return tuple(x)
+            elif isinstance(x, ArrayLiteral):
+                return x.array
+            return x
+
+        return (
+            [conv(p) for p in multiparams],
+            {k: conv(v) for k, v in params.items()},
+        )
+
+    def _param_names(self):
+        def kfn(p):
+            return self.sql.index(&#34;:&#34; + p)
+
+        return sorted(self._text._bindparams.keys(), key=kfn)
+
+    def __str__(self):
+        paramstr = &#34;, &#34;.join([&#34;%s=None&#34; % k for k in self._param_names()])
+        return &#34;pugsql.statement.Statement: %s(%s) :: %s&#34; % (
+            self.name,
+            paramstr,
+            self.result.display_type,
+        )
+
+    def __repr__(self):
+        return str(self)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pugsql.statement.Affected"><code class="flex name class">
+<span>class <span class="ident">Affected</span></span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Affected(Result):
+    def transform(self, r):
+        return r.rowcount
+
+    @property
+    def display_type(self) -&gt; str:
+        return &#34;rowcount&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pugsql.statement.Result" href="#pugsql.statement.Result">Result</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pugsql.statement.Affected.display_type"><code class="name">var <span class="ident">display_type</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@property
+def display_type(self) -&gt; str:
+    return &#34;rowcount&#34;</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="pugsql.statement.Affected.transform"><code class="name flex">
+<span>def <span class="ident">transform</span></span>(<span>self, r)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def transform(self, r):
+    return r.rowcount</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pugsql.statement.ArrayLiteral"><code class="flex name class">
+<span>class <span class="ident">ArrayLiteral</span></span>
+<span>(</span><span>array)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class ArrayLiteral(object):
+    def __init__(self, array):
+        self.array = list(array)</code></pre>
+</details>
+</dd>
+<dt id="pugsql.statement.Insert"><code class="flex name class">
+<span>class <span class="ident">Insert</span></span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Insert(Scalar):
+    def transform(self, r):
+        if hasattr(r, &#34;lastrowid&#34;):
+            return r.lastrowid
+        return super(Insert, self).transform(r)
+
+    @property
+    def display_type(self) -&gt; str:
+        return &#34;insert&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pugsql.statement.Scalar" href="#pugsql.statement.Scalar">Scalar</a></li>
+<li><a title="pugsql.statement.Result" href="#pugsql.statement.Result">Result</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pugsql.statement.Insert.display_type"><code class="name">var <span class="ident">display_type</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@property
+def display_type(self) -&gt; str:
+    return &#34;insert&#34;</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="pugsql.statement.Insert.transform"><code class="name flex">
+<span>def <span class="ident">transform</span></span>(<span>self, r)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def transform(self, r):
+    if hasattr(r, &#34;lastrowid&#34;):
+        return r.lastrowid
+    return super(Insert, self).transform(r)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pugsql.statement.Many"><code class="flex name class">
+<span>class <span class="ident">Many</span></span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Many(Result):
+    def transform(self, r):
+        ks = r.keys()
+        return ({k: v for k, v in zip(ks, row)} for row in r.fetchall())
+
+    @property
+    def display_type(self) -&gt; str:
+        return &#34;rows&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pugsql.statement.Result" href="#pugsql.statement.Result">Result</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pugsql.statement.Many.display_type"><code class="name">var <span class="ident">display_type</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@property
+def display_type(self) -&gt; str:
+    return &#34;rows&#34;</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="pugsql.statement.Many.transform"><code class="name flex">
+<span>def <span class="ident">transform</span></span>(<span>self, r)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def transform(self, r):
+    ks = r.keys()
+    return ({k: v for k, v in zip(ks, row)} for row in r.fetchall())</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pugsql.statement.One"><code class="flex name class">
+<span>class <span class="ident">One</span></span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class One(Result):
+    def transform(self, r):
+        row = r.first()
+        if row:
+            return {k: v for k, v in zip(r.keys(), row)}
+        return None
+
+    @property
+    def display_type(self) -&gt; str:
+        return &#34;row&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pugsql.statement.Result" href="#pugsql.statement.Result">Result</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pugsql.statement.One.display_type"><code class="name">var <span class="ident">display_type</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@property
+def display_type(self) -&gt; str:
+    return &#34;row&#34;</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="pugsql.statement.One.transform"><code class="name flex">
+<span>def <span class="ident">transform</span></span>(<span>self, r)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def transform(self, r):
+    row = r.first()
+    if row:
+        return {k: v for k, v in zip(r.keys(), row)}
+    return None</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pugsql.statement.Raw"><code class="flex name class">
+<span>class <span class="ident">Raw</span></span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Raw(Result):
+    def transform(self, r):
+        return r
+
+    @property
+    def display_type(self) -&gt; str:
+        return &#34;raw&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pugsql.statement.Result" href="#pugsql.statement.Result">Result</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pugsql.statement.Raw.display_type"><code class="name">var <span class="ident">display_type</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@property
+def display_type(self) -&gt; str:
+    return &#34;raw&#34;</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="pugsql.statement.Raw.transform"><code class="name flex">
+<span>def <span class="ident">transform</span></span>(<span>self, r)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def transform(self, r):
+    return r</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pugsql.statement.Result"><code class="flex name class">
+<span>class <span class="ident">Result</span></span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Result(object):
+    def transform(self, r):
+        raise NotImplementedError()
+
+    @property
+    def display_type(self) -&gt; str:
+        raise NotImplementedError()</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="pugsql.statement.Affected" href="#pugsql.statement.Affected">Affected</a></li>
+<li><a title="pugsql.statement.Many" href="#pugsql.statement.Many">Many</a></li>
+<li><a title="pugsql.statement.One" href="#pugsql.statement.One">One</a></li>
+<li><a title="pugsql.statement.Raw" href="#pugsql.statement.Raw">Raw</a></li>
+<li><a title="pugsql.statement.Scalar" href="#pugsql.statement.Scalar">Scalar</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pugsql.statement.Result.display_type"><code class="name">var <span class="ident">display_type</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@property
+def display_type(self) -&gt; str:
+    raise NotImplementedError()</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="pugsql.statement.Result.transform"><code class="name flex">
+<span>def <span class="ident">transform</span></span>(<span>self, r)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def transform(self, r):
+    raise NotImplementedError()</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pugsql.statement.Scalar"><code class="flex name class">
+<span>class <span class="ident">Scalar</span></span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Scalar(Result):
+    def transform(self, r):
+        row = r.first()
+        if not row:
+            return None
+        return row[0]
+
+    @property
+    def display_type(self) -&gt; str:
+        return &#34;scalar&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pugsql.statement.Result" href="#pugsql.statement.Result">Result</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="pugsql.statement.Insert" href="#pugsql.statement.Insert">Insert</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pugsql.statement.Scalar.display_type"><code class="name">var <span class="ident">display_type</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@property
+def display_type(self) -&gt; str:
+    return &#34;scalar&#34;</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="pugsql.statement.Scalar.transform"><code class="name flex">
+<span>def <span class="ident">transform</span></span>(<span>self, r)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def transform(self, r):
+    row = r.first()
+    if not row:
+        return None
+    return row[0]</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pugsql.statement.Statement"><code class="flex name class">
+<span>class <span class="ident">Statement</span></span>
+<span>(</span><span>name: str, sql: str, doc: str, result: <a title="pugsql.statement.Result" href="#pugsql.statement.Result">Result</a>, filename: str | None = None)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Statement(object):
+    def __init__(
+        self,
+        name: str,
+        sql: str,
+        doc: str,
+        result: Result,
+        filename: Optional[str] = None,
+    ):
+        self.filename = filename
+
+        if not name:
+            self._value_err(&#34;Statement must have a name.&#34;)
+
+        if sql is None:
+            self._value_err(&#34;Statement must have a SQL string.&#34;)
+        sql = sql.strip()
+        if not len(sql):
+            self._value_err(&#34;SQL string cannot be empty.&#34;)
+
+        if not result:
+            self._value_err(&#34;Statement must have a result type.&#34;)
+
+        self.name = name
+        self.sql = sql
+        self.doc = doc
+        self.result = result
+        self.filename = filename
+        self._module = None
+        self._text = sqlalchemy.sql.text(self.sql)
+
+    def _value_err(self, msg):
+        if self.filename:
+            raise ValueError(&#34;%s In: %s&#34; % (msg, self.filename))
+        raise ValueError(msg)
+
+    def set_module(self, module: &#34;Module&#34;):
+        self._module = module
+
+    def _assert_module(self) -&gt; &#34;Module&#34;:
+        if self._module is None:
+            raise RuntimeError(
+                &#34;This statement is not associated with a module&#34;
+            )
+        return self._module
+
+    def __call__(self, *multiparams, **params):
+        module = self._assert_module()
+        multiparams, params = self._convert_params(multiparams, params)
+        self._validateMultiparams(params, multiparams)
+        with _compile_context(multiparams, params):
+            try:
+                r = module._execute(self._text, *multiparams, **params)
+            except AttributeError as e:
+                if str(e) == &#34;&#39;tuple&#39; object has no attribute &#39;keys&#39;&#34;:
+                    self._positionalArgError()
+                raise
+        return self.result.transform(r)
+
+    def _validateMultiparams(self, params, multiparams):
+        # try to catch some common usage mistakes
+        if not len(multiparams):
+            return
+
+        if len(params):
+            # currently never supported to pass both positional args and
+            # keywords
+            self._positionalArgError()
+
+        for p in multiparams:
+            # multiparams are allowed when they&#39;re tuples/rows/etc to be e.g.
+            # inserted
+            if not type(p) in {dict, list, set, tuple}:
+                self._positionalArgError()
+
+    def _positionalArgError(self):
+        raise InvalidArgumentError(
+            &#34;Pass keyword arguments to statements (received &#34;
+            &#34;positional arguments).&#34;
+        )
+
+    def _convert_params(self, multiparams, params):
+        def conv(x):
+            if isinstance(x, set) or isinstance(x, list):
+                return tuple(x)
+            elif isinstance(x, ArrayLiteral):
+                return x.array
+            return x
+
+        return (
+            [conv(p) for p in multiparams],
+            {k: conv(v) for k, v in params.items()},
+        )
+
+    def _param_names(self):
+        def kfn(p):
+            return self.sql.index(&#34;:&#34; + p)
+
+        return sorted(self._text._bindparams.keys(), key=kfn)
+
+    def __str__(self):
+        paramstr = &#34;, &#34;.join([&#34;%s=None&#34; % k for k in self._param_names()])
+        return &#34;pugsql.statement.Statement: %s(%s) :: %s&#34; % (
+            self.name,
+            paramstr,
+            self.result.display_type,
+        )
+
+    def __repr__(self):
+        return str(self)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pugsql.statement.Statement.set_module"><code class="name flex">
+<span>def <span class="ident">set_module</span></span>(<span>self, module: Module)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def set_module(self, module: &#34;Module&#34;):
+    self._module = module</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pugsql" href="index.html">pugsql</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pugsql.statement.Affected" href="#pugsql.statement.Affected">Affected</a></code></h4>
+<ul class="">
+<li><code><a title="pugsql.statement.Affected.display_type" href="#pugsql.statement.Affected.display_type">display_type</a></code></li>
+<li><code><a title="pugsql.statement.Affected.transform" href="#pugsql.statement.Affected.transform">transform</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pugsql.statement.ArrayLiteral" href="#pugsql.statement.ArrayLiteral">ArrayLiteral</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pugsql.statement.Insert" href="#pugsql.statement.Insert">Insert</a></code></h4>
+<ul class="">
+<li><code><a title="pugsql.statement.Insert.display_type" href="#pugsql.statement.Insert.display_type">display_type</a></code></li>
+<li><code><a title="pugsql.statement.Insert.transform" href="#pugsql.statement.Insert.transform">transform</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pugsql.statement.Many" href="#pugsql.statement.Many">Many</a></code></h4>
+<ul class="">
+<li><code><a title="pugsql.statement.Many.display_type" href="#pugsql.statement.Many.display_type">display_type</a></code></li>
+<li><code><a title="pugsql.statement.Many.transform" href="#pugsql.statement.Many.transform">transform</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pugsql.statement.One" href="#pugsql.statement.One">One</a></code></h4>
+<ul class="">
+<li><code><a title="pugsql.statement.One.display_type" href="#pugsql.statement.One.display_type">display_type</a></code></li>
+<li><code><a title="pugsql.statement.One.transform" href="#pugsql.statement.One.transform">transform</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pugsql.statement.Raw" href="#pugsql.statement.Raw">Raw</a></code></h4>
+<ul class="">
+<li><code><a title="pugsql.statement.Raw.display_type" href="#pugsql.statement.Raw.display_type">display_type</a></code></li>
+<li><code><a title="pugsql.statement.Raw.transform" href="#pugsql.statement.Raw.transform">transform</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pugsql.statement.Result" href="#pugsql.statement.Result">Result</a></code></h4>
+<ul class="">
+<li><code><a title="pugsql.statement.Result.display_type" href="#pugsql.statement.Result.display_type">display_type</a></code></li>
+<li><code><a title="pugsql.statement.Result.transform" href="#pugsql.statement.Result.transform">transform</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pugsql.statement.Scalar" href="#pugsql.statement.Scalar">Scalar</a></code></h4>
+<ul class="">
+<li><code><a title="pugsql.statement.Scalar.display_type" href="#pugsql.statement.Scalar.display_type">display_type</a></code></li>
+<li><code><a title="pugsql.statement.Scalar.transform" href="#pugsql.statement.Scalar.transform">transform</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pugsql.statement.Statement" href="#pugsql.statement.Statement">Statement</a></code></h4>
+<ul class="">
+<li><code><a title="pugsql.statement.Statement.set_module" href="#pugsql.statement.Statement.set_module">set_module</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.11.5</a>.</p>
+</footer>
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-139602329-3"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-139602329-3');
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
