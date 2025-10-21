@@ -1,5 +1,6 @@
 # Release History
 ## 0.3.6
+* Added the `ArrayLiteral` class to enable insertion of arrays in Postgres ([#37](https://github.com/mcfunley/pugsql/issues/37)). Thanks to [joe-seabound](https://github.com/joe-seabound).
 * Informational comments now include the line number within a pugsql source file where the query appears ([#78](https://github.com/mcfunley/pugsql/issues/78)). Thanks again to [Doeke Zanstra](https://github.com/doekman).
 
 ## 0.3.5
