@@ -30,8 +30,7 @@ To get postgres on a mac,
     brew install postgresql
     brew services start postgresql
 
-The postgres tests will use `PGUSER` and a `PGPASS` environment variables to override the default postgres user and
-password, when they exist. Postgres should be hosting on 127.0.0.1:5432.
+The postgres tests will use `PGUSER` and a `PGPASS` environment variables to override the default postgres user and password, when they exist. Postgres should be hosting on 127.0.0.1:5432.
 
 To run the tests and the linter:
 
