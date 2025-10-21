@@ -44,7 +44,11 @@ def parse(
 
     hdr = []
     if sys.version_info[:2] > (3, 9):
-        hdr = ["-- pugsql function %s in file %s" % (cpr["name"], ctx.sqlfile)]
+        file_name = ctx.sqlfile
+        if file_name != "<literal>":
+            file_name = "\"" + file_name + "\""
+        hdr = ["-- pugsql function %s in file %s at line %d" % (cpr["name"],
+               file_name, ctx.line + 1)]
     sql = "\n".join(hdr + cpr["unconsumed"] + [token.value for token in rest])
 
     return statement.Statement(

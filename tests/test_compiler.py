@@ -44,8 +44,15 @@ class BasicCompilerTest(TestCase):
         m = compiler.Module("tests/sql")
         self.assertEqual(
             m.username_for_id.sql,
-            "-- pugsql function username_for_id in file tests/sql/basic.sql\n"
-            "select username from users where user_id = :user_id",
+            "-- pugsql function username_for_id in file "
+            "\"tests/sql/basic.sql\" at line 1\n"
+            "select username from users where user_id = :user_id"
+        )
+        self.assertEqual(
+            m.multiline_syntax.sql,
+            "-- pugsql function multiline_syntax in file "
+            "\"tests/sql/multi-statement.sql\" at line 8\n"
+            "select * from foo where bar = :bar;"
         )
 
     def test_multiple_statements_per_file(self):

@@ -63,8 +63,11 @@ class Module(object):
 
             # handle multiple statements per file
             statements = re.split(r"\n+(?=--+\s*:name)", pugsql)
+            statement_line = 0
             for statement in statements:
-                s = parser.parse(statement, ctx=context.Context(sqlfile))
+                s = parser.parse(statement, ctx=context.Context(sqlfile,
+                                 line=statement_line))
+                statement_line += len(statement.splitlines()) + 1
 
                 if hasattr(self, s.name):
                     if s.name not in self._statements:
