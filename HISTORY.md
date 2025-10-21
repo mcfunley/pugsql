@@ -1,9 +1,12 @@
 # Release History
+## 0.3.6
+* Informational comments now include the line number within a pugsql source file where the query appears ([#78](https://github.com/mcfunley/pugsql/issues/78)). Thanks again to [Doeke Zanstra](https://github.com/doekman).
+
 ## 0.3.5
 * Fixed problem with 0.3.4 in Python 3.9. Pugsql source file / line number comments no longer supported before Python 3.10.
 
 ## 0.3.4
-* Executed queries now include a comment referencing the pugsql source file and line number ([#17](https://github.com/mcfunley/pugsql/issues/73)). Thanks to [Doeke Zanstra](https://github.com/doekman).
+* Executed queries now include a comment referencing the pugsql source file ([#17](https://github.com/mcfunley/pugsql/issues/17)). Thanks to [Doeke Zanstra](https://github.com/doekman).
 
 ## 0.3.3
 * Adds support for Python 3.13.
