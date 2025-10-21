@@ -18,6 +18,11 @@ if TYPE_CHECKING:
     from .compiler import Module
 
 
+class ArrayLiteral(object):
+    def __init__(self, array):
+        self.array = list(array)
+
+
 @contextmanager
 def _compile_context(multiparams, params):
     _locals.compile_context = {
@@ -42,7 +47,7 @@ def _visit_bindparam(element, compiler, **kw):
 def _is_expanding_param(element, cc):
     if element.key not in cc["params"]:
         return False
-    return isinstance(cc["params"][element.key], (tuple, list))
+    return isinstance(cc["params"][element.key], tuple)
 
 
 class Result(object):
@@ -189,7 +194,7 @@ class Statement(object):
         for p in multiparams:
             # multiparams are allowed when they're tuples/rows/etc to be e.g.
             # inserted
-            if not type(p) in {dict, list, set}:
+            if not type(p) in {dict, list, set, tuple}:
                 self._positionalArgError()
 
     def _positionalArgError(self):
@@ -200,8 +205,10 @@ class Statement(object):
 
     def _convert_params(self, multiparams, params):
         def conv(x):
-            if isinstance(x, set):
+            if isinstance(x, set) or isinstance(x, list):
                 return tuple(x)
+            elif isinstance(x, ArrayLiteral):
+                return x.array
             return x
 
         return (

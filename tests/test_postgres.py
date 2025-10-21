@@ -59,6 +59,12 @@ class PostgresqlTest(TestCase):
         ]
         self.assertEqual({1, 2}, set(ids))
 
+    def test_insert_array(self):
+        returned = self.fixtures.insert_array(
+            id=1, arr=pugsql.statement.ArrayLiteral([1,2,3,1])
+        )
+        self.assertEqual([1,2,3,1], returned["arr"])
+
     def test_transaction(self):
         with self.fixtures.transaction():
             self.fixtures.upsert_foo(id=1, foo="abcd")
