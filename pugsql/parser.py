@@ -138,6 +138,7 @@ def _consume_doc(cpr: dict, rest: lexer.Token):
     else:
         cpr["doc"] = rest.value.strip()
 
+
 def _set_result(cpr: dict, ktok: lexer.Token):
     tokens = lexer.lex_result(ktok)
     if not tokens:
