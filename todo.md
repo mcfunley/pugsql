@@ -1,6 +1,6 @@
 # Planned features
 
-- [ ] Support `:doc`.
+- [x] Support `:doc`.
 - [x] Better result for `print(module.foobar)`.
 - [ ] Understand interpolated parameters.
 - [x] Support multiple queries per file.
