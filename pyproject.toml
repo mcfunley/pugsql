@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pugsql"
-version = "0.3.6"
+version = "0.3.7"
 description = "PugSQL is an anti-ORM that facilitates interacting with databases using SQL in files."
 authors = ["Dan McKinley <mcfunley@gmail.com>"]
 license = "Apache-2.0"
