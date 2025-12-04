@@ -28,6 +28,7 @@ and the desired return types. Queries can return a single row:
 
 ```sql
 -- :name user_for_id :one
+-- :doc Finds a single user by identifier.
 select * from users where user_id = :user_id
 ```
 
@@ -35,6 +36,7 @@ Or many rows:
 
 ```sql
 -- :name search_users :many
+-- :doc Finds all users matching the given pattern.
 select * from users where username like :pattern
 ```
 
