@@ -147,7 +147,7 @@ class Statement(object):
 
         self.name = name
         self.sql = sql
-        self.doc = doc
+        self.__doc__ = doc
         self.result = result
         self.filename = filename
         self._module = None

@@ -132,6 +132,20 @@ class MultilineTest(TestCase):
         self.assertIsInstance(s.result, statement.Scalar)
         self.assertEqual(s.name, "has_commentary_whitespace")
 
+    def test_doc(self):
+        s = self.parse("doc")
+        self.assertEqual(
+            s.__doc__,
+            "This query doesn't do anything but looks good doing it",
+        )
+
+    def test_doc_multiline(self):
+        s = self.parse("doc-multiline")
+        self.assertEqual(
+            s.__doc__,
+            "This query doesn't do anything,\nbut looks good doing it",
+        )
+
 
 class ParserErrorTest(TestCase):
     def test_no_name(self):

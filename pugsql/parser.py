@@ -82,12 +82,15 @@ def _parse_comments(comments: list[lexer.Token]) -> dict:
 
     for comment_token in comments:
         toks = lexer.lex_comment(comment_token)
+
         if not toks:
             cpr["unconsumed"].append(comment_token.value)
         elif toks["keyword"].value == ":name":
             _consume_name(cpr, toks["rest"])
         elif toks["keyword"].value == ":result":
             _consume_result(cpr, toks["rest"])
+        elif toks["keyword"].value == ":doc":
+            _consume_doc(cpr, toks["rest"])
         else:
             cpr["unconsumed"].append(comment_token.value)
 
@@ -128,6 +131,12 @@ def _consume_name(cpr: dict, rest: lexer.Token):
 
     _set_result(cpr, tokens["keyword"])
 
+
+def _consume_doc(cpr: dict, rest: lexer.Token):
+    if cpr["doc"] is not None:
+        cpr["doc"] += "\n" + rest.value.strip()
+    else:
+        cpr["doc"] = rest.value.strip()
 
 def _set_result(cpr: dict, ktok: lexer.Token):
     tokens = lexer.lex_result(ktok)
